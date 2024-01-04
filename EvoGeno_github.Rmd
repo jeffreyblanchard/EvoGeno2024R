@@ -1,0 +1,25 @@
+---
+title: "Pulling down the files from the course github repo"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    theme: united
+    highlight: tango
+editor_options: 
+  chunk_output_type: console
+---
+
+The course github site repository is at https://github.com/jeffreyblanchard/EvoGeno2024R
+
+If you are not using RStudio Cloud here are directions for creating a RStudio project space that is in sync with the course github and will download the files in the repo.
+
+* Go to https://github.com/jeffreyblanchard/EvoGeno2024R
+* Click on the green code button and copy the https link (https://github.com/jeffreyblanchard/EvoGeno2024R.git)
+* In RStudio click on File > New Project (You can not do this on RStudio Cloud. Only on Unity or with RStudio downloaded to your own computer)
+* Select Version Control
+* Select Git
+* Paste in link from course github site (https://github.com/jeffreyblanchard/EvoGeno2024R.git)
+* Choose the directory you want to use for the project (often /project/username)
+* In the upper right corner select the git tab. Click pull when you want to update
+

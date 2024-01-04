@@ -1,0 +1,8 @@
+---
+title: "Evolutionary Genomics & Bioinformatics"
+output: html_document
+date: 'Spring 2024'
+---
+
+This is a rendering of hmtl files from the course repository  (https://github.com/jeffreyblanchard/EvoGeno2024R) for Evolutionary Genomics & Bioinformatics taught at the University of Massachusetts Amherst by Prof. Jeffrey Blanchard.  If you are not using RStudio (Posit) Cloud here are [directions](EvoGeno_github.html) for creating a RStudio project space that is in sync with the course github and will download the files in the course repo.
+
