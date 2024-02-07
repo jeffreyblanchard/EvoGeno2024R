@@ -89,7 +89,7 @@ Unity is the UMass High Performance Computing cluster. Unity staff maintain a Sl
 
 ## Getting set up
 
-### Bio478 and Bio678
+### Bio476 and Bio676
 
 [Posit Cloud](https://posit.cloud/) and create an account. I will share the link for our Workspace in an Announcement on Canvas. The steps are
 
@@ -99,13 +99,24 @@ Unity is the UMass High Performance Computing cluster. Unity staff maintain a Sl
 -   Click on Project tab
 -   Start assignment
 
-### Bio678
+### Bio676
 
-If you are a graduate student in 678 please set up an account (you will need your PIs approval) on Unity <https://unity.rc.umass.edu/>. You will be using R and RStudio from the Unity HPC. You are also welcome to use R and RStudio it from your own computer.
+If you are a graduate student in 676 please set up an account (you will need your PIs approval) on Unity <https://unity.rc.umass.edu/>. You will be using R and RStudio from the Unity HPC. You are also welcome to use R and RStudio it from your own computer.
 
 ### Working in RStudio
 
-Open RStudio
+1. Open RStudio
+
+2. Click on File > New File > RMarkdown
+
+The default R studio appearance includes 4 windows. 
+
+1. The R script(s) and data view.
+2. Console.
+3. Workspace and history.
+4. Files, plots, packages and help.
+
+![](images/RStudio.png)
 
 #### Console Window (bottom left window)
 
