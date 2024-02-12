@@ -8,6 +8,7 @@ output:
     toc_depth: 4
     theme: united
     highlight: tango
+    code_folding: hide
 ---
 
 ## Learning objectives
@@ -35,7 +36,6 @@ Images liven up presentations and reports. They can help broaden the appeal or b
 The very top of your Rmarkdown default template is the `YAML` block which is bordered by `---`
 
 You already now the title, author, data and hmtl output sections which were in your Lab 1 report.  The toc is for table of contents. The depth is the number of subheaders recognized. The toc_float option is to float the table of contents to the left of the main document content (the default is false for putting it at the top of the document). Here is a good overview with a different themes - https://bookdown.org/yihui/rmarkdown/html-document.html
-
 
 ## Exercises
 
