@@ -16,6 +16,8 @@ output:
 -   Loading images
 -   YAML block
 
+## Overview and examples
+
 ### A more comprehensive look at R Markdown
 
 In Lab one we used a single R Markdown file to both save and execute code and generate a lab report. Today we will spend more time understanding R Markdown using a set of [R Markdown tutorials](https://rmarkdown.rstudio.com/index.html)
@@ -28,7 +30,7 @@ Images liven up presentations and reports. They can help broaden the appeal or b
 
 ![Colorized TEM of a Giant Virus from Barre Woods Experimental Warming Plot, Petersham, MA](images/lab2/giant_virus.jpg)
 
-## YAML
+### YAML
 
 The very top of your Rmarkdown default template is the `YAML` block which is bordered by `---`
 
