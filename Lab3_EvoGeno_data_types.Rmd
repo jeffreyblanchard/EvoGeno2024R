@@ -1,0 +1,383 @@
+---
+title: "Human Genome Analysis Lab 2 : Basic R Object types and importing SNP data"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    theme: united
+    highlight: tango
+---
+
+## Learning objectives
+
+* Factors
+* Data Matrics
+* Data Frames
+* Importing Data into R
+* Working with 23andMe SNP data
+
+## Overview
+
+The last lab we learned about data types in R and vectors, one of the most important object types in R.  This session we will learn a few more object types and their importance for importing data from files
+
+* vectors: ordered collection of numeric, character, complex and logical values.
+* factors: special type vectors with grouping information of its components
+* data frames: two dimensional structures with different data types
+* matrices: two dimensional structures with data of same type
+* arrays: multidimensional arrays of vectors (not covered today)
+* lists: general form of vectors with different types of elements (not covered today)
+
+We can think of matrices, arrays, lists and data frames as deviations from a vector. The
+deviations are related to the two characteristics order and homogeneity. Here are naming conventions that go with objects
+
+* Object, row and column names should not start with a number.
+* Avoid spaces in object, row and column names.
+* Avoid special characters like '#' in object, row and column names.
+
+## Basic Data Objects
+
+### Vectors
+
+Vectors are ordered collections of the same data type (numeric, character, complex, raw and logical values).  Data types are also called atomic modes in R.  In the last session we made a vector of numeric characters.  You can assemble and combine vectors using the function "c" short for combine.  
+
+```{r}
+SNPs <- c("AA", "AA", "GG", "AG", "AG", "AA","AG", "AA", "AA", "AA", "AG")
+SNPs
+```
+
+
+### Factors
+
+A Factor is a vector whose elements can take on one of a specific set of values. For example, "Sex" will usually take on only the values "M" or "F," whereas "Genotype" will generally have lots of possibilities. The set of values that the elements of a factor can take are called its levels.  Factors encode categorical data.  
+
+```{r}
+SNPs_cat <- factor(SNPs)
+SNPs_cat
+```
+
+We can use the TABLE function to make a table of the factors
+
+```{r}
+table(SNPs_cat)
+```
+
+and make a plot of SNPs
+
+```{r}
+plot(SNPs_cat)
+```
+
+If we had tried to make a plot of a vector of characters an error message would be returned.
+
+Factors are actually stored as a list of integers, referring to the element number of the factor levels. In the following example, there are 6 levels (AA AC AG CC CT GG), which are represented as characters, and the numeric values of the factor comprise the integers 1-6, referring to the elements of the vector of levels. We can see these integers using
+
+```{r}
+as.numeric(SNPs_cat)
+```
+
+### Matrices
+
+Matrices are two dimensional structures with data of same type and are often thought of as a numeric array of rows and columns. One of the easiest ways to create a matrix is to combine vectors of equal length using cbind(), meaning "column bind" OR rbind() to combine objects as rows
+
+```{r}
+Day1 <- c(2,4,6,8)
+Day2 <- c(3,6,9,12)
+Day3 <- c(1,4,9,16)
+A <- cbind(Day1,Day2,Day3)
+A
+```
+
+```{r}
+Day1 <- c(2,4,6,8)
+Day2 <- c(3,6,9,12)
+Day3 <- c(1,4,9,16)
+B <- rbind(Day1,Day2,Day3)
+B
+```
+
+To add a row to a matrix we can use rbind or cbind with the vector representing the row and the matrix
+
+```{r}
+Day4 <- c(5,10,11,20)
+C <- rbind(B,Day4)
+C
+```
+
+As with vectors we can do calculations on the matix
+
+```{r}
+A * 10
+```
+
+Matrices are stored in a 1 dimensional structure, so you can still access their elements with a single subscript:
+
+```{r}
+A[1]
+A[12]
+```
+They can also be accessed using row and column positions:
+
+```{r}
+A[1,1]
+A[2,3]
+```
+
+If we want to extract a submatrix consisting of the first and third column, leave the first positin the specifies the row blank.
+
+```{r}
+A[ ,c(1,3)]
+```
+
+Extract a submatrix consisting of the second and fourth row. Leave the column (2nd) position blank.
+
+```{r}
+A[c(2,4), ]
+```
+
+A matrix can be transposed using the function "t""
+
+```{r}
+t(A)
+```
+
+### Data frames
+
+Data frames are two dimensional structures with different data types.  The data.frame() function can combine vectors and/or factors into a single data frame.
+
+```{r}
+Gene1 <- c(2,4,6,8)
+Gene2 <- c(3,6,9,12)
+Gene3 <- c(1,4,9,16)
+Gene <- c("Day 1", "Day 2","Day 3", "Day 4")
+RNAseq <- data.frame(Gene1, Gene2, Gene3, row.names = Gene)
+RNAseq
+```
+
+To work with data in dataframes we use the names of the data frame and the name of the vector (column). For example
+
+```{r}
+RNAseq$Gene3
+```
+
+To make an x-y plot of the data
+
+```{r}
+plot(RNAseq$Gene1,RNAseq$Gene3)
+```
+
+Note what happens if we plot Day vs Gene3
+```{r, eval=FALSE}
+plot(RNAseq$Day,RNAseq$Gene3)
+```
+You will get a message "Error in xy.coords(x, y, xlabel, ylabel, log) : 'x' and 'y' lengths differ"
+
+If you want to plot Day vs Gene3 then you have to add Day as a column with numeric values and not as the row names
+
+There are many different ways of adding columns to a data frame.
+
+```{r}
+RNAseq$Gene4 <- c(5, 10, 15, 20)
+RNAseq
+```
+and
+
+```{r}
+RNAseq[,"Gene5"] <- c(1, 2, 3, 3)
+RNAseq
+```
+
+To add a row use rbind
+
+```{r}
+RNAseq["Day 4",] <- rbind(10, 14, 20, 22, 3)
+```
+
+### Checking on object types
+
+Sometimes it is confusing as to what type of type of data is in a object.  You can use the str() function
+
+```{r}
+x = 1
+str(x)
+```
+
+Object with a number(num)
+
+```{r}
+a = "ATGCCCTGA"
+str(a)
+```
+
+Object with a character
+
+```{r}
+str(SNPs)
+```
+This reveals a vector of characters (chr). 
+
+```{r}
+SNPs <- c("AA", "AA", "GG", "AG", "AG", "AA","AG", "AA", "AA", "AA", "AG")
+str(SNPs_cat)
+```
+This reveals a factor with 3 levels
+
+```{r}
+Day1 <- c(2,4,6,8)
+Day2 <- c(3,6,9,12)
+Day3 <- c(1,4,9,16)
+B <- rbind(Day1,Day2,Day3)
+str (B)
+```
+This shows a matrix of numbers (num) with the columns having character names (chr)
+
+```{r}
+Gene1 <- c(2,4,6,8)
+Gene2 <- c(3,6,9,12)
+Gene3 <- c(1,4,9,16)
+Gene <- c("Day 1", "Day 2","Day 3", "Day 4")
+RNAseq <- data.frame(Gene1, Gene2, Gene3, row.names = Gene)
+str(RNAseq)
+```
+A dataframe of numbers (num)
+
+The Environment window in the top right corner of RStudio will also display the value types.
+
+## Importing data
+
+### read.table()
+
+Most of our class data will be in files that we import into R.  A common way to store data is in CSV (comman-separated values) and tab separated file.  In these file formats the columns are separated by either a comman or tab.  
+
+The function read.table() is used to load these files into R.  This function reads a file in table format and creates a data frame from it.  By default, read.table uses ‘#’ as a comment character, and if this is encountered (except in quoted strings) the rest of the line is ignored. Lines containing only white space and a comment are treated as blank lines. The important fields in read.table are the file name, header and separator.
+
+
+### Loading a truncuated 23andMe file
+
+Down load the 23andMe truncated file (23andMe_example_cat25.txt) from the Moodle site.  Open it up with your text editor (Notepad++, Text Wrangler, etc).  The file contains important background information that is demarked with #. There are 4 columns for the rsid number, chromosome number, chromosome position and the genotype.  
+
+The rsid number is used by researchers to refer to specific SNPs. It stands for Reference SNP cluster ID.  When researchers identify a SNP, they send the report, which includes the sequence immediately surrounding the SNP, to the dbSNP database - http://www.ncbi.nlm.nih.gov/SNP/ at the National Center for Biotechnology Information. Genome-wide association studies linking SNPs to traits or conditions usually report their results by rsid. The rsid numbers for SNPs in Health and Traits articles can be found in the technical report section. I put my data files in a folder called data within my working directory.
+
+```{r}
+SNP_table <- read.table("data/23andMe_example_cat25.txt", header = TRUE, sep = "\t")
+SNP_table
+```
+
+### Getting Information on a Dataset
+
+List the variables in the data set
+
+```{r}
+names(SNP_table)
+```
+
+List the structure of the data set
+
+```{r}
+str(SNP_table)
+```
+
+List levels of factor genotype
+
+```{r}
+levels(SNP_table$genotype)
+```
+
+Dimensions of an object
+
+```{r}
+dim(SNP_table)
+```
+
+Class of an object (numeric, matrix, data frame, etc)
+
+```{r}
+class(SNP_table)
+```
+
+Print mydata - warming do not try to do this on large data sets such as the full 23andME file
+```{r}
+SNP_table
+```
+
+Print first 5 rows of the data set
+```{r}
+head(SNP_table, n=10)
+```
+
+Print last 5 rows of the data set
+```{r}
+tail(SNP_table, n=5)
+```
+
+The object type of each column can be determine during the import process.  For more information of modifying the data and object type
+
+```{r eval = FALSE}
+help(read.table)
+```
+
+For example for some purposes when we have loaded the complete SNP file it would be nice to have the chromosomes considered as factors rather than integers.
+
+```{r}
+SNP_table$chromosome <- as.factor(SNP_table$chromosome)
+str(SNP_table) 
+```
+
+and back
+
+```{r}
+SNP_table$chromosome <- as.integer(SNP_table$chromosome)
+str(SNP_table) 
+```
+
+Select a subset of the data with the genotype AG and make a summary table
+
+```{r}
+SNP_table_AG <- subset(SNP_table, genotype == 'AG') 
+SNP_table_AG
+table(SNP_table_AG$chromosome)
+```
+
+Select a subset of a chromosome by position
+
+```{r}
+subset(SNP_table, position > 700000 & position < 800000)
+```
+
+## Excercises 
+
+There are many ways to do the below excercises, but try to do them simply by using the commands in the above examples.  In later sessions we will focus on graphing.  For now do not worry that your graphs do not have titles, x or y labels, units and other things. Please submit a .R file with comments denoting the examples and exercises.
+
+### Exercise 1
+
+Add, subtract, multipy and divide the following two vectors (1,3,6,9,12) and (1,0,1,0,1)
+
+### Exercise 2
+
+Create 3 different vectors from (0,1,2,3), ("aa","bb","cc","dd") and ("aa",1,"bb",2). Use str() to determine what data types each vector holds.
+
+### Exercise 3 
+
+Create a matrix of the data: genotype 1 ("AA", "AA", "AG", "GG", "GG"), genotype 2 ("AA", "AA", "GG", "GG", "GG"). Display the matrix. Use the table function (as in the above examples) to show the total number of each genotype.
+
+### Exercise 4 
+
+Create a dataframe of the following experiment in samples were collected every 2 minutes starting at t = 0. treatment 1 (0,1,2,3,4), treatment 2 (0,2,4,6,8), treatment 3 (0,3,6,9,12).  Display the dataframe.  Plot treatment 3 vs. time (you will need to load time as a column rather than a row name)
+
+### Exercise 5
+
+Following the example above with the truncated file use read.table to import the full SNP file 23andME_complete.txt. (This is a large file and may take several minutes to load into R)
+
+What object type is chromosome?  Why is it different from the above SNP_table example with the truncated file?  
+
+### Exercise 6
+
+Use the table function to calculate the total number of each genotype. There may be unsual genotypes. 23andMe reports a very small number of deletions and insertions coded as D DD DI I II.  The double dash -- represents an uncertain (not reported) call at this position.
+
+### Exercise 7
+
+Determine which chromosome(s) the single letter genotype A is found on (e.g which chromosomes have only one copy of DNA)?  Hint: Use subset() to make a table with just the genotype A.
+
+
+
+
+

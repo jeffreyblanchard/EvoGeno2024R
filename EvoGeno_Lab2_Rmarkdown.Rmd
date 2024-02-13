@@ -1,7 +1,7 @@
 ---
 title: "Lab 2 Rmarkdown"
 author: "Jeffrey Blanchard"
-date: "2/9/2022"
+date: "2/9/2024"
 output:
   html_document:
     toc: true
