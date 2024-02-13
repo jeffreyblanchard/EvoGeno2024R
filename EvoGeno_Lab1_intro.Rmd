@@ -116,7 +116,7 @@ The default R studio appearance includes 4 windows.
 3. Workspace and history.
 4. Files, plots, packages and help.
 
-![](images/RStudio.png)
+![](images/lab1/RStudio.png)
 
 #### Console Window (bottom left window)
 
