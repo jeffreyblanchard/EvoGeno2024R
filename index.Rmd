@@ -8,7 +8,9 @@ This is a rendering of hmtl files from the course repository  (https://github.co
 
 * Lab 1 : [Introduction to R and Reproducible Research](EvoGeno_Lab1_intro.html)
 * Lab 2 : [Rmarkdown](EvoGeno_Lab2_Rmarkdown.html)
+* Lab 3 : [Basic R Object types and importing data](EvoGeno_Lab3_data_types.html)
 
 For students with prior R programming experience and familiarity with Tidyverse (including all students who were in Human Genome Analysis)
 
 * Lab xtra1 : [Programming in R - Regular Expressions](EvoGeno_xtra1_stringr.html)
+* Lab xtra3 : [Programming in R - Control Structures and Functions](EvoGeno_xtra3_loops.html)

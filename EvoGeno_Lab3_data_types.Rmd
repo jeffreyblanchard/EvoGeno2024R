@@ -1,5 +1,5 @@
 ---
-title: "Human Genome Analysis Lab 2 : Basic R Object types and importing SNP data"
+title: "Lab 3 : Basic R Object types and importing SNP data"
 output:
   html_document:
     toc: true
@@ -44,7 +44,7 @@ Vectors are ordered collections of the same data type (numeric, character, compl
 SNPs <- c("AA", "AA", "GG", "AG", "AG", "AA","AG", "AA", "AA", "AA", "AG")
 SNPs
 ```
-
+Look into the `Environment` window in the top right. You will see the object SNPs with the data type `chr` (character)
 
 ### Factors
 
@@ -55,6 +55,7 @@ SNPs_cat <- factor(SNPs)
 SNPs_cat
 ```
 
+Look into the `Environment` window in the top right. You will see the object SNPs with the data type `Factor`
 We can use the TABLE function to make a table of the factors
 
 ```{r}
@@ -238,7 +239,6 @@ Gene <- c("Day 1", "Day 2","Day 3", "Day 4")
 RNAseq <- data.frame(Gene1, Gene2, Gene3, row.names = Gene)
 str(RNAseq)
 ```
-A dataframe of numbers (num)
 
 The Environment window in the top right corner of RStudio will also display the value types.
 
@@ -248,104 +248,27 @@ The Environment window in the top right corner of RStudio will also display the 
 
 Most of our class data will be in files that we import into R.  A common way to store data is in CSV (comman-separated values) and tab separated file.  In these file formats the columns are separated by either a comman or tab.  
 
-The function read.table() is used to load these files into R.  This function reads a file in table format and creates a data frame from it.  By default, read.table uses ‘#’ as a comment character, and if this is encountered (except in quoted strings) the rest of the line is ignored. Lines containing only white space and a comment are treated as blank lines. The important fields in read.table are the file name, header and separator.
+The base R function read.table() is used to load these files into R. This function reads a file in table format and creates a data frame from it.  By default, read.table uses ‘#’ as a comment character, and if this is encountered (except in quoted strings) the rest of the line is ignored. Lines containing only white space and a comment are treated as blank lines. The important fields in read.table are the file name, header and separator.
 
 
 ### Loading a truncuated 23andMe file
 
-Down load the 23andMe truncated file (23andMe_example_cat25.txt) from the Moodle site.  Open it up with your text editor (Notepad++, Text Wrangler, etc).  The file contains important background information that is demarked with #. There are 4 columns for the rsid number, chromosome number, chromosome position and the genotype.  
-
-The rsid number is used by researchers to refer to specific SNPs. It stands for Reference SNP cluster ID.  When researchers identify a SNP, they send the report, which includes the sequence immediately surrounding the SNP, to the dbSNP database - http://www.ncbi.nlm.nih.gov/SNP/ at the National Center for Biotechnology Information. Genome-wide association studies linking SNPs to traits or conditions usually report their results by rsid. The rsid numbers for SNPs in Health and Traits articles can be found in the technical report section. I put my data files in a folder called data within my working directory.
+I put my data files in a folder called data within my working directory.
 
 ```{r}
 SNP_table <- read.table("data/23andMe_example_cat25.txt", header = TRUE, sep = "\t")
 SNP_table
 ```
 
-### Getting Information on a Dataset
+The rsid number is used by researchers to refer to specific SNPs. It stands for Reference SNP cluster ID.  When researchers identify a SNP, they send the report, which includes the sequence immediately surrounding the SNP, to the dbSNP database - http://www.ncbi.nlm.nih.gov/SNP/ at the National Center for Biotechnology Information. Genome-wide association studies linking SNPs to traits or conditions usually report their results by rsid. The rsid numbers for SNPs in Health and Traits articles can be found in the technical report section. 
 
-List the variables in the data set
-
-```{r}
-names(SNP_table)
-```
-
-List the structure of the data set
-
-```{r}
-str(SNP_table)
-```
-
-List levels of factor genotype
-
-```{r}
-levels(SNP_table$genotype)
-```
-
-Dimensions of an object
-
-```{r}
-dim(SNP_table)
-```
-
-Class of an object (numeric, matrix, data frame, etc)
-
-```{r}
-class(SNP_table)
-```
-
-Print mydata - warming do not try to do this on large data sets such as the full 23andME file
-```{r}
-SNP_table
-```
-
-Print first 5 rows of the data set
-```{r}
-head(SNP_table, n=10)
-```
-
-Print last 5 rows of the data set
-```{r}
-tail(SNP_table, n=5)
-```
-
-The object type of each column can be determine during the import process.  For more information of modifying the data and object type
-
-```{r eval = FALSE}
-help(read.table)
-```
-
-For example for some purposes when we have loaded the complete SNP file it would be nice to have the chromosomes considered as factors rather than integers.
-
-```{r}
-SNP_table$chromosome <- as.factor(SNP_table$chromosome)
-str(SNP_table) 
-```
-
-and back
-
-```{r}
-SNP_table$chromosome <- as.integer(SNP_table$chromosome)
-str(SNP_table) 
-```
 
 Select a subset of the data with the genotype AG and make a summary table
 
-```{r}
-SNP_table_AG <- subset(SNP_table, genotype == 'AG') 
-SNP_table_AG
-table(SNP_table_AG$chromosome)
-```
-
-Select a subset of a chromosome by position
-
-```{r}
-subset(SNP_table, position > 700000 & position < 800000)
-```
 
 ## Excercises 
 
-There are many ways to do the below excercises, but try to do them simply by using the commands in the above examples.  In later sessions we will focus on graphing.  For now do not worry that your graphs do not have titles, x or y labels, units and other things. Please submit a .R file with comments denoting the examples and exercises.
+There are many ways to do the below exercises, but try to do them simply by using the commands in the above examples.  In later sessions we will focus on graphing.  For now do not worry that your graphs do not have titles, x or y labels, units and other things. Please submit your knitted file with comments denoting the examples and exercises.
 
 ### Exercise 1
 
@@ -365,17 +288,21 @@ Create a dataframe of the following experiment in samples were collected every 2
 
 ### Exercise 5
 
-Following the example above with the truncated file use read.table to import the full SNP file 23andME_complete.txt. (This is a large file and may take several minutes to load into R)
-
-What object type is chromosome?  Why is it different from the above SNP_table example with the truncated file?  
+What are the data types in the SNP table?  You can view these in the `Environment` window. You can also use the function `str()` in your R code
 
 ### Exercise 6
 
-Use the table function to calculate the total number of each genotype. There may be unsual genotypes. 23andMe reports a very small number of deletions and insertions coded as D DD DI I II.  The double dash -- represents an uncertain (not reported) call at this position.
+Convert the object `chromosome` in the SNP table to a factor.  Remember use the names of the data frame and the name of the vector (column).
 
 ### Exercise 7
 
-Determine which chromosome(s) the single letter genotype A is found on (e.g which chromosomes have only one copy of DNA)?  Hint: Use subset() to make a table with just the genotype A.
+Make a bar plot of `genotype`
+
+
+
+
+
+
 
 
 

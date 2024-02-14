@@ -11,7 +11,7 @@
 
 
 
-<title>Human Genome Analysis Lab 2 : Basic R Object types and importing SNP data</title>
+<title>Lab xtra3 : Programming in R - Control Structures and Functions</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -425,495 +425,437 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Human Genome Analysis Lab 2 : Basic R
-Object types and importing SNP data</h1>
+<h1 class="title toc-ignore">Lab xtra3 : Programming in R - Control
+Structures and Functions</h1>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#learning-objectives" id="toc-learning-objectives">Learning
-objectives</a></li>
-<li><a href="#overview" id="toc-overview">Overview</a></li>
-<li><a href="#basic-data-objects" id="toc-basic-data-objects">Basic Data
-Objects</a>
+<li><a href="#control-structures" id="toc-control-structures">Control
+Structures</a>
 <ul>
-<li><a href="#vectors" id="toc-vectors">Vectors</a></li>
-<li><a href="#factors" id="toc-factors">Factors</a></li>
-<li><a href="#matrices" id="toc-matrices">Matrices</a></li>
-<li><a href="#data-frames" id="toc-data-frames">Data frames</a></li>
-<li><a href="#checking-on-object-types" id="toc-checking-on-object-types">Checking on object types</a></li>
-</ul></li>
-<li><a href="#importing-data" id="toc-importing-data">Importing data</a>
+<li><a href="#conditional-statements-with-if-else" id="toc-conditional-statements-with-if-else">Conditional statements with
+<code>if</code>-<code>else</code></a></li>
+<li><a href="#important-operators" id="toc-important-operators">Important Operators</a>
 <ul>
-<li><a href="#read.table" id="toc-read.table">read.table()</a></li>
-<li><a href="#loading-a-truncuated-23andme-file" id="toc-loading-a-truncuated-23andme-file">Loading a truncuated 23andMe
-file</a></li>
-<li><a href="#getting-information-on-a-dataset" id="toc-getting-information-on-a-dataset">Getting Information on a
-Dataset</a></li>
+<li><a href="#comparison-operators" id="toc-comparison-operators">Comparison operators</a></li>
+<li><a href="#logical-operators" id="toc-logical-operators">Logical
+operators</a></li>
 </ul></li>
-<li><a href="#excercises" id="toc-excercises">Excercises</a>
+<li><a href="#for-loops" id="toc-for-loops"><code>for</code>
+Loops</a></li>
+<li><a href="#nested-for-loops" id="toc-nested-for-loops">Nested
+<code>for</code> loops</a></li>
+<li><a href="#while-loops" id="toc-while-loops"><code>while</code>
+Loops</a></li>
+</ul></li>
+<li><a href="#functions" id="toc-functions">Functions</a>
 <ul>
-<li><a href="#exercise-1" id="toc-exercise-1">Exercise 1</a></li>
-<li><a href="#exercise-2" id="toc-exercise-2">Exercise 2</a></li>
-<li><a href="#exercise-3" id="toc-exercise-3">Exercise 3</a></li>
-<li><a href="#exercise-4" id="toc-exercise-4">Exercise 4</a></li>
-<li><a href="#exercise-5" id="toc-exercise-5">Exercise 5</a></li>
-<li><a href="#exercise-6" id="toc-exercise-6">Exercise 6</a></li>
-<li><a href="#exercise-7" id="toc-exercise-7">Exercise 7</a></li>
+<li><a href="#functions-in-r" id="toc-functions-in-r">Functions in
+R</a></li>
+<li><a href="#your-first-function" id="toc-your-first-function">Your
+First Function</a></li>
 </ul></li>
+<li><a href="#looping-on-the-command-line-using-apply-family-in-r-base-or-purrr-in-tidyverse" id="toc-looping-on-the-command-line-using-apply-family-in-r-base-or-purrr-in-tidyverse">Looping
+on the Command Line using <code>apply</code> family in R base or
+<code>purrr</code> in Tidyverse</a></li>
+<li><a href="#excercises" id="toc-excercises">Excercises</a></li>
 </ul>
 </div>
 
-<div id="learning-objectives" class="section level2">
-<h2>Learning objectives</h2>
+<p><strong>Much of the text in this lab is derived from Roger Peng’s <a href="https://github.com/rdpeng/rprogdatascience">R Programming for Data
+Science</a>, the chapters <a href="https://r4ds.had.co.nz/iteration.html">Iteration</a> and <a href="#functions">Functions</a> (<a href="https://r4ds.had.co.nz/functions.html" class="uri">https://r4ds.had.co.nz/functions.html</a>) chapters in R for
+Data Science] by Hadley Wickham and supplements from Thomas Girke’s <a href="https://github.com/tgirke/GEN242-2016/">Data Analysis in Genome
+Biology</a>.</strong></p>
+<div id="control-structures" class="section level2">
+<h2>Control Structures</h2>
+<p>One of the main attractions of using the R environment is the ease
+with which users can write their own programs and custom functions. The
+R programming syntax is extremely easy to learn, even for users with no
+previous programming experience. Once the basic R programming control
+structures are understood, users can use the R language as a powerful
+environment to perform complex custom analyses of almost any type of
+data.</p>
+<p>Control structures in R allow you to control the flow of execution of
+a series of R expressions. Basically, control structures allow you to
+put some “logic” into your R code, rather than just always executing the
+same R code every time. Control structures allow you to respond to
+inputs or to features of the data and execute different R expressions
+accordingly.</p>
+<p>Commonly used control structures are</p>
 <ul>
-<li>Factors</li>
-<li>Data Matrics</li>
-<li>Data Frames</li>
-<li>Importing Data into R</li>
-<li>Working with 23andMe SNP data</li>
+<li><p><code>if</code> and <code>else</code>: testing a condition and
+acting on it</p></li>
+<li><p><code>for</code>: execute a loop a fixed number of times</p></li>
+<li><p><code>while</code>: execute a loop <em>while</em> a condition is
+true</p></li>
+</ul>
+<p>Most control structures are not used in interactive sessions, but
+rather when writing functions or longer expresisons. However, these
+constructs do not have to be used in functions and it’s a good idea to
+become familiar with them before we delve into functions.</p>
+<div id="conditional-statements-with-if-else" class="section level3">
+<h3>Conditional statements with <code>if</code>-<code>else</code></h3>
+<p>The <code>if</code>-<code>else</code> combination is probably the
+most commonly used control structure in R (or perhaps any language).
+This structure allows you to test a condition and act on it depending on
+whether it’s true or false.</p>
+<p>For starters, you can just use the <code>if</code> statement.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">&lt;</span>condition<span class="sc">&gt;</span>) {</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>        <span class="do">## do something</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>} </span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="do">## Continue with rest of code</span></span></code></pre></div>
+<p>The above code does nothing if the condition is false. If you have an
+action you want to execute when the condition is false, then you need an
+<code>else</code> clause.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">&lt;</span>condition<span class="sc">&gt;</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>        <span class="do">## do something</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>} </span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="cf">else</span> {</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>        <span class="do">## do something else</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>}</span></code></pre></div>
+<p>You can have a series of tests by following the initial
+<code>if</code> with any number of <code>else if</code>s.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">&lt;</span>condition1<span class="sc">&gt;</span>) {</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>        <span class="do">## do something</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span>(<span class="sc">&lt;</span>condition2<span class="sc">&gt;</span>)  {</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>        <span class="do">## do something different</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>        <span class="do">## do something different</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>}</span></code></pre></div>
+<p>Here is an example of a valid if/else structure.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="do">## Generate a uniform random number</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">10</span>)  </span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="cf">if</span>(x <span class="sc">&gt;</span> <span class="dv">3</span>) {</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>        y <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>        y <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>}</span></code></pre></div>
+<p>The value of <code>y</code> is set depending on whether
+<code>x &gt; 3</code> or not.</p>
+</div>
+<div id="important-operators" class="section level3">
+<h3>Important Operators</h3>
+<div id="comparison-operators" class="section level4">
+<h4>Comparison operators</h4>
+<ul>
+<li><code>==</code> (equal)</li>
+<li><code>!=</code> (not equal)</li>
+<li><code>&gt;</code> (greater than)</li>
+<li><code>&gt;=</code> (greater than or equal)</li>
+<li><code>&lt;</code> (less than)</li>
+<li><code>&lt;=</code> (less than or equal)</li>
 </ul>
 </div>
-<div id="overview" class="section level2">
-<h2>Overview</h2>
-<p>The last lab we learned about data types in R and vectors, one of the
-most important object types in R. This session we will learn a few more
-object types and their importance for importing data from files</p>
+<div id="logical-operators" class="section level4">
+<h4>Logical operators</h4>
 <ul>
-<li>vectors: ordered collection of numeric, character, complex and
-logical values.</li>
-<li>factors: special type vectors with grouping information of its
-components</li>
-<li>data frames: two dimensional structures with different data
-types</li>
-<li>matrices: two dimensional structures with data of same type</li>
-<li>arrays: multidimensional arrays of vectors (not covered today)</li>
-<li>lists: general form of vectors with different types of elements (not
-covered today)</li>
-</ul>
-<p>We can think of matrices, arrays, lists and data frames as deviations
-from a vector. The deviations are related to the two characteristics
-order and homogeneity. Here are naming conventions that go with
-objects</p>
-<ul>
-<li>Object, row and column names should not start with a number.</li>
-<li>Avoid spaces in object, row and column names.</li>
-<li>Avoid special characters like ‘#’ in object, row and column
-names.</li>
+<li><code>&amp;</code> (and)</li>
+<li><code>|</code> (or)</li>
+<li><code>!</code> (not)</li>
 </ul>
 </div>
-<div id="basic-data-objects" class="section level2">
-<h2>Basic Data Objects</h2>
-<div id="vectors" class="section level3">
-<h3>Vectors</h3>
-<p>Vectors are ordered collections of the same data type (numeric,
-character, complex, raw and logical values). Data types are also called
-atomic modes in R. In the last session we made a vector of numeric
-characters. You can assemble and combine vectors using the function “c”
-short for combine.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>SNPs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;AA&quot;</span>, <span class="st">&quot;AA&quot;</span>, <span class="st">&quot;GG&quot;</span>, <span class="st">&quot;AG&quot;</span>, <span class="st">&quot;AG&quot;</span>, <span class="st">&quot;AA&quot;</span>,<span class="st">&quot;AG&quot;</span>, <span class="st">&quot;AA&quot;</span>, <span class="st">&quot;AA&quot;</span>, <span class="st">&quot;AA&quot;</span>, <span class="st">&quot;AG&quot;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>SNPs</span></code></pre></div>
-<pre><code>##  [1] &quot;AA&quot; &quot;AA&quot; &quot;GG&quot; &quot;AG&quot; &quot;AG&quot; &quot;AA&quot; &quot;AG&quot; &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; &quot;AG&quot;</code></pre>
 </div>
-<div id="factors" class="section level3">
-<h3>Factors</h3>
-<p>A Factor is a vector whose elements can take on one of a specific set
-of values. For example, “Sex” will usually take on only the values “M”
-or “F,” whereas “Genotype” will generally have lots of possibilities.
-The set of values that the elements of a factor can take are called its
-levels. Factors encode categorical data.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>SNPs_cat <span class="ot">&lt;-</span> <span class="fu">factor</span>(SNPs)</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>SNPs_cat</span></code></pre></div>
-<pre><code>##  [1] AA AA GG AG AG AA AG AA AA AA AG
-## Levels: AA AG GG</code></pre>
-<p>We can use the TABLE function to make a table of the factors</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">table</span>(SNPs_cat)</span></code></pre></div>
-<pre><code>## SNPs_cat
-## AA AG GG 
-##  6  4  1</code></pre>
-<p>and make a plot of SNPs</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">plot</span>(SNPs_cat)</span></code></pre></div>
-<p><img src="data:image/png;base64,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gIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAICHgAAACIgIAHAACACAh4AAAAiICABwAAgAgIeAAAAIiAgAcAAIAI/H/eXwlNEtTU6QAAAABJRU5ErkJggg==" width="672" /></p>
-<p>If we had tried to make a plot of a vector of characters an error
-message would be returned.</p>
-<p>Factors are actually stored as a list of integers, referring to the
-element number of the factor levels. In the following example, there are
-6 levels (AA AC AG CC CT GG), which are represented as characters, and
-the numeric values of the factor comprise the integers 1-6, referring to
-the elements of the vector of levels. We can see these integers
-using</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">as.numeric</span>(SNPs_cat)</span></code></pre></div>
-<pre><code>##  [1] 1 1 3 2 2 1 2 1 1 1 2</code></pre>
+<div id="for-loops" class="section level3">
+<h3><code>for</code> Loops</h3>
+<p>For loops are pretty much the only looping construct that you will
+need in R. While you may occasionally find a need for other types of
+loops, in my experience doing data analysis, I’ve found very few
+situations where a for loop wasn’t sufficient.</p>
+<p>In R, for loops take an interator variable and assign it successive
+values from a sequence or vector. For loops are most commonly used for
+iterating over the elements of an object (list, vector, etc.)</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>        <span class="fu">print</span>(i)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10</code></pre>
+<p>This loop takes the <code>i</code> variable and in each iteration of
+the loop gives it values 1, 2, 3, …, 10, executes the code within the
+curly braces, and then the loop exits.</p>
+<p>The following three loops all have the same behavior.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>        <span class="do">## Print out each element of &#39;x&#39;</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>        <span class="fu">print</span>(x[i])  </span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;a&quot;
+## [1] &quot;b&quot;
+## [1] &quot;c&quot;
+## [1] &quot;d&quot;</code></pre>
+<p>The <code>seq_along()</code> function is commonly used in conjunction
+with for loops in order to generate an integer sequence based on the
+length of an object (in this case, the object <code>x</code>).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="do">## Generate a sequence based on length of &#39;x&#39;</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(x)) {   </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>        <span class="fu">print</span>(x[i])</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;a&quot;
+## [1] &quot;b&quot;
+## [1] &quot;c&quot;
+## [1] &quot;d&quot;</code></pre>
+<p>It is not necessary to use an index-type variable.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="cf">for</span>(letter <span class="cf">in</span> x) {</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>        <span class="fu">print</span>(letter)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;a&quot;
+## [1] &quot;b&quot;
+## [1] &quot;c&quot;
+## [1] &quot;d&quot;</code></pre>
+<p>For one line loops, the curly braces are not strictly necessary.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) <span class="fu">print</span>(x[i])</span></code></pre></div>
+<pre><code>## [1] &quot;a&quot;
+## [1] &quot;b&quot;
+## [1] &quot;c&quot;
+## [1] &quot;d&quot;</code></pre>
+<p>However, I like to use curly braces even for one-line loops, because
+that way if you decide to expand the loop to multiple lines, you won’t
+be burned because you forgot to add curly braces (and you <em>will</em>
+be burned by this).</p>
 </div>
-<div id="matrices" class="section level3">
-<h3>Matrices</h3>
-<p>Matrices are two dimensional structures with data of same type and
-are often thought of as a numeric array of rows and columns. One of the
-easiest ways to create a matrix is to combine vectors of equal length
-using cbind(), meaning “column bind” OR rbind() to combine objects as
-rows</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>Day1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>Day2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">12</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>Day3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Day1,Day2,Day3)</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>A</span></code></pre></div>
-<pre><code>##      Day1 Day2 Day3
-## [1,]    2    3    1
-## [2,]    4    6    4
-## [3,]    6    9    9
-## [4,]    8   12   16</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>Day1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>Day2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">12</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>Day3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">rbind</span>(Day1,Day2,Day3)</span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>B</span></code></pre></div>
-<pre><code>##      [,1] [,2] [,3] [,4]
-## Day1    2    4    6    8
-## Day2    3    6    9   12
-## Day3    1    4    9   16</code></pre>
-<p>To add a row to a matrix we can use rbind or cbind with the vector
-representing the row and the matrix</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>Day4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">20</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">rbind</span>(B,Day4)</span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>C</span></code></pre></div>
-<pre><code>##      [,1] [,2] [,3] [,4]
-## Day1    2    4    6    8
-## Day2    3    6    9   12
-## Day3    1    4    9   16
-## Day4    5   10   11   20</code></pre>
-<p>As with vectors we can do calculations on the matix</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>A <span class="sc">*</span> <span class="dv">10</span></span></code></pre></div>
-<pre><code>##      Day1 Day2 Day3
-## [1,]   20   30   10
-## [2,]   40   60   40
-## [3,]   60   90   90
-## [4,]   80  120  160</code></pre>
-<p>Matrices are stored in a 1 dimensional structure, so you can still
-access their elements with a single subscript:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>A[<span class="dv">1</span>]</span></code></pre></div>
+<div id="nested-for-loops" class="section level3">
+<h3>Nested <code>for</code> loops</h3>
+<p><code>for</code> loops can be nested inside of each other.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(x))) {</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>        <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">ncol</span>(x))) {</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>                <span class="fu">print</span>(x[i, j])</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>        }   </span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>}</span></code></pre></div>
+<p>Nested loops are commonly needed for multidimensional or hierarchical
+data structures (e.g. matrices, lists). Be careful with nesting though.
+Nesting beyond 2 to 3 levels often makes it difficult to read/understand
+the code. If you find yourself in need of a large number of nested
+loops, you may want to break up the loops by using functions (discussed
+later).</p>
+</div>
+<div id="while-loops" class="section level3">
+<h3><code>while</code> Loops</h3>
+<p>While loops begin by testing a condition. If it is true, then they
+execute the loop body. Once the loop body is executed, the condition is
+tested again, and so forth, until the condition is false, after which
+the loop exits.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>count <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="cf">while</span>(count <span class="sc">&lt;</span> <span class="dv">10</span>) {</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>        <span class="fu">print</span>(count)</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>        count <span class="ot">&lt;-</span> count <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] 0
+## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9</code></pre>
+<p>While loops can potentially result in infinite loops if not written
+properly. Use with care!</p>
+<p>Sometimes there will be more than one condition in the test.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="cf">while</span>(z <span class="sc">&gt;=</span> <span class="dv">3</span> <span class="sc">&amp;&amp;</span> z <span class="sc">&lt;=</span> <span class="dv">10</span>) {</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>        coin <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>        </span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>        <span class="cf">if</span>(coin <span class="sc">==</span> <span class="dv">1</span>) {  <span class="do">## random walk</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>                z <span class="ot">&lt;-</span> z <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>                z <span class="ot">&lt;-</span> z <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>        } </span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>}</span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="fu">print</span>(z)</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>A[<span class="dv">12</span>]</span></code></pre></div>
-<pre><code>## [1] 16</code></pre>
-<p>They can also be accessed using row and column positions:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>A[<span class="dv">1</span>,<span class="dv">1</span>]</span></code></pre></div>
-<pre><code>## Day1 
-##    2</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>A[<span class="dv">2</span>,<span class="dv">3</span>]</span></code></pre></div>
-<pre><code>## Day3 
-##    4</code></pre>
-<p>If we want to extract a submatrix consisting of the first and third
-column, leave the first positin the specifies the row blank.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>A[ ,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]</span></code></pre></div>
-<pre><code>##      Day1 Day3
-## [1,]    2    1
-## [2,]    4    4
-## [3,]    6    9
-## [4,]    8   16</code></pre>
-<p>Extract a submatrix consisting of the second and fourth row. Leave
-the column (2nd) position blank.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>A[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>), ]</span></code></pre></div>
-<pre><code>##      Day1 Day2 Day3
-## [1,]    4    6    4
-## [2,]    8   12   16</code></pre>
-<p>A matrix can be transposed using the function “t””</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="fu">t</span>(A)</span></code></pre></div>
-<pre><code>##      [,1] [,2] [,3] [,4]
-## Day1    2    4    6    8
-## Day2    3    6    9   12
-## Day3    1    4    9   16</code></pre>
-</div>
-<div id="data-frames" class="section level3">
-<h3>Data frames</h3>
-<p>Data frames are two dimensional structures with different data types.
-The data.frame() function can combine vectors and/or factors into a
-single data frame.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>Gene1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>Gene2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">12</span>)</span>
-<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>Gene3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>)</span>
-<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>Gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Day 1&quot;</span>, <span class="st">&quot;Day 2&quot;</span>,<span class="st">&quot;Day 3&quot;</span>, <span class="st">&quot;Day 4&quot;</span>)</span>
-<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>RNAseq <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(Gene1, Gene2, Gene3, <span class="at">row.names =</span> Gene)</span>
-<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a>RNAseq</span></code></pre></div>
-<pre><code>##       Gene1 Gene2 Gene3
-## Day 1     2     3     1
-## Day 2     4     6     4
-## Day 3     6     9     9
-## Day 4     8    12    16</code></pre>
-<p>To work with data in dataframes we use the names of the data frame
-and the name of the vector (column). For example</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>RNAseq<span class="sc">$</span>Gene3</span></code></pre></div>
-<pre><code>## [1]  1  4  9 16</code></pre>
-<p>To make an x-y plot of the data</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="fu">plot</span>(RNAseq<span class="sc">$</span>Gene1,RNAseq<span class="sc">$</span>Gene3)</span></code></pre></div>
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAIAAAB7BESOAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nOzdZ5hU5d3A4efMFnZp0nuRJioCFkCxxkLsCohijb1H0KCi5o2xxW7ssReiRomKXTSi2EARsWFBiiIoCCy97+7MeT9gF1gcFtbD3vensPPMmf/6Idf12+fMeaI4jgMAAADw+5aq6AEAAACAsgl4AAAASAABDwAAAAkg4AEAACABBDwAAAAkgIAHAACABBDwAAAAkAACHgAAABJAwAMAAEACCHgAAABIAAEPAAAACSDgAQAAIAEEPAAAACSAgAcAAIAEEPAAAACQAAIeAAAAEkDAAwAAQAIIeAAAAEgAAQ8AAAAJIOABAAAgAQQ8AAAAJICABwAAgAQQ8AAAAJAAAh4AAAASQMADAABAAgh4AAAASAABDwAAAAkg4AEAACABBDwAAAAkgIAHAACABBDwAAAAkAACHgAAABJAwAMAAEACCHgAAABIAAEPAAAACSDgAQAAIAEEPAAAACSAgAcAAIAEEPAAAACQAAIeAAAAEkDAAwAAQAIIeAAAAEgAAQ8AAAAJIOABAAAgAQQ8AAAAJICABwAAgAQQ8AAAAJAAAh4AAAASQMADAABAAgh4AAAASAABDwAAAAkg4AEAACABBDwAAAAkgIAHAACABBDwAAAAkAACHgAAABJAwAMAAEACCHgAAABIAAEPAAAACSDgAQAAIAEEPAAAACSAgAcAAIAEEPAAAACQAAIeAAAAEkDAAwAAQAIIeAAAAEgAAQ8AAAAJIOABAAAgAQQ8AAAAJICABwAAgAQQ8AAAAJAAAh4AAAASQMADAABAAgh4AAAASAABDwAAAAkg4AEAACABBDwAAAAkgIAHAACABBDwAAAAkAACHgAAABJAwAMAAEACCHgAAABIAAEPAAAACSDgAQAAIAEEPAAAACSAgAcAAIAEEPAAAACQAAIeAAAAEkDAAwAAQAIIeAAAAEgAAQ8AAAAJIOABAAAgAQQ8AAAAJICABwAAgAQQ8AAAAJAAAh4AAAASQMADAABAAgh4AAAASAABDwAAAAkg4AEAACABBDwAAAAkgIAHAACABBDwAAAAkAACHgAAABJAwAMAAEACCHgAAABIAAEPAAAACSDgAQAAIAEEPAAAACSAgAcAAIAEEPAAAACQAAIeAAAAEkDAAwAAQAIIeAAAAEgAAQ8AAAAJIOABAAAgAQQ8AAAAJICABwAAgAQQ8AAAAJAAAh4AAAASQMADAABAAgh4AAAASAABDwAAAAkg4AEAACABBDwAAAAkgIAHAACABBDwAAAAkAACHgAAABJAwAMAAEACCHgAAABIAAEPAAAACSDgAQAAIAEEPAAAACSAgAcAAIAEEPAAAACQAAIeAAAAEkDAAwAAQAIIeAAAAEgAAQ8AAAAJIOABAAAgAQQ8AAAAJICABwAAgAQQ8AAAAJAAAh4AAAASQMADAABAAgh4AAAASAABDwAAAAkg4AEAACABBDwAAAAkgIAHAACABBDwAAAAkAACHgAAABJAwAMAAEACCHgAAABIAAEPAAAACZBb0QNQ/qZMmXLHHXek0+mKHgQAAGBdqVat2oABA6pWrVrRg6w/An4DdOutt1599dUVPQUAAMC61b59+0MOOaSip1h/BPwGqKSkJISw33777bjjjhU9CwAAQPkbPHjw+++/X1xcXNGDrFcCfoO12267nXXWWRU9BQAAQPn7+OOP33///YqeYn3zEDsAAABIAAEPAAAACSDgAQAAIAEEPAAAACSAgAcAAIAEEPAAAACQAAIeAAAAEkDAAwAAQAIIeAAAAEgAAQ8AAAAJIOABAAAgAXIregAAAACSZ/78+RMmTJg3b17Dhg3btWtXUFBQ0RNt+OzAAwAA8BsMGzasR48e9erV69q1a48ePTp16lSvXr3DDjvs008/rejRNnACHgAAgDWybNmyP/3pTz169Bg2bFgqlerSpcvuu+/eoUOHJUuWPPLII506dbr66qsresYNmYAHAACgbOl0unfv3g888EDNmjWvvfbaWbNmjR49etiwYR9//PHUqVPPOOOMOI4HDhz4t7/9raIn3WAJeAAAAMp2+eWXDx06tGHDhiNHjhwwYEDNmjV/eKlp06Y33XTTkCFD8vLy/vGPf7z44osVOOcGTMADAABQhlmzZl199dVRFA0ePLhDhw4rXXPggQdefvnlcRyfc845cRyv5wkrAwEPAABAGR5//PFFixbts88+u+yyy2qW9evXr1mzZmPHjn3vvffW22yVh4AHAACgDK+++moI4aCDDlr9svz8/P333/+H9ZQvAQ8AAEAZpk2bFkJo27ZtmSvbtWsXQvj666/X+UyVj4AHAACgDLm5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" width="672" /></p>
-<p>Note what happens if we plot Day vs Gene3</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="fu">plot</span>(RNAseq<span class="sc">$</span>Day,RNAseq<span class="sc">$</span>Gene3)</span></code></pre></div>
-<p>You will get a message “Error in xy.coords(x, y, xlabel, ylabel, log)
-: ‘x’ and ‘y’ lengths differ”</p>
-<p>If you want to plot Day vs Gene3 then you have to add Day as a column
-with numeric values and not as the row names</p>
-<p>There are many different ways of adding columns to a data frame.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>RNAseq<span class="sc">$</span>Gene4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>)</span>
-<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a>RNAseq</span></code></pre></div>
-<pre><code>##       Gene1 Gene2 Gene3 Gene4
-## Day 1     2     3     1     5
-## Day 2     4     6     4    10
-## Day 3     6     9     9    15
-## Day 4     8    12    16    20</code></pre>
-<p>and</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>RNAseq[,<span class="st">&quot;Gene5&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
-<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>RNAseq</span></code></pre></div>
-<pre><code>##       Gene1 Gene2 Gene3 Gene4 Gene5
-## Day 1     2     3     1     5     1
-## Day 2     4     6     4    10     2
-## Day 3     6     9     9    15     3
-## Day 4     8    12    16    20     3</code></pre>
-<p>To add a row use rbind</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a>RNAseq[<span class="st">&quot;Day 4&quot;</span>,] <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="dv">10</span>, <span class="dv">14</span>, <span class="dv">20</span>, <span class="dv">22</span>, <span class="dv">3</span>)</span></code></pre></div>
-</div>
-<div id="checking-on-object-types" class="section level3">
-<h3>Checking on object types</h3>
-<p>Sometimes it is confusing as to what type of type of data is in a
-object. You can use the str() function</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>x <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a><span class="fu">str</span>(x)</span></code></pre></div>
-<pre><code>##  num 1</code></pre>
-<p>Object with a number(num)</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>a <span class="ot">=</span> <span class="st">&quot;ATGCCCTGA&quot;</span></span>
-<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a><span class="fu">str</span>(a)</span></code></pre></div>
-<pre><code>##  chr &quot;ATGCCCTGA&quot;</code></pre>
-<p>Object with a character</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="fu">str</span>(SNPs)</span></code></pre></div>
-<pre><code>##  chr [1:11] &quot;AA&quot; &quot;AA&quot; &quot;GG&quot; &quot;AG&quot; &quot;AG&quot; &quot;AA&quot; &quot;AG&quot; &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; &quot;AG&quot;</code></pre>
-<p>This reveals a vector of characters (chr).</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a>SNPs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;AA&quot;</span>, <span class="st">&quot;AA&quot;</span>, <span class="st">&quot;GG&quot;</span>, <span class="st">&quot;AG&quot;</span>, <span class="st">&quot;AG&quot;</span>, <span class="st">&quot;AA&quot;</span>,<span class="st">&quot;AG&quot;</span>, <span class="st">&quot;AA&quot;</span>, <span class="st">&quot;AA&quot;</span>, <span class="st">&quot;AA&quot;</span>, <span class="st">&quot;AG&quot;</span>)</span>
-<span id="cb49-2"><a href="#cb49-2" tabindex="-1"></a><span class="fu">str</span>(SNPs_cat)</span></code></pre></div>
-<pre><code>##  Factor w/ 3 levels &quot;AA&quot;,&quot;AG&quot;,&quot;GG&quot;: 1 1 3 2 2 1 2 1 1 1 ...</code></pre>
-<p>This reveals a factor with 3 levels</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>Day1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>)</span>
-<span id="cb51-2"><a href="#cb51-2" tabindex="-1"></a>Day2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">12</span>)</span>
-<span id="cb51-3"><a href="#cb51-3" tabindex="-1"></a>Day3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>)</span>
-<span id="cb51-4"><a href="#cb51-4" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">rbind</span>(Day1,Day2,Day3)</span>
-<span id="cb51-5"><a href="#cb51-5" tabindex="-1"></a><span class="fu">str</span> (B)</span></code></pre></div>
-<pre><code>##  num [1:3, 1:4] 2 3 1 4 6 4 6 9 9 8 ...
-##  - attr(*, &quot;dimnames&quot;)=List of 2
-##   ..$ : chr [1:3] &quot;Day1&quot; &quot;Day2&quot; &quot;Day3&quot;
-##   ..$ : NULL</code></pre>
-<p>This shows a matrix of numbers (num) with the columns having
-character names (chr)</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>Gene1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>)</span>
-<span id="cb53-2"><a href="#cb53-2" tabindex="-1"></a>Gene2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">12</span>)</span>
-<span id="cb53-3"><a href="#cb53-3" tabindex="-1"></a>Gene3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">16</span>)</span>
-<span id="cb53-4"><a href="#cb53-4" tabindex="-1"></a>Gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Day 1&quot;</span>, <span class="st">&quot;Day 2&quot;</span>,<span class="st">&quot;Day 3&quot;</span>, <span class="st">&quot;Day 4&quot;</span>)</span>
-<span id="cb53-5"><a href="#cb53-5" tabindex="-1"></a>RNAseq <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(Gene1, Gene2, Gene3, <span class="at">row.names =</span> Gene)</span>
-<span id="cb53-6"><a href="#cb53-6" tabindex="-1"></a><span class="fu">str</span>(RNAseq)</span></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:    4 obs. of  3 variables:
-##  $ Gene1: num  2 4 6 8
-##  $ Gene2: num  3 6 9 12
-##  $ Gene3: num  1 4 9 16</code></pre>
-<p>A dataframe of numbers (num)</p>
-<p>The Environment window in the top right corner of RStudio will also
-display the value types.</p>
+<p>Conditions are always evaluated from left to right. For example, in
+the above code, if <code>z</code> were less than 3, the second test
+would not have been evaluated.</p>
 </div>
 </div>
-<div id="importing-data" class="section level2">
-<h2>Importing data</h2>
-<div id="read.table" class="section level3">
-<h3>read.table()</h3>
-<p>Most of our class data will be in files that we import into R. A
-common way to store data is in CSV (comman-separated values) and tab
-separated file. In these file formats the columns are separated by
-either a comman or tab.</p>
-<p>The function read.table() is used to load these files into R. This
-function reads a file in table format and creates a data frame from it.
-By default, read.table uses ‘#’ as a comment character, and if this is
-encountered (except in quoted strings) the rest of the line is ignored.
-Lines containing only white space and a comment are treated as blank
-lines. The important fields in read.table are the file name, header and
-separator.</p>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<p>Writing functions is a core activity of an R programmer. It
+represents the key step of the transition from a user of R to a
+developer who creates new functionality for R. While we are focusing on
+learning how to use R and it’s package, it is helpful to understand the
+basics of functions. We have already been using them extensively.
+Functions are often used to encapsulate a sequence of expressions that
+need to be executed numerous times, perhaps under slightly different
+conditions. Functions are also often written when code must be shared
+with others or the public.</p>
+<p>The writing of a function allows a developer to create an interface
+to the code, that is explicitly specified with a set of parameters. This
+interface provides an abstraction of the code to potential users. This
+abstraction simplifies the users’ lives because it relieves them from
+having to know every detail of how the code operates. In addition, the
+creation of an interface allows the developer to communicate to the user
+the aspects of the code that are important or are most relevant.</p>
+<div id="functions-in-r" class="section level3">
+<h3>Functions in R</h3>
+<p>Functions in R are “first class objects”, which means that they can
+be treated much like any other R object. Importantly,</p>
+<ul>
+<li><p>Functions can be passed as arguments to other functions. This is
+very handy for the various apply functions, like <code>lapply()</code>
+and <code>sapply()</code> that we will learn below.</p></li>
+<li><p>Functions can be nested, so that you can define a function inside
+of another function</p></li>
+</ul>
 </div>
-<div id="loading-a-truncuated-23andme-file" class="section level3">
-<h3>Loading a truncuated 23andMe file</h3>
-<p>Down load the 23andMe truncated file (23andMe_example_cat25.txt) from
-the Moodle site. Open it up with your text editor (Notepad++, Text
-Wrangler, etc). The file contains important background information that
-is demarked with #. There are 4 columns for the rsid number, chromosome
-number, chromosome position and the genotype.</p>
-<p>The rsid number is used by researchers to refer to specific SNPs. It
-stands for Reference SNP cluster ID. When researchers identify a SNP,
-they send the report, which includes the sequence immediately
-surrounding the SNP, to the dbSNP database - <a href="http://www.ncbi.nlm.nih.gov/SNP/" class="uri">http://www.ncbi.nlm.nih.gov/SNP/</a> at the National Center
-for Biotechnology Information. Genome-wide association studies linking
-SNPs to traits or conditions usually report their results by rsid. The
-rsid numbers for SNPs in Health and Traits articles can be found in the
-technical report section. I put my data files in a folder called data
-within my working directory.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>SNP_table <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/23andMe_example_cat25.txt&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span>
-<span id="cb55-2"><a href="#cb55-2" tabindex="-1"></a>SNP_table</span></code></pre></div>
-<pre><code>##          rsid chromosome position genotype
-## 1   rs4477212          1    82154       AA
-## 2   rs3094315          1   752566       AA
-## 3   rs3131972          1   752721       GG
-## 4  rs12124819          1   776546       AG
-## 5  rs11240777          1   798959       AG
-## 6   rs6681049          1   800007       CC
-## 7   rs4970383          1   838555       AC
-## 8   rs4475691          1   846808       CT
-## 9   rs7537756          1   854250       AG
-## 10 rs13302982          1   861808       GG</code></pre>
-</div>
-<div id="getting-information-on-a-dataset" class="section level3">
-<h3>Getting Information on a Dataset</h3>
-<p>List the variables in the data set</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a><span class="fu">names</span>(SNP_table)</span></code></pre></div>
-<pre><code>## [1] &quot;rsid&quot;       &quot;chromosome&quot; &quot;position&quot;   &quot;genotype&quot;</code></pre>
-<p>List the structure of the data set</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a><span class="fu">str</span>(SNP_table)</span></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:    10 obs. of  4 variables:
-##  $ rsid      : chr  &quot;rs4477212&quot; &quot;rs3094315&quot; &quot;rs3131972&quot; &quot;rs12124819&quot; ...
-##  $ chromosome: int  1 1 1 1 1 1 1 1 1 1
-##  $ position  : int  82154 752566 752721 776546 798959 800007 838555 846808 854250 861808
-##  $ genotype  : chr  &quot;AA&quot; &quot;AA&quot; &quot;GG&quot; &quot;AG&quot; ...</code></pre>
-<p>List levels of factor genotype</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a><span class="fu">levels</span>(SNP_table<span class="sc">$</span>genotype)</span></code></pre></div>
+<div id="your-first-function" class="section level3">
+<h3>Your First Function</h3>
+<p>Functions are defined using the <code>function()</code> directive and
+are stored as R objects just like anything else. In particular, they are
+R objects of class “function”.</p>
+<p>Here’s a simple function that takes no arguments and does
+nothing.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>        <span class="do">## This is an empty function</span></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>}</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="do">## Functions have their own class</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="fu">class</span>(f)  </span></code></pre></div>
+<pre><code>## [1] &quot;function&quot;</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="do">## Execute this function</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="fu">f</span>()       </span></code></pre></div>
 <pre><code>## NULL</code></pre>
-<p>Dimensions of an object</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="fu">dim</span>(SNP_table)</span></code></pre></div>
-<pre><code>## [1] 10  4</code></pre>
-<p>Class of an object (numeric, matrix, data frame, etc)</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a><span class="fu">class</span>(SNP_table)</span></code></pre></div>
-<pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>Print mydata - warming do not try to do this on large data sets such
-as the full 23andME file</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a>SNP_table</span></code></pre></div>
-<pre><code>##          rsid chromosome position genotype
-## 1   rs4477212          1    82154       AA
-## 2   rs3094315          1   752566       AA
-## 3   rs3131972          1   752721       GG
-## 4  rs12124819          1   776546       AG
-## 5  rs11240777          1   798959       AG
-## 6   rs6681049          1   800007       CC
-## 7   rs4970383          1   838555       AC
-## 8   rs4475691          1   846808       CT
-## 9   rs7537756          1   854250       AG
-## 10 rs13302982          1   861808       GG</code></pre>
-<p>Print first 5 rows of the data set</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a><span class="fu">head</span>(SNP_table, <span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##          rsid chromosome position genotype
-## 1   rs4477212          1    82154       AA
-## 2   rs3094315          1   752566       AA
-## 3   rs3131972          1   752721       GG
-## 4  rs12124819          1   776546       AG
-## 5  rs11240777          1   798959       AG
-## 6   rs6681049          1   800007       CC
-## 7   rs4970383          1   838555       AC
-## 8   rs4475691          1   846808       CT
-## 9   rs7537756          1   854250       AG
-## 10 rs13302982          1   861808       GG</code></pre>
-<p>Print last 5 rows of the data set</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a><span class="fu">tail</span>(SNP_table, <span class="at">n=</span><span class="dv">5</span>)</span></code></pre></div>
-<pre><code>##          rsid chromosome position genotype
-## 6   rs6681049          1   800007       CC
-## 7   rs4970383          1   838555       AC
-## 8   rs4475691          1   846808       CT
-## 9   rs7537756          1   854250       AG
-## 10 rs13302982          1   861808       GG</code></pre>
-<p>The object type of each column can be determine during the import
-process. For more information of modifying the data and object type</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a><span class="fu">help</span>(read.table)</span></code></pre></div>
-<p>For example for some purposes when we have loaded the complete SNP
-file it would be nice to have the chromosomes considered as factors
-rather than integers.</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a>SNP_table<span class="sc">$</span>chromosome <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(SNP_table<span class="sc">$</span>chromosome)</span>
-<span id="cb74-2"><a href="#cb74-2" tabindex="-1"></a><span class="fu">str</span>(SNP_table) </span></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:    10 obs. of  4 variables:
-##  $ rsid      : chr  &quot;rs4477212&quot; &quot;rs3094315&quot; &quot;rs3131972&quot; &quot;rs12124819&quot; ...
-##  $ chromosome: Factor w/ 1 level &quot;1&quot;: 1 1 1 1 1 1 1 1 1 1
-##  $ position  : int  82154 752566 752721 776546 798959 800007 838555 846808 854250 861808
-##  $ genotype  : chr  &quot;AA&quot; &quot;AA&quot; &quot;GG&quot; &quot;AG&quot; ...</code></pre>
-<p>and back</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" tabindex="-1"></a>SNP_table<span class="sc">$</span>chromosome <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(SNP_table<span class="sc">$</span>chromosome)</span>
-<span id="cb76-2"><a href="#cb76-2" tabindex="-1"></a><span class="fu">str</span>(SNP_table) </span></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:    10 obs. of  4 variables:
-##  $ rsid      : chr  &quot;rs4477212&quot; &quot;rs3094315&quot; &quot;rs3131972&quot; &quot;rs12124819&quot; ...
-##  $ chromosome: int  1 1 1 1 1 1 1 1 1 1
-##  $ position  : int  82154 752566 752721 776546 798959 800007 838555 846808 854250 861808
-##  $ genotype  : chr  &quot;AA&quot; &quot;AA&quot; &quot;GG&quot; &quot;AG&quot; ...</code></pre>
-<p>Select a subset of the data with the genotype AG and make a summary
-table</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" tabindex="-1"></a>SNP_table_AG <span class="ot">&lt;-</span> <span class="fu">subset</span>(SNP_table, genotype <span class="sc">==</span> <span class="st">&#39;AG&#39;</span>) </span>
-<span id="cb78-2"><a href="#cb78-2" tabindex="-1"></a>SNP_table_AG</span></code></pre></div>
-<pre><code>##         rsid chromosome position genotype
-## 4 rs12124819          1   776546       AG
-## 5 rs11240777          1   798959       AG
-## 9  rs7537756          1   854250       AG</code></pre>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" tabindex="-1"></a><span class="fu">table</span>(SNP_table_AG<span class="sc">$</span>chromosome)</span></code></pre></div>
-<pre><code>## 
-## 1 
-## 3</code></pre>
-<p>Select a subset of a chromosome by position</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" tabindex="-1"></a><span class="fu">subset</span>(SNP_table, position <span class="sc">&gt;</span> <span class="dv">700000</span> <span class="sc">&amp;</span> position <span class="sc">&lt;</span> <span class="dv">800000</span>)</span></code></pre></div>
-<pre><code>##         rsid chromosome position genotype
-## 2  rs3094315          1   752566       AA
-## 3  rs3131972          1   752721       GG
-## 4 rs12124819          1   776546       AG
-## 5 rs11240777          1   798959       AG</code></pre>
+<p>The next thing we can do is create a function that actually has a
+non-trivial <em>function body</em>.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">&quot;Hello, world!</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>}</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="fu">f</span>()</span></code></pre></div>
+<pre><code>## Hello, world!</code></pre>
+<p>The last aspect of a basic function is the <em>function
+arguments</em>. These are the options that you can specify to the user
+that the user may explicity set. For this basic function, we can add an
+argument that determines how many times “Hello, world!” is printed to
+the console.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(num) {</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>        <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(num)) {</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>                <span class="fu">cat</span>(<span class="st">&quot;Hello, world!</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>        }</span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a>}</span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a><span class="fu">f</span>(<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## Hello, world!
+## Hello, world!
+## Hello, world!</code></pre>
+<p>Obviously, we could have just cut-and-pasted the
+<code>cat(&quot;Hello, world!\n&quot;)</code> code three times to achieve the
+ same effect, but then we wouldn’t be programming, would we? Also, it
+would be un-neighborly of you to give your code to someone else and
+force them to cut-and-paste the code however many times the need to see
+“Hello, world!”.</p>
+<blockquote>
+<p>In general, if you find yourself doing a lot of cutting and pasting,
+that’s usually a good sign that you might need to write a function.
+Finally, the function above doesn’t <em>return</em> anything. It just
+prints “Hello, world!” to the console <code>num</code> number of times
+and then exits. But often it is useful if a function returns something
+that perhaps can be fed into another section of code.</p>
+</blockquote>
+<p>This next function returns the total number of characters printed to
+the console.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(num) {</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>        hello <span class="ot">&lt;-</span> <span class="st">&quot;Hello, world!</span><span class="sc">\n</span><span class="st">&quot;</span></span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>        <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(num)) {</span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>                <span class="fu">cat</span>(hello)</span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a>        }</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a>        chars <span class="ot">&lt;-</span> <span class="fu">nchar</span>(hello) <span class="sc">*</span> num</span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a>        chars</span>
+<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a>}</span>
+<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a>meaningoflife <span class="ot">&lt;-</span> <span class="fu">f</span>(<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## Hello, world!
+## Hello, world!
+## Hello, world!</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="fu">print</span>(meaningoflife)</span></code></pre></div>
+<pre><code>## [1] 42</code></pre>
+<p>In the above function, we didn’t have to indicate anything special in
+order for the function to return the number of characters. In R, the
+return value of a function is always the very last expression that is
+evaluated. Because the <code>chars</code> variable is the last
+expression that is evaluated in this function, that becomes the return
+value of the function.</p>
+<p>Note that there is a <code>return()</code> function that can be used
+to return an explicity value from a function, but it is rarely used in R
+(we will discuss it a bit later in this chapter).</p>
+<p>Finally, in the above function, the user must specify the value of
+the argument <code>num</code>. If it is not specified by the user, R
+will throw an error.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="fu">f</span>()</span></code></pre></div>
+<p>We can modify this behavior by setting a <em>default value</em> for
+the argument <code>num</code>. Any function argument can have a default
+value, if you wish to specify it. Sometimes, argument values are rarely
+modified (except in special cases) and it makes sense to set a default
+value for that argument. This relieves the user from having to specify
+the value of that argument every single time the function is called.</p>
+<p>Here, for example, we could set the default value for
+<code>num</code> to be 1, so that if the function is called without the
+<code>num</code> argument being explicitly specified, then it will print
+“Hello, world!” to the console once.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">num =</span> <span class="dv">1</span>) {</span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>        hello <span class="ot">&lt;-</span> <span class="st">&quot;Hello, world!</span><span class="sc">\n</span><span class="st">&quot;</span></span>
+<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a>        <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(num)) {</span>
+<span id="cb33-4"><a href="#cb33-4" tabindex="-1"></a>                <span class="fu">cat</span>(hello)</span>
+<span id="cb33-5"><a href="#cb33-5" tabindex="-1"></a>        }</span>
+<span id="cb33-6"><a href="#cb33-6" tabindex="-1"></a>        chars <span class="ot">&lt;-</span> <span class="fu">nchar</span>(hello) <span class="sc">*</span> num</span>
+<span id="cb33-7"><a href="#cb33-7" tabindex="-1"></a>        chars</span>
+<span id="cb33-8"><a href="#cb33-8" tabindex="-1"></a>}</span>
+<span id="cb33-9"><a href="#cb33-9" tabindex="-1"></a><span class="fu">f</span>()    <span class="do">## Use default value for &#39;num&#39;</span></span></code></pre></div>
+<pre><code>## Hello, world!</code></pre>
+<pre><code>## [1] 14</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="fu">f</span>(<span class="dv">2</span>)   <span class="do">## Use user-specified value</span></span></code></pre></div>
+<pre><code>## Hello, world!
+## Hello, world!</code></pre>
+<pre><code>## [1] 28</code></pre>
+<p>Remember that the function still returns the number of characters
+printed to the console.</p>
+<p>At this point, we have written a function that</p>
+<ul>
+<li><p>has one <em>formal argument</em> named <code>num</code> with a
+<em>default value</em> of 1. The <em>formal arguments</em> are the
+arguments included in the function definition. The
+<code>formals()</code> function returns a list of all the formal
+arguments of a function</p></li>
+<li><p>prints the message “Hello, world!” to the console a number of
+times indicated by the argument <code>num</code></p></li>
+<li><p><em>returns</em> the number of characters printed to the
+console</p></li>
+</ul>
+<p>Functions have <em>named arguments</em> which can optionally have
+default values. Because all function arguments have names, they can be
+specified using their name.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a><span class="fu">f</span>(<span class="at">num =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## Hello, world!
+## Hello, world!</code></pre>
+<pre><code>## [1] 28</code></pre>
 </div>
+</div>
+<div id="looping-on-the-command-line-using-apply-family-in-r-base-or-purrr-in-tidyverse" class="section level2">
+<h2>Looping on the Command Line using <code>apply</code> family in R
+base or <code>purrr</code> in Tidyverse</h2>
+<p>Writing <code>for</code> and <code>while</code> loops is useful when
+programming but not particularly easy when working interactively on the
+command line. The Apply family comprises: apply, lapply, sapply, vapply,
+mapply, rapply, and tapply. The Family of Apply functions pertains to
+the R base package, and is populated with functions to manipulate slices
+of data from matrices, arrays, lists and data frames in a repetitive
+way. In Tidyverse this functionality is covered by <a href="https://purrr.tidyverse.org/">purrr</a>. The <code>apply</code>
+and <code>purrr</code> functions in R are designed to avoid explicit use
+of loop constructs. They act on an input list, matrix or array, and
+apply a named function with one or several optional arguments.</p>
 </div>
 <div id="excercises" class="section level2">
 <h2>Excercises</h2>
-<p>There are many ways to do the below excercises, but try to do them
-simply by using the commands in the above examples. In later sessions we
-will focus on graphing. For now do not worry that your graphs do not
-have titles, x or y labels, units and other things. Please submit a .R
-file with comments denoting the examples and exercises.</p>
-<div id="exercise-1" class="section level3">
-<h3>Exercise 1</h3>
-<p>Add, subtract, multipy and divide the following two vectors
-(1,3,6,9,12) and (1,0,1,0,1)</p>
-</div>
-<div id="exercise-2" class="section level3">
-<h3>Exercise 2</h3>
-<p>Create 3 different vectors from (0,1,2,3), (“aa”,“bb”,“cc”,“dd”) and
-(“aa”,1,“bb”,2). Use str() to determine what data types each vector
-holds.</p>
-</div>
-<div id="exercise-3" class="section level3">
-<h3>Exercise 3</h3>
-<p>Create a matrix of the data: genotype 1 (“AA”, “AA”, “AG”, “GG”,
-“GG”), genotype 2 (“AA”, “AA”, “GG”, “GG”, “GG”). Display the matrix.
-Use the table function (as in the above examples) to show the total
-number of each genotype.</p>
-</div>
-<div id="exercise-4" class="section level3">
-<h3>Exercise 4</h3>
-<p>Create a dataframe of the following experiment in samples were
-collected every 2 minutes starting at t = 0. treatment 1 (0,1,2,3,4),
-treatment 2 (0,2,4,6,8), treatment 3 (0,3,6,9,12). Display the
-dataframe. Plot treatment 3 vs. time (you will need to load time as a
-column rather than a row name)</p>
-</div>
-<div id="exercise-5" class="section level3">
-<h3>Exercise 5</h3>
-<p>Following the example above with the truncated file use read.table to
-import the full SNP file 23andME_complete.txt. (This is a large file and
-may take several minutes to load into R)</p>
-<p>What object type is chromosome? Why is it different from the above
-SNP_table example with the truncated file?</p>
-</div>
-<div id="exercise-6" class="section level3">
-<h3>Exercise 6</h3>
-<p>Use the table function to calculate the total number of each
-genotype. There may be unsual genotypes. 23andMe reports a very small
-number of deletions and insertions coded as D DD DI I II. The double
-dash – represents an uncertain (not reported) call at this position.</p>
-</div>
-<div id="exercise-7" class="section level3">
-<h3>Exercise 7</h3>
-<p>Determine which chromosome(s) the single letter genotype A is found
-on (e.g which chromosomes have only one copy of DNA)? Hint: Use subset()
-to make a table with just the genotype A.</p>
-</div>
+<p>Make a Rmd file with the above examples. Explore the examples by
+modifying each example is some way. Knit and turn in your html file.</p>
 </div>
 
 
