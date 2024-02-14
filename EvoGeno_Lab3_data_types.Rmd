@@ -256,14 +256,13 @@ The base R function read.table() is used to load these files into R. This functi
 I put my data files in a folder called data within my working directory.
 
 ```{r}
-SNP_table <- read.table("data/23andMe_example_cat25.txt", header = TRUE, sep = "\t")
+SNP_table <- read.table("data/23andMe_cat25.txt", header = TRUE, sep = "\t")
 SNP_table
 ```
 
 The rsid number is used by researchers to refer to specific SNPs. It stands for Reference SNP cluster ID.  When researchers identify a SNP, they send the report, which includes the sequence immediately surrounding the SNP, to the dbSNP database - http://www.ncbi.nlm.nih.gov/SNP/ at the National Center for Biotechnology Information. Genome-wide association studies linking SNPs to traits or conditions usually report their results by rsid. The rsid numbers for SNPs in Health and Traits articles can be found in the technical report section. 
 
 
-Select a subset of the data with the genotype AG and make a summary table
 
 
 ## Excercises 
