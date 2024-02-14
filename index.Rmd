@@ -13,3 +13,4 @@ This is a rendering of hmtl files from the course repository  (https://github.co
 Advanced Labs
 
 * Lab xtra1 : [Programming in R - Regular Expressions](EvoGeno_xtra1_stringr.html)
+* Lab xtra3 : [Programming in R - Control Structures and Functions](EvoGeno_xtra3_loops.html)
