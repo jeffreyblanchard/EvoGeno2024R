@@ -8,7 +8,11 @@ output:
     highlight: tango
 ---
 
-The course github site repository is at https://github.com/jeffreyblanchard/EvoGeno2024R
+
+
+
+
+## Sync with the course GitHub repo
 
 If you are not using Posit/RStudio Cloud here are directions for creating a RStudio project space that is in sync with the course github and will download the files in the repo.
 
@@ -20,4 +24,11 @@ If you are not using Posit/RStudio Cloud here are directions for creating a RStu
 * Paste in link from course github site (https://github.com/jeffreyblanchard/EvoGeno2024R.git)
 * Choose the directory you want to use for the project (often /project/username)
 * In the upper right corner select the git tab. Click pull when you want to update
+
+
+## Create and sync with your own GitHub repo
+
+* If not already installed, install the R package `usethis`
+
+
 
