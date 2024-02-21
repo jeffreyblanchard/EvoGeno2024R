@@ -1,0 +1,77 @@
+---
+title: "Lab xtra3 : Shiny"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    theme: united
+    highlight: tango
+---
+
+---
+title: "Lab 10 : R Shiny apps using the COVID-19 reporting data"
+output:
+  html_document:
+    toc: true
+    toc_depth : 4
+    theme: united
+    highlight: tango
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+## Learning Objectives
+
+* The basics of making Rshiny interactive applications
+* Creating a Rshiny app 
+
+## Shiny Overview and tutorial
+
+The first step is to install the __shiny__ package
+
+You can run an example shiny app by typing the following in the R console
+
+```{r, eval = FALSE}
+library(shiny)
+runExample("01_hello")
+```
+
+
+### Structure of an app.R file
+
+Then let's examing the example new file (which is also the same as 01_hello. Go to File > New File > Shiny Web App
+
+Click on the Run button and the App will be built
+
+app.R has three components:
+
+    a user interface object
+
+    a server function
+
+    a call to the shinyApp function
+
+It you open a new Shiny file you can see these three components
+
+```{r, eval=FALSE}
+# Define UI for application that draws a histogram
+ui <- fluidPage(...
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {...
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+```
+
+The user interface (ui) object controls the layout and appearance of your app. The server function contains the instructions that your computer needs to build your app. Finally the shinyApp function creates Shiny app objects from an explicit UI/server pair.
+
+Notice the call to load the libraries (in this case __shiny__) comes before the code for the shiny app. Other code that feeds into your app (e.g. loading and manipulating data) also comes before the shiny app.
+
+## Exercises
+
+There is a great starter set of Shiny tutorials written by RStudio that include examples. Today's lab will be going through the [Shiny Basics](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/index.html) Turn your lesson 5 Shiny app (Your turn 2 - Census Visualization) into a web page using shinyapps.io, RStudio’s hosting service for Shiny apps.  See [Shiny User Guide](https://docs.posit.co/shinyapps.io/getting-started.html#working-with-shiny-for-rI). On Canvas send me a link you your app.  
