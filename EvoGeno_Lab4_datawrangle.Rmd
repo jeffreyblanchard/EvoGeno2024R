@@ -1,0 +1,86 @@
+---
+title: "Lab 4 : Data Wrangling"
+author: " "
+date: " "
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    theme: united
+    highlight: tango
+---
+
+## Learning objectives
+
+-   Using R Markdown to
+-   Understanding R packages and libraries
+-   Reading and manipulating tables with tidyverse
+-   Making nice tables for your lab reports
+
+## A more comprehensive look at R Markdown
+
+In Lab one we used a single R Markdown file to both save and execute code and generate a lab report. Today we will spend more time understanding R Markdown using a set of [R Markdown tutorials](https://rmarkdown.rstudio.com/index.html)
+
+## R packages and libraries
+
+There are many R packages (add-ons) that provide additional functionality to the Base R installation that we worked within in Lab 1. To use these packages after installing them we must first load the libraries for the packages. Here is a nice introduction from the Harvard Chan Bioinformatics Core on [R Packages and Libraries](https://hbctraining.github.io/Intro-to-R-flipped/lessons/04_introR_packages.html).
+
+### Installing R packages
+
+**If you are using RStudio Cloud in the HumGen Workspace the necessary packages for the labs should be preinstalled**
+
+If you are using R on your own computer, Unity or even a separate RStudio Cloud Workspace, you must install the additional packages. You can search for ones that have been registered in the CRAN repository through the RStudio menu bar by clicking on Tools \> Install Packages and searching for the package. Check the box to install dependencies. 'tidyverse' does not come with the core R installation, so to work with it you must install the package.
+
+If you are installing R packages from source code (as we will do later in the course), first install the `devtools` package. I recommend doing this now. Check out this [Data Camp Tutorial](https://www.datacamp.com/community/tutorials/r-packages-guide) for more details on installing R packages.
+
+### Working with the packages - loading libraries
+
+Simple!!!
+
+```{r, message=FALSE}
+library(tidyverse)
+```
+
+...but it is easy to forget this step. Which will result in an error message when you try to use the libraries' functions.
+
+...also even when you have loaded the library in your working environment. When you Knit an R Markdown file it only uses libraries loaded in the file so if you don't specifically load a library in the R Markdown file you will get an error message when Knitting in which the function that is part of the library could not be found. **This is a very common error.**
+
+```{r, eval=FALSE}
+surveys <- read_csv("data_raw/portal_data_joined.csv")
+```
+
+![](images/lab4/knit_error.png) I recommend putting loading all libraries need at the beginning of the R Markdown document
+
+## Overview of tidyverse
+
+In R and most programming languages there are many ways to do the same thing. In the past I have taught R using the core syntax. A newer approach to learning to program in R is embodied by the [tidyverse](https://www.tidyverse.org/). The tidyverse packages are designed flatten the learning curve for data transformation, analysis and graphing. This approach is conducive to course like ours.
+
+### Import
+
+-   `readr` - readr provides a fast and friendly way to read rectangular data (like csv, tsv, and fwf). It is designed to flexibly parse many types of data found in the wild.
+
+### Data Wrangling
+
+-   `dplyr` - dplyr provides a grammar of data manipulation, providing a consistent set of verbs that solve the most common data manipulation challenges.
+
+-   `tidyr` - tidyr provides a set of functions that help you get to tidy data. Tidy data is data with a consistent form: in brief, every variable goes in a column, and every column is a variable.
+
+-   `stringr` - stringr provides a cohesive set of functions designed to make working with strings as easy as possible.
+
+### Graphing
+
+-   `ggplot2` - ggplot2 is a system for creating graphics, based on The Grammar of Graphics.
+
+### Programming
+
+-   `purrr` - purrr enhances R's functional programming (FP) toolkit by providing a complete and consistent set of tools for working with functions and vectors. Once you master the basic concepts, purrr allows you to replace many for loops with code that is easier to write and more expressive.
+
+The free online book [R for Data Science](https://r4ds.had.co.nz/) is a one place offers a introduction to the `tidyverse` and is great source of alternate examples, explanations and workflows for this course
+
+## On the Computer
+
+Today's lab we will use [Data Carpentry tutorials](https://datacarpentry.org/R-ecology-lesson/aio.html) for a different perspective. The first 3 sections on `Before We Start`, `Introduction to R` and `Starting with data` are mostly review but you will need to go through them to prepare for today's lab on [Manipulating, analyzing and exporting data with tidyverse](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html).
+
+### What to upload to Canvas
+
+Create a report using R Markdown with all the [Manipulating, analyzing and exporting data with tidyverse](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html) examples and with the challenges listed at the end.  Make sure you include code to load the data and libraries from the earlier Data Carpentry lessons. You will need to create a `data_raw` folder or modify the path when you download the `portal_data_joined.csv` file. Take your time doing this as we will repeatedly return to examples in this lesson later in the class.
