@@ -1,5 +1,5 @@
 ---
-title: "Creating your own RStudio project and Github repo site"
+title: "Connecting a Github repo site with a new RStudio project"
 output:
   html_document:
     toc: true
