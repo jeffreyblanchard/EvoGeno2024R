@@ -91,10 +91,18 @@ Those seven commands are the majority of what you need to successfully use git. 
 * Go back to your main repo page, in the right corner in the `About` section click the wheel. Select `Use your GitHub Pages website`. Save changes
 * Click on the green `code` button and copy the https link.
 
-### In Posit Cloud
+### Make a local version of your github repo in Posit Cloud -  
 
 * In `Your Workspace` (not the `EvoGeno Workspace`) click on the `New Project` button then `New Project from Git Repository`
 * Paste in the link to your Github repository (e.g https://github.com/jeffreyblanchard/posit-test.git)
+
+#### If your are using RStudio on Unity or your own Computer
+
+* In RStudio click on File > New Project (You can not do this on Posit Cloud. Only on Unity or with RStudio downloaded to your own computer)
+* Select Version Control
+* Select Git
+* Paste in link your github site
+* Choose the directory you want to use for the project
 
 ### Configure your local repo to connect with the github repo
 
