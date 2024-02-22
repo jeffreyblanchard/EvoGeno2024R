@@ -10,6 +10,7 @@ This is a rendering of hmtl files from the course repository  (https://github.co
 * Lab 2 : [Rmarkdown](EvoGeno_Lab2_Rmarkdown.html)
 * Lab 3 : [Data types and importing tables](EvoGeno_Lab3_data_types.html)
 * Lab 4 : [Data Wrangling](EvoGeno_Lab4_datawrangle.html)
+* Lab 5 : [Creating your own RStudio project and Github repo site](EvoGeno_Lab5_Github_posit.html)
 
 Advanced Labs
 

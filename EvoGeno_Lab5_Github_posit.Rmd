@@ -1,0 +1,139 @@
+---
+title: "Creating your own RStudio project and Github repo site"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    theme: united
+    highlight: tango
+---
+
+Much of the material for this lesson was borrowed from or inspired by Matt Jones' [NCEAS Reproducible Research Techniques for Synthesis workshop](https://learning.nceas.ucsb.edu/2020-02-RRCourse/)
+
+## Learning Objectives
+
+In this lesson, you will learn:
+
+- What computational reproducibility is and why it is useful
+- How version control can increase computational reproducibility
+- How to start a Github repo and Pages site
+- to set up your own RStudio Project and sync with your GitHub repo
+- How to make a simple web page for your site
+
+## Background
+
+### Reproducible Research
+
+Reproducibility is the hallmark of science, which is based on empirical observations coupled with explanatory models.  While reproducibility encompasses the full science lifecycle, and includes issues such as methodological consistency and treatment of bias, in this course we will focus on **computational reproducibility**: the ability to document data, analyses, and models sufficiently for other researchers to be able to understand and ideally re-execute the computations that led to scientific results and conclusions.
+
+### What is needed for computational reproducibility?
+
+The first step towards addressing these issues is to be able to evaluate the data, analyses, and models on which conclusions are drawn.  Under current practice, this can be difficult because data are typically unavailable, the method sections of papers do not detail the computational approaches used, and analyses and models are often conducted in graphical programs, or, when scripted analyses are employed,the code is not available.
+
+And yet, this is easily remedied.  Researchers can achieve computational reproducibility through open science approaches, including straightforward steps for archiving data and code openly along with the scientific workflows describing  the provenance of scientific results (e.g., @hampton_tao_2015, @munafo_manifesto_2017).
+
+### Conceptualizing workflows
+
+Scientific workflows encapsulate all of the steps from data acquisition, cleaning, transformation, integration, analysis, and visualization.  
+
+![](images/lab5/workflow.png)
+
+Workflows can range in detail from simple flowcharts to fully executable scripts. R scripts and python scripts are a textual form of a workflow, and when researchers publish specific versions of the scripts and data used in an analysis, it becomes far easier to repeat their computations and understand the provenance of their conclusions.
+
+### The problem with filenames
+
+Every file in the scientific process changes.  Manuscripts are edited. Figures get revised.  Code gets fixed when problems are discovered.  Data files get combined together, then errors are fixed, and then they are split and combined again. In the course of a single analysis, one can expect thousands of changes to files.  And yet, all we use to track this are simplistic *filenames*.  You might think there is a better way, and you'd be right: __version control__.
+
+Version control systems help you track all of the changes to your files, without the spaghetti mess that ensues from simple file renaming.  In version control systems like `git`, the system tracks not just the name of the file, but also its contents, so that when contents change, it can tell you which pieces went where.  It tracks which version of a file a new version came from.  So its easy to draw a graph showing all of the versions of a file, like this one:
+
+![](images/lab5/version-graph.png)
+
+Version control systems assign an identifier to every version of every file, and track their relationships. They also allow branches in those versions, and merging those branches back into the main line of work. They also support having  *multiple copies* on multiple computers for backup, and for collaboration. And finally, they let you tag particular versions, such that it is easy to return to a set of files exactly as they were when you tagged them. For example, the exact versions of data, code, and narrative that were used when a manuscript was originallysubmitted might be `eco-ms-1` in the graph above, and then when it was revised and resubmitted, it was done with tag `eco-ms-2`.  A different paper was started and submitted with tag `dens-ms-1`, showing that you can be working on multiple manuscripts with closely related but not identical sets of code and data being used for each, and keep track of it all.
+
+### Version control and Collaboration using Git and GitHub
+
+First, just what are `git` and GitHub?
+
+- __git__: version control software used to track files in a folder (a repository)
+    - git creates the versioned history of a repository
+- __GitHub__: web site that allows users to store their git repositories and share them with others
+
+### The Git lifecycle
+
+As a git user, you'll need to understand the basic concepts associated with versioned sets of changes, and how they are stored and moved across repositories.  Any given git repository can be cloned so that it exist both locally, and remotely.  But each of these cloned repositories is simply a copy of all of the files and change history for those files, stored in git's particular format.  For our purposes, we can consider a git repository just a folder with a bunch of additional version-related metadata.
+
+In a local git-enabled folder, the folder contains a workspace containing the current version of all files in the repository. These working files are linked to a hidden folder containing the 'Local repository', which contains all of the other changes made to the files, along with the version metadata.
+
+So, when working with files using git, you can use git commands to indicate specifically which changes to the local working files should be staged for versioning (using the `git add` command), and when to record those changes as a version in the local repository (using the command `git commit`).
+
+The remaining concepts are involved in synchronizing the changes in your local repository with changes in a remote repository.  The `git push` command is used to send local changes up to a remote repository (possibly on GitHub), and the `git pull` command is used to fetch changes from a remote repository and merge them into the local repository.
+
+![](images/lab5/git-flowchart.png)
+
+- `git clone`: to copy a whole remote repository to local
+- `git add` (stage): notify git to track particular changes
+- `git commit`: store those changes as a version
+- `git pull`: merge changes from a remote repository to our local repository
+- `git push`: copy changes from our local repository to a remote repository
+- `git status`: determine the state of all files in the local repository
+- `git log`: print the history of changes in a repository
+
+Those seven commands are the majority of what you need to successfully use git.   But this is all super abstract, so let's explore with some real examples.
+
+## On the Computer
+
+### On the github website
+
+* Register for a github account on https://github.com/
+* Create a new repo by clicking on the new repository button.
+* Give it a name, make it public, Add a readme file, Add R .gitignore file, Add Apache license.
+* Enable a web page for the repo - Click of the settings wheel, in the left menu select `pages` then under branch select `main`.
+* Go back to your main repo page, in the right corner in the `About` section click the wheel. Select `Use your GitHub Pages website`. Save changes
+* Click on the green `code` button and copy the https link.
+
+### In Posit Cloud
+
+* In `Your Workspace` (not the `EvoGeno Workspace`) click on the `New Project` button then `New Project from Git Repository`
+* Paste in the link to your Github repository (e.g https://github.com/jeffreyblanchard/posit-test.git)
+
+### Configure your local repo to connect with the github repo
+
+* Install the R package `usethis` using Tools > Install Packages
+* Configure git with your username and email. This must be the username and email associated with your GitHub account. 
+
+```{r, eval=FALSE}
+library(usethis)
+use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
+```
+
+* Create a github token
+```{r, eval=FALSE}
+usethis::create_github_token()
+```
+This will open a web page on your github account. The recommended scopes will be pre-selected. This will be fine for now and you can change later if needed. 
+
+* Click “Generate token”.
+
+* Copy the generated PAT (beginning with ghp_ )to your clipboard. Provide this PAT next time a Git operation asks for your password.
+
+* To link your PAT with your repo
+
+```{r, eval=FALSE}
+gitcreds::gitcreds_set() 
+```
+
+to get a prompt where you can paste your PAT: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+### Make an index file as the homepage for your Github repo
+
+* In RStudio open a new Rmarkdown template
+* Save it as index.Rmd
+* Add text and images to make your homepage
+* Knit it to make index.html
+* Under the git tab in the upper right corner, commit the changes
+* Push the index files to your github repo
+* This will automatically replace your homepage README.md file with index.html (it takes about 5 minutes before the `page` updates)
+* It will take about 5 minutes before you can see it on your github repo page
+
+*** More on git and working with your repos in later labs
+
