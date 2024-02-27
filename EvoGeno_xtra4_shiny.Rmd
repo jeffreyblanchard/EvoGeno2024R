@@ -75,3 +75,12 @@ Notice the call to load the libraries (in this case __shiny__) comes before the 
 ## Exercises
 
 There is a great starter set of Shiny tutorials written by RStudio that include examples. Today's lab will be going through the [Shiny Basics](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/index.html) Turn your lesson 5 Shiny app (Your turn 2 - Census Visualization) into a web page using shinyapps.io, RStudio’s hosting service for Shiny apps.  See [Shiny User Guide](https://docs.posit.co/shinyapps.io/getting-started.html#working-with-shiny-for-rI). On Canvas send me a link you your app.  
+
+Here is a nice visual tutorial [How to publish a Shiny app? An example with shinyapps.io]( https://statsandr.com/blog/how-to-publish-shiny-app-example-with-shinyapps-io/).  When you copy your token made sure the `secret` ID is shown.
+
+```{r, eval=FALSE}
+> rsconnect::setAccountInfo(name='jeffreyblanchard',
+                          token='27730B28ZAB8E10D71CFF3CB982623AF',
+                          secret='XY7lzMhc9v8SXgq8awuUTvxzkj5p5z/BWoyA26Fbx')
+```
+
