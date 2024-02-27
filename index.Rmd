@@ -1,15 +1,22 @@
 ---
 title: "Evolutionary Genomics & Bioinformatics"
-output: html_document
 date: 'Spring 2024'
+output: 
+  html_document:
+    theme: darkly
 ---
 
-This is a rendering of hmtl files from the course repository  (https://github.com/jeffreyblanchard/EvoGeno2024R) for Human Genome Analysis taught at the University of Massachusetts Amherst by Prof. Jeffrey Blanchard.  If you are not using RStudio (Posit) Cloud here are [EvoGeno_github.html) for creating a RStudio project space that is in sync with the course github and will download the files in the course repo.
+This is a rendering of hmtl files from the [course repository](https://github.com/jeffreyblanchard/EvoGeno2024R) for Evolutionary Genomics & Bioinformatics taught at the University of Massachusetts Amherst by Prof. Jeffrey Blanchard.  If you are not using RStudio (Posit) Cloud here are [Directions](EvoGeno_github.html) for creating a RStudio project space that will sync with and download files from the course repo.
 
 * Lab 1 : [Introduction to R and Reproducible Research](EvoGeno_Lab1_intro.html)
 * Lab 2 : [Rmarkdown](EvoGeno_Lab2_Rmarkdown.html)
 * Lab 3 : [Data types and importing tables](EvoGeno_Lab3_data_types.html)
+* Lab 4 : [Data Wrangling](EvoGeno_Lab4_datawrangle.html)
+* Lab 5 : [Connecting a Github repo site with a new RStudio project](EvoGeno_Lab5_Github_posit.html)
+* Lab 6 : [Graphing with ggplot](EvoGeno_Lab6_ggplot.html)
 
 Advanced Labs
 
-* Lab xtra1 : [Programming in R - Regular Expressions](EvoGeno_xtra1_stringr.html)
+* Lab A1 : [Programming in R - Regular Expressions](EvoGeno_xtra1_stringr.html)
+* Lab A3 : [Programming in R - Control Structures and Functions](EvoGeno_xtra3_loops.html)
+* Lab A4 : [R Shiny](EvoGeno_xtra4_shiny.html)
