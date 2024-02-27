@@ -11,7 +11,7 @@
 
 
 
-<title>Pulling down the files from the course github repo</title>
+<title>Lab 6 : Graphing with ggplot</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -225,6 +225,106 @@ ul.task-list{list-style: none;}
 
 
 
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } 
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.at { color: #204a87; } 
+code span.bn { color: #0000cf; } 
+code span.cf { color: #204a87; font-weight: bold; } 
+code span.ch { color: #4e9a06; } 
+code span.cn { color: #8f5902; } 
+code span.co { color: #8f5902; font-style: italic; } 
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.dt { color: #204a87; } 
+code span.dv { color: #0000cf; } 
+code span.er { color: #a40000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #0000cf; } 
+code span.fu { color: #204a87; font-weight: bold; } 
+code span.im { } 
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.kw { color: #204a87; font-weight: bold; } 
+code span.op { color: #ce5c00; font-weight: bold; } 
+code span.ot { color: #8f5902; } 
+code span.pp { color: #8f5902; font-style: italic; } 
+code span.sc { color: #ce5c00; font-weight: bold; } 
+code span.ss { color: #4e9a06; } 
+code span.st { color: #4e9a06; } 
+code span.va { color: #000000; } 
+code span.vs { color: #4e9a06; } 
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -325,30 +425,109 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Pulling down the files from the course
-github repo</h1>
+<h1 class="title toc-ignore">Lab 6 : Graphing with ggplot</h1>
 
 </div>
 
-
-<p>The course github site repository is at <a href="https://github.com/jeffreyblanchard/EvoGeno2024R" class="uri">https://github.com/jeffreyblanchard/EvoGeno2024R</a></p>
-<p>If you are not using RStudio Cloud here are directions for creating a
-RStudio project space that is in sync with the course github and will
-download the files in the repo.</p>
+<div id="TOC">
 <ul>
-<li>Go to <a href="https://github.com/jeffreyblanchard/EvoGeno2024R" class="uri">https://github.com/jeffreyblanchard/EvoGeno2024R</a></li>
-<li>Click on the green code button and copy the https link (<a href="https://github.com/jeffreyblanchard/EvoGeno2024R.git" class="uri">https://github.com/jeffreyblanchard/EvoGeno2024R.git</a>)</li>
-<li>In RStudio click on File &gt; New Project (You can not do this on
-RStudio Cloud. Only on Unity or with RStudio downloaded to your own
-computer)</li>
-<li>Select Version Control</li>
-<li>Select Git</li>
-<li>Paste in link from course github site (<a href="https://github.com/jeffreyblanchard/EvoGeno2024R.git" class="uri">https://github.com/jeffreyblanchard/EvoGeno2024R.git</a>)</li>
-<li>Choose the directory you want to use for the project (often
-/project/username)</li>
-<li>In the upper right corner select the git tab. Click pull when you
-want to update</li>
+<li><a href="#learning-objectives" id="toc-learning-objectives">Learning
+objectives</a></li>
+<li><a href="#introduction-to-r-graphics" id="toc-introduction-to-r-graphics">Introduction to R Graphics</a>
+<ul>
+<li><a href="#grammar-of-graphics" id="toc-grammar-of-graphics">Grammar
+of Graphics</a></li>
+<li><a href="#installation" id="toc-installation">Installation</a></li>
+<li><a href="#tutorials-and-resources" id="toc-tutorials-and-resources">Tutorials and resources</a></li>
+<li><a href="#key-board-shortcuts" id="toc-key-board-shortcuts">Key
+board shortcuts</a></li>
+</ul></li>
+<li><a href="#on-the-computer" id="toc-on-the-computer">On the
+Computer</a></li>
+<li><a href="#what-to-upload-to-canvas" id="toc-what-to-upload-to-canvas">What to upload to Canvas</a></li>
 </ul>
+</div>
+
+<div id="learning-objectives" class="section level2">
+<h2>Learning objectives</h2>
+<ul>
+<li>ggplot</li>
+</ul>
+</div>
+<div id="introduction-to-r-graphics" class="section level2">
+<h2>Introduction to R Graphics</h2>
+<p>R provides comprehensive graphics utilities for visualizing and
+exploring scientific data. To date we have been making a few plots using
+the R Base Graphics. In addition, several more recent graphics
+environments extend these utilities. These include the
+<code>grid</code>, <code>lattice</code> and <code>ggplot2</code>
+packages. The <code>ggplot2</code> environment is by far the most
+popular and used for many R packages and in many scientific
+publications.</p>
+<div id="grammar-of-graphics" class="section level3">
+<h3>Grammar of Graphics</h3>
+<p><code>ggplot2</code> is meant to be an implementation of the Grammar
+of Graphics, hence the gg in ggplot. The basic notion is that there is a
+grammar to the composition of graphical components in statistical
+graphics. By direcly controlling that grammar, you can generate a large
+set of carefully constructed graphics from a relatively small set of
+operations. As Hadley Wickham (2010), the author of <code>ggplot2</code>
+said,</p>
+<p>“A good grammar will allow us to gain insight into the composition of
+complicated graphics, and reveal unexpected connections between
+seemingly different graphics.</p>
+</div>
+<div id="installation" class="section level3">
+<h3>Installation</h3>
+<p><code>ggplot2</code> is a R package, which is part of the
+<code>tidyverse</code> collection.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+</div>
+<div id="tutorials-and-resources" class="section level3">
+<h3>Tutorials and resources</h3>
+<p>You can make amazing graphs with ggplot, but there is a long learning
+curve so we will have multiple lab sessions on ggplot and graphing. Here
+are a few different resources for <code>ggplot</code>.</p>
+<ul>
+<li>Hadley Wickham and Garrett Grolemund released a new book in 2017 <a href="http://r4ds.had.co.nz/">R for Data Science</a>. Chapter 3 covers
+material related to this week’s lab in ggplot.</li>
+<li>Another resource good for those with a visual learning style is <a href="https://www.youtube.com/channel/UC2bWYX9h1KlaGWfTDuhASWg">Maria
+Nattestad’s Youtube videos</a></li>
+<li><a href="https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf">ggplot
+cheatsheet</a></li>
+</ul>
+</div>
+<div id="key-board-shortcuts" class="section level3">
+<h3>Key board shortcuts</h3>
+<ul>
+<li>Selecting <code>shift</code> <code>ctrl</code> <code>m</code> at the
+same time is a keyboard shortcut for `%</li>
+<li>Selecting <code>ctr</code> <code>alt</code> <code>i</code> at the
+same time is a keyboard shortcut for a new r code (Windows keyboard
+layout)</li>
+<li>Selecting <code>option</code> <code>command</code> <code>i</code> at
+the same time is a keyboard shortcut for a new r code (Mac keyboard
+layout) To see more shortcuts in the menu <code>Tools</code> →
+<code>Keyboard Shortcuts Help</code>.</li>
+</ul>
+</div>
+</div>
+<div id="on-the-computer" class="section level2">
+<h2>On the Computer</h2>
+<p>Today’s lab we will use Data Carpentry tutorials for a different
+perspective. Be sure to start at the section on <a href="https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html">Starting
+with data</a> then proceed to <a href="https://datacarpentry.org/R-ecology-lesson/03-dplyr.html">manipulating
+data</a> and a walk through of <a href="https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html">ggplot</a>
+using Data Carpentry’s tutorials. Next week we will return to working
+with the 23andMe and Ancestry data.</p>
+</div>
+<div id="what-to-upload-to-canvas" class="section level2">
+<h2>What to upload to Canvas</h2>
+<p>Create a report using R Markdown with all the <a href="https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html">ggplot
+tutorial</a> examples and with the challenges listed at the end. Make
+sure to load the data and libraries from the earlier Data Carpentry
+lessons. Include both the examples and the challenges in the report.</p>
+</div>
 
 
 

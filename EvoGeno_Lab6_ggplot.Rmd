@@ -1,5 +1,5 @@
 ---
-title: "Lab 3 : Graphing with ggplot"
+title: "Lab 6 : Graphing with ggplot"
 output:
   html_document:
     toc: true
@@ -53,4 +53,4 @@ Today's lab we will use Data Carpentry tutorials for a different perspective.  B
 
 ## What to upload to Canvas
 
-Create a report using R Markdown with all the [ggplot tutorial](https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html) examples and with the challenges listed at the end.  Make sure you include code to load the data and libraries from the earlier Data Carpentry lessons.  If you are not doing this on Posit Cloud you will need to create a `data_raw` folder or modify the path when you download the `portal_data_joined.csv` file. 
+Create a report using R Markdown with all the [ggplot tutorial](https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html) examples and with the challenges listed at the end.  Make sure to load the data and libraries from the earlier Data Carpentry lessons. Include both the examples and the challenges in the report.
