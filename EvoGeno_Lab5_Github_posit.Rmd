@@ -87,13 +87,17 @@ Those seven commands are the majority of what you need to successfully use git. 
 * Register for a github account on https://github.com/
 * Create a new repo by clicking on the new repository button.
 * Give it a name, make it public, Add a readme file, Add R .gitignore file, Add Apache license.
-* Enable a web page for the repo - Click of the settings wheel, in the left menu select `pages` then under branch select `main`.
+* Enable a web page for the repo - Click of the settings wheel, in the left menu select `pages` then under branch select `main` and save.
+![](images/lab5/select_branch.png)
 * Go back to your main repo page, in the right corner in the `About` section click the wheel. Select `Use your GitHub Pages website`. Save changes
 * Click on the green `code` button and copy the https link.
+![](images/lab5/green_code_button.png)
 
 ### Make a local version of your github repo in Posit Cloud -  
 
 * In `Your Workspace` (not the `EvoGeno Workspace`) click on the `New Project` button then `New Project from Git Repository`
+
+![](images/lab5/new_project.png)
 * Paste in the link to your Github repository (e.g https://github.com/jeffreyblanchard/posit-test.git)
 
 #### If your are using RStudio on Unity or your own Computer
@@ -114,6 +118,7 @@ library(usethis)
 use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
 ```
 
+![](images/lab5/usethis.png)
 * Create a github token
 ```{r, eval=FALSE}
 usethis::create_github_token()
@@ -122,7 +127,7 @@ This will open a web page on your github account. The recommended scopes will be
 
 * Click “Generate token”.
 
-* Copy the generated PAT (beginning with ghp_ )to your clipboard. Provide this PAT next time a Git operation asks for your password.
+* Copy the generated PAT (__beginning with ghp__)to your clipboard. Provide this PAT next time a Git operation asks for your password.
 
 * To link your PAT with your repo
 
@@ -140,6 +145,8 @@ to get a prompt where you can paste your PAT: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 * Knit it to make index.html
 * Under the git tab in the upper right corner, commit the changes
 * Push the index files to your github repo
+
+
 * This will automatically replace your homepage README.md file with index.html (it takes about 5 minutes before the `page` updates)
 * It will take about 5 minutes before you can see it on your github repo page
 * You can quickly spice up your page by adding a theme to your `YAML` block of your index.Rmd (available themes are “default”, “bootstrap”, “cerulean”, “cosmo”, “darkly”, “flatly”, “journal”, “lumen”, “paper”, “readable”, “sandstone”, “simplex”, “spacelab”, “united”, “yeti”)
