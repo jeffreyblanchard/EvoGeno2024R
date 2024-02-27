@@ -143,9 +143,12 @@ to get a prompt where you can paste your PAT: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 * Save it as index.Rmd
 * Add text and images to make your homepage
 * Knit it to make index.html
-* Under the git tab in the upper right corner, commit the changes
-* Push the index files to your github repo
-
+* Under the git tab in the upper right corner, select `commit` the changes`
+* Add a description of your changes in the commit messeage
+* Click on `Commit`
+* Close the window
+* Click on `Push` to copy the index files to your github repo
+![](images/lab5/new_index_page.png)
 
 * This will automatically replace your homepage README.md file with index.html (it takes about 5 minutes before the `page` updates)
 * It will take about 5 minutes before you can see it on your github repo page

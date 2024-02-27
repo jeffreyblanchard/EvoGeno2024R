@@ -6,7 +6,7 @@ output:
     theme: darkly
 ---
 
-This is a rendering of hmtl files from the [course repository](https://github.com/jeffreyblanchard/EvoGeno2024R) for Evolutionary Genomics & Bioinformatics taught at the University of Massachusetts Amherst by Prof. Jeff Blanchard.  If you are not using RStudio (Posit) Cloud here are [Directions](EvoGeno_github.html) for creating a RStudio project space that will sync with and download files from the course repo.
+This is a rendering of hmtl files from the [course repository](https://github.com/jeffreyblanchard/EvoGeno2024R) for Evolutionary Genomics & Bioinformatics taught at the University of Massachusetts Amherst by Prof. Jeffrey Blanchard.  If you are not using RStudio (Posit) Cloud here are [Directions](EvoGeno_github.html) for creating a RStudio project space that will sync with and download files from the course repo.
 
 * Lab 1 : [Introduction to R and Reproducible Research](EvoGeno_Lab1_intro.html)
 * Lab 2 : [Rmarkdown](EvoGeno_Lab2_Rmarkdown.html)
