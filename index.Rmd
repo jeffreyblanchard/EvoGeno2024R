@@ -20,3 +20,4 @@ Advanced Labs
 * Lab A1 : [Programming in R - Regular Expressions](EvoGeno_xtra1_stringr.html)
 * Lab A3 : [Programming in R - Control Structures and Functions](EvoGeno_xtra3_loops.html)
 * Lab A4 : [R Shiny](EvoGeno_xtra4_shiny.html)
+* Lab A5 : [Working on the command line](EvoGeno_xtra5_cmd.html)

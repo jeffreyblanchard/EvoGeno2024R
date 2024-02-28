@@ -1,0 +1,123 @@
+---
+title: "Lab xtra5 : Working on the Command Line"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    theme: united
+    highlight: tango
+editor_options: 
+  chunk_output_type: console
+---
+
+
+## Learning objectives
+
+* Intro to working on the unix command line 
+
+## Bash shell / Terminal
+
+Working on high performance computer such as the Massachusetts Green High Performance Computing Center (MGHPCC) or our Virtual Machines through JetStream requires a basic working knowledge of the Bash Unix shell and . On Ubuntu and Apple OSX computers, including the BCRC's machine Bash is available through a program called Terminal. The terminal is also available within RStudio for Unix, OSX and Windows computers and on RStudio Cloud. The below tutorial is written for RStudio Cloud. It should work on any computer, but the paths to your directories maybe different.
+
+### Using the terminal in Posit Clould (and in RStudio on Linux and OSX)
+
+In RStudio menu go to `Tools` and then select `Terminal > New Terminal`.  A Terminal window (tab) will appear in the console window. There will be a line similar to this below.
+
+```{sh, eval=FALSE}
+cloud/project$ 
+```
+
+If you are doing this on your own computer it will look like
+
+```{sh, eval=FALSE}
+jlb@mamicrobiome:~/EvoGeno2024R$
+```
+
+#### Note for Windows Users using RStudio on their own computer
+
+If you get "command not found" (or similar) when you try these steps through the RStudio terminal tab, you may need to set the type of terminal that gets launched by RStudio. Under some git install senerios, the git executable may not be available to the default terminal type. Follow the instructions on the RStudio site for [Windows specific terminal options](https://support.rstudio.com/hc/en-us/articles/115010737148-Using-the-RStudio-Terminal#appendixe). In particular, you should choose "New Terminals open with Git Bash" in the Terminal options (`Tools->Global Options->Terminal`). Not all the Unix commands will work on the Git Bash Terminal in Windows. Post to Piazza which ones don't seem to be working
+
+### Navigating your file system using shell commands
+
+Before doing these examples make a new empty folder on your computer.
+
+The __pwd__ command prints your current directory/folder.
+
+```{sh, eval=FALSE}
+pwd
+```
+
+__mkdir__ is to make a new directory 
+
+```{sh, eval=FALSE}
+mkdir MYDRAFTS
+```
+
+__cd__ is short for change directory. You can move into the new directory
+
+```{sh, eval=FALSE}
+cd MYDRAFTS
+```
+
+The __ls__ lists items your current directory/folder.
+
+```{sh, eval=FALSE}
+ls -a
+```
+
+The ls -a and ls -l commands are useful for seeing more information on your files and hidden files that often begin with . (e.g. .Rdata or .gitignore). To see more options for any unix function use __--help__
+
+Since this is a new directory there are no files in the directory. Let's make and save a new file. In the Unix and OSX Terminal there is a simple text editor `nano`, but it is not available on RStudio Clould or on Windows computer, but you can make a text file by going to `File > New File > Text File`.  Put a couple of lines of text in the file. Save this file in the MYDRAFTS folder as __draft.txt__.  Now try listing the files
+
+```{sh, eval=FALSE}
+ls -a
+```
+
+### Coping, Moving and Deleting Files
+
+To copy files. 
+
+```{sh, eval=FALSE}
+cp draft.txt draft_old.txt
+```
+
+To delete my draft_old.txt change into that directory and using __rm__
+
+```{ssh, eval=FALSE}
+rm draft_old.txt
+```
+
+To move up one directory 
+
+```{sh, eval=FALSE}
+cd ..
+```
+
+Delete the MYDRAFT directory
+
+```{sh, eval=FALSE}
+rm -r MYDRAFTS
+```
+
+## Using the Bash Shell within RMarkdown
+
+A less well-known fact about R Markdown is that many other languages are also supported, such as Python, Julia, C++, and SQL. The support comes from the knitr package, which has provided a large number of language engines. Language engines are essentially functions registered in the object knitr::knit_engine. You can list the names of all available engines via:
+
+```{r}
+names(knitr::knit_engines$get())
+```
+
+You can run shell commands from within a RMarkdown file using __```{sh}... or  {bash}...__ 
+
+The terminal correlate of the .R file is the .sh file. You can open a new text file (File -> New File -> Text file) and save it as a .sh file. Like with R the hashtag is used to denote line that will not be run and for adding comments to your program. Similar to a .R file you can save a run a file with a batch of commands at the same time. 
+
+Using __sh__ or __bash__ within RMarkdown has unusual quirk in that after a code chunk the working directory is reset to the original working directory where the .Rmd file is.  This mean you have to be careful navigation to a new directory as in the above example to make sure all your commands are run in the same code chunk or you are likely to get an error.  
+
+In addition, because you will be creating and deleting files and directories you may want to set your __```{sh, eval = FALSE}...```__ so that the commands are not run when you Knit.
+ 
+## Exercise
+
+There is no assignment to turn in associated with today' lab. 
+
+There are many Unix Command line tutorials on line you could learn from, including [https://www.linuxcommand.org/lc3_learning_the_shell.php](https://www.linuxcommand.org/lc3_learning_the_shell.php) [Data Carpentries Introduction to the Unix Shell](https://swcarpentry.github.io/shell-novice/01-intro/index.html). Follow through one of this tutorials today. Don't worry about capturing this in Rmarkdown. There will be nothing to turn in this week, but we will be using many of this commands as the course progresses.
+
