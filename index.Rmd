@@ -13,11 +13,11 @@ This is a rendering of hmtl files from the [course repository](https://github.co
 * Lab 3 : [Data types and importing tables](EvoGeno_Lab3_data_types.html)
 * Lab 4 : [Data Wrangling](EvoGeno_Lab4_datawrangle.html)
 * Lab 5 : [Connecting a Github repo site with a new RStudio project](EvoGeno_Lab5_Github_posit.html)
-* Lab 6 : [Graphing with ggplot](EvoGeno_Lab6_ggplot.html)
+* Lab 6 : [Dat Visualization with ggplot](EvoGeno_Lab6_ggplot.html)
 
 Advanced Labs
 
 * Lab A1 : [Programming in R - Regular Expressions](EvoGeno_xtra1_stringr.html)
 * Lab A3 : [Programming in R - Control Structures and Functions](EvoGeno_xtra3_loops.html)
 * Lab A4 : [R Shiny](EvoGeno_xtra4_shiny.html)
-* Lab A5 : [Working on the command line](EvoGeno_xtra5_cmd.html)
+* Lab A6 : [Working on the command line](EvoGeno_xtra5_cmd.html)

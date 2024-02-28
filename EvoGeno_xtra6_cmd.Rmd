@@ -1,5 +1,5 @@
 ---
-title: "Lab xtra5 : Working on the Command Line"
+title: "Lab xtra6 : Working on the Command Line"
 output:
   html_document:
     toc: true
