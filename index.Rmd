@@ -13,7 +13,8 @@ This is a rendering of hmtl files from the [course repository](https://github.co
 * Lab 3 : [Data types and importing tables](EvoGeno_Lab3_data_types.html)
 * Lab 4 : [Data Wrangling](EvoGeno_Lab4_datawrangle.html)
 * Lab 5 : [Connecting a Github repo site with a new RStudio project](EvoGeno_Lab5_Github_posit.html)
-* Lab 6 : [Dat Visualization with ggplot](EvoGeno_Lab6_ggplot.html)
+* Lab 6 : [Data Visualization with ggplot](EvoGeno_Lab6_ggplot.html)
+* Lab 7 : [Building a 5 tab web site with Quarto](EvoGeno_Lab7_quarto.html)
 
 Advanced Labs
 
