@@ -18,7 +18,7 @@ In this lesson, you will learn:
 
 ## Background
 
-[Quarto](https://quarto.org/) has recently been developed as a next-generation, R Markdown-like publishing system. Quarto was developed to be used with R, Python, Julia, and Observable JavaScript. You can easily work with Quarto in RStudio and can use Quarto in other popular editors including Visual Studio Code. Quarto has particular strengths related to [authoring tools](https://quarto.org/docs/guide/) for presentations, publiations and web sites. 
+[Quarto](https://quarto.org/) has recently been developed as a next-generation, R Markdown-like publishing system. Quarto was developed to be used with R, Python, Julia, and Observable JavaScript. You can easily work with Quarto in RStudio and can use Quarto in other popular editors including Visual Studio Code. Quarto has particular strengths related to [authoring tools](https://quarto.org/docs/guide/) for presentations, publiations and web sites.
 
 Today we will go through the background information on the [Quarto](https://quarto.org/) and look at a few differences between R Markdown `Rmd` and Quarto `qmd` files by going through the [NCEAS Literate Analysis with Quarto](https://learning.nceas.ucsb.edu/2023-10-coreR/session_04.html) chapter.
 
