@@ -1,0 +1,257 @@
+---
+title: 'Lab 8 : Wrangling the NEON data'
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    theme: united
+    highlight: tango
+editor_options: 
+  chunk_output_type: inline
+---
+
+## Learning objectives
+
+* Introduction to the National Ecological Observatory Network 
+* Introduction to the JGI and the Integrated Microbial Genomes and Microbiomes (IMG/MER)
+* Creating nicely displayed and interactive tables for reports
+* Wrangling the NEON data
+
+## Background
+
+We will going over the following in class
+
+* ([NEON](https://www.neonscience.org/))
+* [Joint Genome Institute](https://jgi.doe.gov/) and the [Integrated Microbial Genomes and Microbiomes(IMG/MER)](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi)
+* [DOE JGI Metagenome Workflow](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8269246/)
+* [Terabase-scale metagenome coassembly with MetaHipMer](https://www.nature.com/articles/s41598-020-67416-5)
+* [JGI GOLD database](https://gold.jgi.doe.gov/study?id=Gs0161344) summary of our project
+
+
+## On the Computer
+
+
+```{r, message=FALSE}
+library(tidyverse)
+library(knitr)
+library(DT)
+```
+
+### kable
+
+__Don't display tables with thousands of rows.__ If you do you may run out of memory and/or you will generate a very large html file.
+
+By default, R Markdown displays data frames and matrixes as they would be in the R terminal (in a monospaced font). You have seen already what they look like. Here is an example for the `iris` data set that is preloaded when you start R. We will make a subset of the table.
+
+```{r}
+  iris_setosa <- iris %>% 
+  filter(Species == "setosa") %>% 
+  filter(Sepal.Length > 5)
+```
+
+To make a table more readable in a report the [knitr::kable](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html) function works nice for simple customizable tables.
+
+```{r}
+library(knitr)
+kable(iris_setosa)
+```
+`kable` works for small tables, but even 22 rows is too much to display in a report. If you have larger tables and/or want to make them interactive, the [DT](https://rstudio.github.io/DT/) works well.
+
+### DT 
+
+```{r}
+library(DT)
+datatable(iris_setosa)
+```
+There are two options for using `datatable` in your R code chunk. (1) Bound the code chunk you want to present by `datatable`
+```{r}
+datatable(
+  iris %>% 
+    filter(Species == "setosa") %>% 
+    filter(Sepal.Length > 5)
+)
+```
+
+Or create a new object
+```{r}
+iris_setosa <- iris %>% 
+  filter(Species == "setosa") %>% 
+  filter(Sepal.Length > 5)
+
+datatable(iris_setosa)
+```
+
+### Other popular table making packages
+
+Here are a few other popular table making packages
+
+* [kableExtra](https://bookdown.org/yihui/rmarkdown-cookbook/kableextra.html)
+* [GT](https://gt.rstudio.com/)
+* [reactable](https://glin.github.io/reactable/articles/examples.html)
+
+### Examples using the NEON data table
+
+Our data that we will work with today can be found by searching metagenome bins associated with GOLD Study ID Gs0161344 [IMG/MER](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetagenomeBinSearch&page=searchForm)
+
+A description of the column headers for the file we will work with
+
+* Bin ID - Metagenome Assemble Genome (MAG) ID
+* Genome Name - The metagenome sample name
+* IMG Genome ID - The metagenome sample ID
+* Bin Quality - An estimate of the quality of the bin or MAG
+* Bin Lineage - Taxonomic lineage using the JGI system
+* GTDB-Tk Taxonomy Lineage - Taxonomic lineage using GTDB
+* Bin Methods - The methods for binning contigs and quality control
+* Created By - The process by which the bins were created
+* Date Added - Date sample/metagenome was added
+* Bin Completeness - An estimate of the completeness of the MAG
+* Bin Contamination - An estimate of the contamination of the MAG
+* Total Number of Bases - MAG size in bases
+* 5s rRNA - Count of 5s rRNAs in the MAG
+* 16s rRNA - Count of 16S rRNAs in the MAG
+* 23s rRNA - Count of 23s rRNAs in the MAG
+* tRNA Genes - Count of tRNA genes in the MAG
+* Gene Count - Count of number of genes in the MAG
+* Scaffold Count - Number of separate scaffold comprising the MAG. The ideal would be 1
+* GOLD Study ID - The ID in the JGI GOLD database
+
+Let's load the table into R
+
+```{r, message=FALSE}
+NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON.csv")
+```
+
+As always in the Environment window check to see if the table loaded as expect and what the object types are. Or you can do it in your R console
+
+```{r}
+head(NEON_MAGs)
+
+str(NEON_MAGs)
+```
+
+
+Today we are just going to work from the assembly of the individual metagenomes, so let's remove the MAGs from the combined assembly. __When working with variable names that have spaces or special characters enclose them with grave accent ` ` that looks like a single quote ' ', but is not__  Note that single and double quotes delimit character strings in your variables. They can be used interchangeably but double quotes are preferred, so single quotes are normally only used to delimit character strings containing double quotes.
+
+```{r}
+NEON_MAGs_Ind <- NEON_MAGs %>% 
+  filter(`Genome Name` != "NEON combined assembly") 
+```
+
+Count the number of MQ and HQ genomes
+
+```{r}
+NEON_MAGs_Ind %>% 
+  count(`Bin Quality`, sort = TRUE) 
+```
+
+Make a `knitr::kable` table of the bin quality counts
+
+```{r}
+kable(
+  NEON_MAGs_Ind %>% 
+   count(`Bin Quality`) 
+)
+```
+
+Filter so that Bin Quality = HQ and display in `DT::datatable`
+
+```{r}
+datatable(
+  NEON_MAGs_Ind %>% 
+    filter(`Bin Quality` == "HQ")
+)
+```
+
+Select the GTDB taxonomy and the MAGs genome size then filter to all MAGs greater than 10,000,000 bases
+
+```{r}
+kable(
+NEON_MAGs_Ind %>% 
+  select(c(`GTDB-Tk Taxonomy Lineage`, `Total Number of Bases`)) %>% 
+  filter(`Total Number of Bases` > 10000000)
+)
+```
+
+We can use the `stringr` package to filter based on a word or string of characters in a column
+
+```{r}
+datatable(
+NEON_MAGs_Ind %>% 
+  filter(str_detect(`GTDB-Tk Taxonomy Lineage`, 'Bacteroidota'))
+)
+```
+
+Filter to include only the samples from `Yellowstone NP`
+
+```{r}
+datatable(
+NEON_MAGs_Ind %>% 
+  filter(str_detect(`Genome Name`, 'Yellowstone NP'))
+)
+```
+
+Since the the taxonomic categories in `GTDB-Tk Taxonomy Lineage` are separated by the `;` we can use the `separate` function to create new columns for each of the taxonomic categories. The `remove = FALSE` keeps the original `GTDB-Tk Taxonomy Lineage` column
+
+```{r}
+NEON_MAGs_Ind_tax <- NEON_MAGs_Ind %>% 
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus"), "; ", remove = FALSE) 
+```
+
+Count the number of MAGs for each Phylum and display in `DT::datatable`
+```{r}
+datatable(
+  NEON_MAGs_Ind_tax %>% 
+    count(Phylum, sort = TRUE)
+)
+```
+Note that there is one category with no name. This were MAGs that were not annotated by GTDB using the JGI pipline (they are Archaea)
+
+There is a lot of information in `Genome Name`. Let's unpack it into separate columns. Note here where the double quotes and grave accents are used
+
+```{r}
+NEON_MAGs_Ind_tax_sample <- NEON_MAGs_Ind_tax %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-",) 
+```
+
+Check this out in the Environment window to make sure with got it right.
+
+Let's see which Site has the most MAGs
+
+```{r}
+datatable(
+  NEON_MAGs_Ind_tax_sample %>% 
+    count(Site, sort = TRUE)
+)
+```
+
+## Exercises
+
+### Exercise 1
+
+Use `view(iris)` to see the whole data table.  Subset the table based on a different species than was used in the example. Display the table using DT::datatable
+
+
+### Exercise 2
+
+Display using DT::datatable the NEON MAGs from the individual assemblies that have at least 1 16S rRNA
+
+### Exercise 3
+
+Display a table of the MAGs from `Lower Teakettle` with only the columns for the `Genome Name`, `GTDB-Tk Taxonomy Lineage`, and estimated MAG genome size.
+
+### Exercise 4
+
+Display a table with the Class counts at LBJ National Grasslands
+
+### Exercise 5
+
+Display a table with the counts for the Phylum Actinobacteriota at each Site
