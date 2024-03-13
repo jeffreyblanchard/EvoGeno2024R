@@ -1,0 +1,122 @@
+---
+title: 'NEON data tables and graphs'
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    theme: united
+    highlight: tango
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+## Libraries
+
+
+```{r, message=FALSE}
+library(tidyverse)
+library(knitr)
+library(DT)
+```
+
+
+## Wrangling summary file
+
+Our data that we will work with today can be found by searching metagenome bins associated with GOLD Study ID Gs0161344 [IMG/MER](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetagenomeBinSearch&page=searchForm)
+
+A description of the column headers for the file we will work with
+
+* Bin ID - Metagenome Assemble Genome (MAG) ID
+* Genome Name - The metagenome sample name
+* IMG Genome ID - The metagenome sample ID
+* Bin Quality - An estimate of the quality of the bin or MAG
+* Bin Lineage - Taxonomic lineage using the JGI system
+* GTDB-Tk Taxonomy Lineage - Taxonomic lineage using GTDB
+* Bin Methods - The methods for binning contigs and quality control
+* Created By - The process by which the bins were created
+* Date Added - Date sample/metagenome was added
+* Bin Completeness - An estimate of the completeness of the MAG
+* Bin Contamination - An estimate of the contamination of the MAG
+* Total Number of Bases - MAG size in bases
+* 5s rRNA - Count of 5s rRNAs in the MAG
+* 16s rRNA - Count of 16S rRNAs in the MAG
+* 23s rRNA - Count of 23s rRNAs in the MAG
+* tRNA Genes - Count of tRNA genes in the MAG
+* Gene Count - Count of number of genes in the MAG
+* Scaffold Count - Number of separate scaffold comprising the MAG. The ideal would be 1
+* GOLD Study ID - The ID in the JGI GOLD database
+
+Let's load the table into R
+
+```{r, message=FALSE}
+NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON.csv") %>% 
+  # remove columns that are not needed for data analysis
+  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`)) %>% 
+  # create a new column with the Assembly Type
+  mutate("Assembly Type" = case_when(`Genome Name` == "NEON combined assembly" ~ `Genome Name`,
+                            TRUE ~ "Individual")) %>% 
+  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Combined") %>% 
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus"), "; ", remove = FALSE) %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
+```
+
+
+```{r}
+NEON_MAGs_bact <- NEON_MAGs %>% 
+  # remove Archaea since there is no GTDB annotation for Archaea
+  filter(Domain == "Bacteria")
+```
+
+## Tables
+
+### Assembly type by Bin Qualit
+```{r}
+  NEON_MAGs_bact %>% 
+   group_by(`Assembly Type`, `Bin Quality`) %>% 
+   count(`Bin Quality`)
+```
+
+### Assemby Type by Phylum Count
+
+```{r}
+datatable(
+  NEON_MAGs_bact %>% 
+   group_by(`Assembly Type`, Phylum) %>% 
+   summarize(n = n()) %>%
+   pivot_wider(names_from = `Assembly Type`, values_from = n) %>% 
+   mutate(pct_change = (Combined-Individual)/(Individual) * 100) %>% 
+   mutate_if(is.numeric, round, 0)
+)
+```
+```{r}
+datatable(
+  NEON_MAGs_bact %>% 
+   group_by(`Assembly Type`, Family) %>% 
+   summarize(n = n()) %>% 
+   pivot_wider(names_from = `Assembly Type`, values_from = n) %>% 
+   mutate(pct_change = (Combined-Individual)/(Individual) * 100) %>% 
+   mutate_if(is.numeric, round, 0)
+)
+```
+
+
+## Figures
+
+### Assembly Type by Phylum Bar 
+```{r}
+NEON_MAGs_bact %>% 
+ggplot(aes(x = Phylum, fill = `Assembly Type`)) +
+  geom_bar(position="dodge") +
+  coord_flip()
+```
+

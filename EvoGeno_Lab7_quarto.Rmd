@@ -1,5 +1,5 @@
 ---
-title: "Lab 7 : Web sites with Quarto"
+title: "Lab 7 : Websites with Quarto"
 output:
   html_document:
     toc: true

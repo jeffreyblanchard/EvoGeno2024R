@@ -219,7 +219,7 @@ NEON_MAGs_Ind_tax_sample <- NEON_MAGs_Ind_tax %>%
   # separate the Sample Name into Site ID and plot info
   separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
   # separate the plot info into 3 columns
-  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-",) 
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
 ```
 
 Check this out in the Environment window to make sure with got it right.
