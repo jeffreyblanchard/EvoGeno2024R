@@ -317,7 +317,7 @@ ggplot(aes(x = fct_infreq(Phylum), y = `Total Number of Bases`)) +
 
 ## Exercises
 
-For all exercises make complete graphs that are report ready. Relabel the x-axis, y-axis and legend for clarity, add a title, add color and size appropriately. The `NA`s in the taxomony indicate a novel species starting with the highest level.  For example a `NA` in a class that has an assigned phylum `Proteobacteria` would be a novel class in the phylum `Proteobacteria`.
+For all exercises make complete graphs that are report ready. Relabel the x-axis, y-axis and legend for clarity, add a title, add color and size appropriately. The `NA`s in the taxonomy indicate a novel species starting with the highest level.  For example a `NA` in a class that has an assigned phylum `Proteobacteria` would be a novel class in the phylum `Proteobacteria`.
 
 ### Exercise 1
 
@@ -333,28 +333,30 @@ How many novel bacteria were discovered (Show that number of `NA`s for each taxo
 
 ### Exercise 4
 
-What sites have novel bacterial genera?
+How many novel bacterial MAGs are high quality vs medium quality?
 
 ### Exercise 5
 
-Make a stacked bar plot of the total number of MAGs at each site using Phylum as the fill
+What sites have novel bacterial genera?
 
 ### Exercise 6
 
-Using `facet_wrap` make plots of the total number of MAGs at each site for each phylum (e.g. similar to the example above but using the site ID and separating each graph by phylum.)
+What phyla have novel bacterial genera?
 
 ### Exercise 7
 
-What sites have high quality (HQ) MAGs?
+Make a stacked bar plot of the total number of MAGs at each site using Phylum as the fill.
 
 ### Exercise 8
 
-What is the relationship between MAGs genome size and the number of genes? Color by Phylum.
+Using `facet_wrap` make plots of the total number of MAGs at each site for each phylum (e.g. similar to the example above but using the site ID and separating each graph by phylum.)
 
 ### Exercise 9
 
-What is the relationship between scaffold count and MAG completeness?
+What is the relationship between MAGs genome size and the number of genes? Color by Phylum.
 
 ### Exercise 10
 
-Show the genome size for each MAG in each class?
+What is the relationship between scaffold count and MAG completeness?
+
+
