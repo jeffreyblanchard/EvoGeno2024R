@@ -341,26 +341,21 @@ How many novel bacteria were discovered (Show that number of `NA`s for each site
 How many novel bacterial MAGs are high quality vs medium quality?
 
 ### Exercise 5
-
-What sites have novel bacterial genera?
+What phyla have novel bacterial genera?
 
 ### Exercise 6
 
-What phyla have novel bacterial genera?
+Make a stacked bar plot of the total number of MAGs at each site using Phylum as the fill.
 
 ### Exercise 7
 
-Make a stacked bar plot of the total number of MAGs at each site using Phylum as the fill.
-
-### Exercise 
-
 Using `facet_wrap` make plots of the total number of MAGs at each site for each phylum (e.g. similar to the example above but using the site ID and separating each graph by phylum.)
 
-### Exercise 9
+### Exercise 8
 
 What is the relationship between MAGs genome size and the number of genes? Color by Phylum.
 
-### Exercise 10
+### Exercise 9
 
 What is the relationship between scaffold count and MAG completeness?
 
