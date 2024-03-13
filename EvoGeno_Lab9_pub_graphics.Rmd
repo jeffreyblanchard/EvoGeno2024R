@@ -334,7 +334,7 @@ What are the MAG counts for each subplot. Color by site ID.
 
 ### Exercise 3
 
-How many novel bacteria were discovered (Show that number of `NA`s for each taxonomic level)?
+How many novel bacteria were discovered (Show that number of `NA`s for each site)?
 
 ### Exercise 4
 
