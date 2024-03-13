@@ -140,7 +140,7 @@ Sometimes it is useful in controlling the image layout for a report to file with
 # Your image must be in your working directory
 # This command is put OUTSIDE the r code chunk
 
-![Iris example plot](images/SNP_example_plot.png) 
+![Iris example plot](images/iris_example_plot2.png) 
 ```
 
 ![Iris example plot](images/iris_example_plot2.png)
@@ -317,7 +317,12 @@ ggplot(aes(x = fct_infreq(Phylum), y = `Total Number of Bases`)) +
 
 ## Exercises
 
-For all exercises make complete graphs that are report ready. Relabel the x-axis, y-axis and legend for clarity, add a title, add color and size appropriately. The `NA`s in the taxonomy indicate a novel species starting with the highest level.  For example a `NA` in a class that has an assigned phylum `Proteobacteria` would be a novel class in the phylum `Proteobacteria`.
+For all exercises make complete graphs that are report ready. Relabel the x-axis, y-axis and legend for clarity, add a title, add color and size appropriately. The `NA`s in the taxonomy indicate a novel species starting with the highest level.  For example a `NA` in a class that has an assigned phylum `Proteobacteria` would be a novel class in the phylum `Proteobacteria`. To filter Class and Order based on `NA`.
+
+```{r}
+NEON_MAGs_bact_ind %>% 
+  filter(is.na(Class) | is.na(Order))
+```
 
 ### Exercise 1
 
@@ -358,5 +363,8 @@ What is the relationship between MAGs genome size and the number of genes? Color
 ### Exercise 10
 
 What is the relationship between scaffold count and MAG completeness?
+
+
+
 
 
