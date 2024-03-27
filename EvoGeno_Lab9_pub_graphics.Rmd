@@ -34,6 +34,7 @@ Here are a couple of cheat sheets that can be useful
 ```{r, warning=FALSE}
 library(tidyverse)
 library(plotly)
+library(DT)
 ```
 
 ### Basic graph labels
@@ -341,6 +342,7 @@ How many novel bacteria were discovered (Show that number of `NA`s for each site
 How many novel bacterial MAGs are high quality vs medium quality?
 
 ### Exercise 5
+
 What phyla have novel bacterial genera?
 
 ### Exercise 6
@@ -358,7 +360,6 @@ What is the relationship between MAGs genome size and the number of genes? Color
 ### Exercise 9
 
 What is the relationship between scaffold count and MAG completeness?
-
 
 
 

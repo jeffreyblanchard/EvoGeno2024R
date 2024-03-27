@@ -1,0 +1,171 @@
+---
+title: "Lab 10 : National Ecological Observatory Network (NEON) Projects"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    theme: united
+    highlight: tango
+bibliography: references.bib
+---
+
+## Learning objectives
+
+* Revisiting the National Ecological Observatory Network 
+* Revisiting the JGI and the Integrated Microbial Genomes and Microbiomes (IMG/MER)
+* Adding references to your report
+* Starting your NEON project
+
+## Background
+
+We will revisit following in class
+
+* [NEON](https://www.neonscience.org/)
+* [NEON Field Sites](https://www.neonscience.org/field-sites)
+* [Integrated Microbial Genomes and Microbiomes(IMG/MER)](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi)
+
+## Integrated Microbial Genomes and Microbiomes(IMG/MER)
+
+* To create an account go to [Integrated Microbial Genomes and Microbiomes(IMG/MER)](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi). Register for an account using your UMass email. For funding source use DOE Biological and Environmental Research (BER)
+
+* The GOLD Study ID for the project is [Gs0161344](https://gold.jgi.doe.gov/study?id=Gs0161344)
+
+* Search in IMG using the `Quick Genome Search` with the Study ID `Gs0161344` to find metagenomes associated with our project. 
+
+We will go through working with the data associated with the metagenomes today.
+
+
+## Adding references to your report
+
+You can automatically generate citations and a bibliography in a number of styles. In order to use this feature, you will need to specify a bibliography file using the bibliography metadata field in a YAML metadata section. For example:
+
+```
+---
+title: "Sample Document"
+output: html_document
+bibliography: bibliography.bib
+---
+```
+The bibliography may have any of these formats:
+
+Format    |File extension
+----------|--------------
+MODS |.mods
+BibLaTeX|.bib
+BibTeX|.bibtex
+RIS|.ris
+EndNote|.enl
+EndNote XML|.xml
+ISI|.wos
+|MEDLINE|.medline
+|Copac|.copac
+|JSON citeproc|.json
+
+You can export references from your favorite reference manager. I use the open source [Zotero](www.zotero.org).
+
+### Minimum working example
+
+If you create these two files `paper.Rmd` and `references.bib` you will have a working example to build from
+paper.Rmd
+
+```
+---
+title: 'My Title'
+author: "Me me me me!"
+date: Aug 31, 2020
+output: html_document
+bibliography: references.bib
+---
+
+Application written in R [@RCoreTeam] using the Shiny framework [@Chang2015].
+
+# REFERENCES
+```
+
+references.bib (Make this file as a text file (File -> New File -> text file))
+
+```
+@Misc{Chang2015,
+  Title                    = {shiny: Web Application Framework for R. R package version 0.12.1},
+
+  Author                   = {Chang, W. and Cheng, J. and Allaire, JJ. and Xie, Y. and McPherson, J. },
+  Year                     = {2015},
+
+  Type                     = {Computer Program},
+  Url                      = {http://CRAN.R-project.org/package=shiny}
+}
+
+
+@Article{RCoreTeam,
+  Title                    = {R: A Language and Environment for Statistical Computing},
+  Author                   = {{R Core Team}},
+  Year                     = {2015},
+
+  Type                     = {Journal Article},
+  Url                      = {http://www.R-project.org}
+}
+```
+
+Here is a short example of a manuscript style report [Reproducible Papers with RMarkdown](https://nceas.github.io/oss-lessons/reproducible-papers-with-rmd/reproducible-papers-with-rmd.html)
+
+
+## NEON MAG data
+
+First load the libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(plotly)
+library(knitr)
+library(DT)
+```
+
+Let's load a modified version of the file the has the JGI bin taxonomy for the Archaea into R
+
+```{r, warning=FALSE, message=FALSE}
+NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON_edArchaea.csv") %>% 
+  # remove columns that are not needed for data analysis
+  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`)) %>% 
+  # create a new column with the Assembly Type
+  mutate("Assembly Type" = case_when(`Genome Name` == "NEON combined assembly" ~ `Genome Name`,
+                            TRUE ~ "Individual")) %>% 
+  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Combined") %>% 
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus"), "; ", remove = FALSE) %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
+```
+
+
+### Project Groups
+
+
+```{r, warning=FALSE, message=FALSE}
+kable(
+project_groups <- read_csv("data/NEON/project_groups.csv") 
+)
+```
+
+## Lab 10 Report
+
+For today's report include:
+
+* A description of your NEON site including a link to the NEON site information as reference and photos.
+* A table from IMG with the metagenome information including Ecosystem subtype, latitude, longitude, Genome Size, Gene Count
+* A summary of the MAGs at your site including the taxomic breakdown. Use both tables and graphs.
+* An overview of your Phylum/Class including references.
+* A summary of what sites your Phylum/Class is found at. Include tables and graphs with lower level taxonomic information.
+
+
+## Acknowledgements
+
+Our labs are written in R [@RCoreTeam] and past labs have used th Shiny framework [@Chang2015].
+
+## References

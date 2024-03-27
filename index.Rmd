@@ -17,6 +17,7 @@ This is a rendering of hmtl files from the [course repository](https://github.co
 * Lab 7 : [Building a 5 tab web site with Quarto](EvoGeno_Lab7_quarto.html)
 * Lab 8 : [Wrangling the NEON data](EvoGeno_Lab8_tables.html)
 * Lab 9 : [ggplotting the NEON data](EvoGeno_Lab9_pub_graphics.html)
+* Lab 10 : [National Ecological Observatory (NEON) Projects](EvoGeno_Lab10_NEON.html)
 
 Advanced Labs
 

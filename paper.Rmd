@@ -1,0 +1,12 @@
+---
+title: 'My Title'
+author: "Me me me me!"
+date: Aug 31, 2020
+output: html_document
+bibliography: references.bib
+---
+
+Application written in R [@RCoreTeam] using the Shiny framework [@Chang2015].
+
+# REFERENCES
+```
