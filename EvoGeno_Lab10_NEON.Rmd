@@ -146,7 +146,6 @@ NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON_edArchaea.csv") %>
 
 ### Project Groups
 
-
 ```{r, warning=FALSE, message=FALSE}
 kable(
 project_groups <- read_csv("data/NEON/project_groups.csv") 
@@ -167,7 +166,7 @@ Using the table from Labs 8 and 9
 
 From IMG
 
-* A table from IMG with the metagenome information including Ecosystem subtype, latitude, longitude, Genome Size, Gene Count. Just display the table in your Lab 10 report. We will work more with this table next week.
+* A table from IMG with the metagenome information including Ecosystem subtype, latitude, longitude, Genome Size, Gene Count. Just display the table in your Lab 10 report. You will need to use `read_tsv` because although it says it is a csv file it is actually a tsv file.  We will work more with this table next week.
 
 ## Acknowledgements
 
