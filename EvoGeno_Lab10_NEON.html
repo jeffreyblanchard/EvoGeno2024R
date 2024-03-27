@@ -225,106 +225,6 @@ ul.task-list{list-style: none;}
 
 
 
-<style type="text/css">
-code {
-white-space: pre;
-}
-.sourceCode {
-overflow: visible;
-}
-</style>
-<style type="text/css" data-origin="pandoc">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-{ counter-reset: source-line 0; }
-pre.numberSource code > span
-{ position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-{ content: counter(source-line);
-position: relative; left: -1em; text-align: right; vertical-align: baseline;
-border: none; display: inline-block;
--webkit-touch-callout: none; -webkit-user-select: none;
--khtml-user-select: none; -moz-user-select: none;
--ms-user-select: none; user-select: none;
-padding: 0 4px; width: 4em;
-color: #aaaaaa;
-}
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
-div.sourceCode
-{ background-color: #f8f8f8; }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ef2929; } 
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } 
-code span.at { color: #204a87; } 
-code span.bn { color: #0000cf; } 
-code span.cf { color: #204a87; font-weight: bold; } 
-code span.ch { color: #4e9a06; } 
-code span.cn { color: #8f5902; } 
-code span.co { color: #8f5902; font-style: italic; } 
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } 
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } 
-code span.dt { color: #204a87; } 
-code span.dv { color: #0000cf; } 
-code span.er { color: #a40000; font-weight: bold; } 
-code span.ex { } 
-code span.fl { color: #0000cf; } 
-code span.fu { color: #204a87; font-weight: bold; } 
-code span.im { } 
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } 
-code span.kw { color: #204a87; font-weight: bold; } 
-code span.op { color: #ce5c00; font-weight: bold; } 
-code span.ot { color: #8f5902; } 
-code span.pp { color: #8f5902; font-style: italic; } 
-code span.sc { color: #ce5c00; font-weight: bold; } 
-code span.ss { color: #4e9a06; } 
-code span.st { color: #4e9a06; } 
-code span.va { color: #000000; } 
-code span.vs { color: #4e9a06; } 
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } 
-</style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    var j = 0;
-    while (j < rules.length) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
-        j++;
-        continue;
-      }
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') {
-        j++;
-        continue;
-      }
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
-</script>
 
 
 
@@ -457,20 +357,24 @@ Network (NEON) Projects</h1>
 <li><a href="#learning-objectives" id="toc-learning-objectives">Learning
 objectives</a></li>
 <li><a href="#background" id="toc-background">Background</a></li>
-<li><a href="#integrated-microbial-genomes-and-microbiomesimgmer" id="toc-integrated-microbial-genomes-and-microbiomesimgmer">Integrated
-Microbial Genomes and Microbiomes(IMG/MER)</a></li>
 <li><a href="#adding-references-to-your-report" id="toc-adding-references-to-your-report">Adding references to your
 report</a>
 <ul>
 <li><a href="#minimum-working-example" id="toc-minimum-working-example">Minimum working example</a></li>
 </ul></li>
-<li><a href="#neon-mag-data" id="toc-neon-mag-data">NEON MAG data</a>
+<li><a href="#integrated-microbial-genomes-and-microbiomesimgmer" id="toc-integrated-microbial-genomes-and-microbiomesimgmer">Integrated
+Microbial Genomes and Microbiomes(IMG/MER)</a>
 <ul>
 <li><a href="#project-groups" id="toc-project-groups">Project
 Groups</a></li>
 </ul></li>
-<li><a href="#lab-10-report" id="toc-lab-10-report">Lab 10
-Report</a></li>
+<li><a href="#lab-10-report" id="toc-lab-10-report">Lab 10 Report</a>
+<ul>
+<li><a href="#exercise-1" id="toc-exercise-1">Exercise 1</a></li>
+<li><a href="#exercise-2" id="toc-exercise-2">Exercise 2</a></li>
+<li><a href="#exercise-3" id="toc-exercise-3">Exercise 3</a></li>
+<li><a href="#exercise-4" id="toc-exercise-4">Exercise 4</a></li>
+</ul></li>
 <li><a href="#acknowledgements" id="toc-acknowledgements">Acknowledgements</a></li>
 <li><a href="#references" id="toc-references">References</a></li>
 </ul>
@@ -496,21 +400,6 @@ Sites</a></li>
 <li><a href="https://img.jgi.doe.gov/cgi-bin/mer/main.cgi">Integrated
 Microbial Genomes and Microbiomes(IMG/MER)</a></li>
 </ul>
-</div>
-<div id="integrated-microbial-genomes-and-microbiomesimgmer" class="section level2">
-<h2>Integrated Microbial Genomes and Microbiomes(IMG/MER)</h2>
-<ul>
-<li><p>To create an account go to <a href="https://img.jgi.doe.gov/cgi-bin/mer/main.cgi">Integrated Microbial
-Genomes and Microbiomes(IMG/MER)</a>. Register for an account using your
-UMass email. For funding source use DOE Biological and Environmental
-Research (BER)</p></li>
-<li><p>The GOLD Study ID for the project is <a href="https://gold.jgi.doe.gov/study?id=Gs0161344">Gs0161344</a></p></li>
-<li><p>Search in IMG using the <code>Quick Genome Search</code> with the
-Study ID <code>Gs0161344</code> to find metagenomes associated with our
-project.</p></li>
-</ul>
-<p>We will go through working with the data associated with the
-metagenomes today.</p>
 </div>
 <div id="adding-references-to-your-report" class="section level2">
 <h2>Adding references to your report</h2>
@@ -617,38 +506,19 @@ Application written in R [@RCoreTeam] using the Shiny framework [@Chang2015].
 Papers with RMarkdown</a></p>
 </div>
 </div>
-<div id="neon-mag-data" class="section level2">
-<h2>NEON MAG data</h2>
-<p>First load the libraries</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">library</span>(DT)</span></code></pre></div>
-<p>Let’s load a modified version of the file the has the JGI bin
-taxonomy for the Archaea into R</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>NEON_MAGs <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/NEON/GOLD_Study_ID_Gs0161344_NEON_edArchaea.csv&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="co"># remove columns that are not needed for data analysis</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">GOLD Study ID</span><span class="st">`</span>, <span class="st">`</span><span class="at">Bin Methods</span><span class="st">`</span>, <span class="st">`</span><span class="at">Created By</span><span class="st">`</span>, <span class="st">`</span><span class="at">Date Added</span><span class="st">`</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="co"># create a new column with the Assembly Type</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">&quot;Assembly Type&quot;</span> <span class="ot">=</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Genome Name</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;NEON combined assembly&quot;</span> <span class="sc">~</span> <span class="st">`</span><span class="at">Genome Name</span><span class="st">`</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;Individual&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;Assembly Type&quot;</span>, str_replace, <span class="st">&quot;NEON combined assembly&quot;</span>, <span class="st">&quot;Combined&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="fu">separate</span>(<span class="st">`</span><span class="at">GTDB-Tk Taxonomy Lineage</span><span class="st">`</span>, <span class="fu">c</span>(<span class="st">&quot;Domain&quot;</span>, <span class="st">&quot;Phylum&quot;</span>, <span class="st">&quot;Class&quot;</span>, <span class="st">&quot;Order&quot;</span>, <span class="st">&quot;Family&quot;</span>, <span class="st">&quot;Genus&quot;</span>), <span class="st">&quot;; &quot;</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="co"># Get rid of the the common string &quot;Soil microbial communities from &quot;</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;Genome Name&quot;</span>, str_replace, <span class="st">&quot;Terrestrial soil microbial communities from &quot;</span>, <span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="co"># Use the first `-` to split the column in two</span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  <span class="fu">separate</span>(<span class="st">`</span><span class="at">Genome Name</span><span class="st">`</span>, <span class="fu">c</span>(<span class="st">&quot;Site&quot;</span>,<span class="st">&quot;Sample Name&quot;</span>), <span class="st">&quot; - &quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="co"># Get rid of the the common string &quot;S-comp-1&quot;</span></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;Sample Name&quot;</span>, str_replace, <span class="st">&quot;-comp-1&quot;</span>, <span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="co"># separate the Sample Name into Site ID and plot info</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  <span class="fu">separate</span>(<span class="st">`</span><span class="at">Sample Name</span><span class="st">`</span>, <span class="fu">c</span>(<span class="st">&quot;Site ID&quot;</span>,<span class="st">&quot;subplot.layer.date&quot;</span>), <span class="st">&quot;_&quot;</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>,) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>  <span class="co"># separate the plot info into 3 columns</span></span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>  <span class="fu">separate</span>(<span class="st">`</span><span class="at">subplot.layer.date</span><span class="st">`</span>, <span class="fu">c</span>(<span class="st">&quot;Subplot&quot;</span>, <span class="st">&quot;Layer&quot;</span>, <span class="st">&quot;Date&quot;</span>), <span class="st">&quot;-&quot;</span>) </span></code></pre></div>
+<div id="integrated-microbial-genomes-and-microbiomesimgmer" class="section level2">
+<h2>Integrated Microbial Genomes and Microbiomes(IMG/MER)</h2>
+<ul>
+<li>To create an account go to <a href="https://img.jgi.doe.gov/cgi-bin/mer/main.cgi">Integrated Microbial
+Genomes and Microbiomes(IMG/MER)</a>. Register for an account using your
+UMass email. For funding source use DOE Biological and Environmental
+Research (BER)</li>
+</ul>
+<p>The GOLD Study ID for the project is <a href="https://gold.jgi.doe.gov/study?id=Gs0161344">Gs0161344</a></p>
+<p>We will go through working with the data associated with the
+metagenomes today.</p>
 <div id="project-groups" class="section level3">
 <h3>Project Groups</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">kable</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>project_groups <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/NEON/project_groups.csv&quot;</span>) </span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>)</span></code></pre></div>
 <table>
 <colgroup>
 <col width="6%" />
@@ -744,26 +614,58 @@ USA</td>
 <h2>Lab 10 Report</h2>
 <p>You can work together with your group, but each of you should submit
 a lab report to Canvas. For today’s report include:</p>
+<div id="exercise-1" class="section level3">
+<h3>Exercise 1</h3>
 <ul>
 <li>A description of your NEON site including a link to the NEON site
 information as reference and photos.</li>
+</ul>
+</div>
+<div id="exercise-2" class="section level3">
+<h3>Exercise 2</h3>
+<ul>
 <li>An overview of your Phylum/Class including references.</li>
 </ul>
-<p>Using the table from Labs 8 and 9</p>
+</div>
+<div id="exercise-3" class="section level3">
+<h3>Exercise 3</h3>
+<p>Using the table from Labs 8 and 9 analyze</p>
 <ul>
-<li>A summary of the MAGs at your site including the taxomic breakdown.
-Use both tables and graphs.</li>
-<li>A summary of what sites your Phylum/Class is found at. Include
-tables and graphs with lower level taxonomic information.</li>
+<li>The MAGs at your site including the taxomic breakdown. Use both
+tables and graphs.</li>
+<li>The sites your Phylum/Class is found at. Include tables and graphs
+with lower level taxonomic information.</li>
 </ul>
-<p>From IMG</p>
+</div>
+<div id="exercise-4" class="section level3">
+<h3>Exercise 4</h3>
+<p>From IMG create table from IMG with the metagenome information
+including Ecosystem subtype, latitude, longitude, Genome Size, Gene
+Count. Just display the table in your Lab 10 report. We will work more
+with this table next week.</p>
+<p>To do this</p>
 <ul>
-<li>A table from IMG with the metagenome information including Ecosystem
-subtype, latitude, longitude, Genome Size, Gene Count. Just display the
-table in your Lab 10 report. You will need to use <code>read_tsv</code>
-because although it says it is a csv file it is actually a tsv file. We
-will work more with this table next week.</li>
+<li>Go to (IMG/MER)](<a href="https://img.jgi.doe.gov/cgi-bin/mer/main.cgi" class="uri">https://img.jgi.doe.gov/cgi-bin/mer/main.cgi</a>)</li>
+<li>Search in IMG using the <code>Quick Genome Search</code> with the
+Study ID <code>Gs0161344</code> to find metagenomes associated with our
+project.</li>
+<li>Scroll down and check the boxes corresponding to Ecosystem
+Categories (5), latitude and longitude. The the default checked boxes
+check</li>
+<li>Click on <code>Redisplay</code></li>
+<li>Scroll up click on <code>Select All</code> (There should be 176
+metagenomes)</li>
+<li>Click on <code>Export</code></li>
+<li>This will create a csv file for download. Put this in your data/NEON
+folder</li>
+<li>Read in the file using <code>read_tsv</code> because although it
+says it is a csv file it is actually a tsv (tab separated value)
+file.</li>
+<li>Filter the table to include only metagenomes from your site and
+metagenomes that are <code>Re-annotated</code>.</li>
+<li>Display the table using kable or DT(datatable) in your report.</li>
 </ul>
+</div>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2>Acknowledgements</h2>

@@ -24,16 +24,6 @@ We will revisit following in class
 * [NEON Field Sites](https://www.neonscience.org/field-sites)
 * [Integrated Microbial Genomes and Microbiomes(IMG/MER)](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi)
 
-## Integrated Microbial Genomes and Microbiomes(IMG/MER)
-
-* To create an account go to [Integrated Microbial Genomes and Microbiomes(IMG/MER)](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi). Register for an account using your UMass email. For funding source use DOE Biological and Environmental Research (BER)
-
-* The GOLD Study ID for the project is [Gs0161344](https://gold.jgi.doe.gov/study?id=Gs0161344)
-
-* Search in IMG using the `Quick Genome Search` with the Study ID `Gs0161344` to find metagenomes associated with our project. 
-
-We will go through working with the data associated with the metagenomes today.
-
 
 ## Adding references to your report
 
@@ -109,44 +99,19 @@ references.bib (Make this file as a text file (File -> New File -> text file))
 Here is a short example of a manuscript style report [Reproducible Papers with RMarkdown](https://nceas.github.io/oss-lessons/reproducible-papers-with-rmd/reproducible-papers-with-rmd.html)
 
 
-## NEON MAG data
+## Integrated Microbial Genomes and Microbiomes(IMG/MER)
 
-First load the libraries
+* To create an account go to [Integrated Microbial Genomes and Microbiomes(IMG/MER)](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi). Register for an account using your UMass email. For funding source use DOE Biological and Environmental Research (BER)
 
-```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
-library(plotly)
-library(knitr)
-library(DT)
-```
+The GOLD Study ID for the project is [Gs0161344](https://gold.jgi.doe.gov/study?id=Gs0161344)
 
-Let's load a modified version of the file the has the JGI bin taxonomy for the Archaea into R
-
-```{r, warning=FALSE, message=FALSE}
-NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON_edArchaea.csv") %>% 
-  # remove columns that are not needed for data analysis
-  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`)) %>% 
-  # create a new column with the Assembly Type
-  mutate("Assembly Type" = case_when(`Genome Name` == "NEON combined assembly" ~ `Genome Name`,
-                            TRUE ~ "Individual")) %>% 
-  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Combined") %>% 
-  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus"), "; ", remove = FALSE) %>% 
-  # Get rid of the the common string "Soil microbial communities from "
-  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
-  # Use the first `-` to split the column in two
-  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
-  # Get rid of the the common string "S-comp-1"
-  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
-  # separate the Sample Name into Site ID and plot info
-  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
-  # separate the plot info into 3 columns
-  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
-```
-
+We will go through working with the data associated with the metagenomes today.
 
 ### Project Groups
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+library(knitr)
+library(tidyverse)
 kable(
 project_groups <- read_csv("data/NEON/project_groups.csv") 
 )
@@ -156,17 +121,37 @@ project_groups <- read_csv("data/NEON/project_groups.csv")
 
 You can work together with your group, but each of you should submit a lab report to Canvas. For today's report include:
 
+### Exercise 1
+
 * A description of your NEON site including a link to the NEON site information as reference and photos.
+
+### Exercise 2
+
 * An overview of your Phylum/Class including references.
 
-Using the table from Labs 8 and 9
+### Exercise 3
 
-* A summary of the MAGs at your site including the taxomic breakdown. Use both tables and graphs.
-* A summary of what sites your Phylum/Class is found at. Include tables and graphs with lower level taxonomic information.
+Using the table from Labs 8 and 9 analyze
 
-From IMG
+* The MAGs at your site including the taxomic breakdown. Use both tables and graphs.
+* The sites your Phylum/Class is found at. Include tables and graphs with lower level taxonomic information.
 
-* A table from IMG with the metagenome information including Ecosystem subtype, latitude, longitude, Genome Size, Gene Count. Just display the table in your Lab 10 report. You will need to use `read_tsv` because although it says it is a csv file it is actually a tsv file.  We will work more with this table next week.
+### Exercise 4
+
+From IMG create table from IMG with the metagenome information including Ecosystem subtype, latitude, longitude, Genome Size, Gene Count. Just display the table in your Lab 10 report.  We will work more with this table next week. 
+
+To do this
+
+* Go to (IMG/MER)](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi)
+* Search in IMG using the `Quick Genome Search` with the Study ID `Gs0161344` to find metagenomes associated with our project. 
+* Scroll down and check the boxes corresponding to Ecosystem Categories (5), latitude and longitude. The the default checked boxes check
+* Click on `Redisplay`
+* Scroll up click on `Select All` (There should be 176 metagenomes)
+* Click on `Export`
+* This will create a csv file for download. Put this in your data/NEON folder
+* Read in the file using `read_tsv` because although it says it is a csv file it is actually a tsv (tab separated value) file. 
+* Filter the table to include only metagenomes from your site and metagenomes that are `Re-annotated`.
+* Display the table using kable or DT(datatable) in your report.
 
 ## Acknowledgements
 
