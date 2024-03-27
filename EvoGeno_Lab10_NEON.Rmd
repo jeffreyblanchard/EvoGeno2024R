@@ -155,7 +155,7 @@ project_groups <- read_csv("data/NEON/project_groups.csv")
 
 ## Lab 10 Report
 
-For today's report include:
+You can work together with your group, but each of you should submit a lab report to Canvas. For today's report include:
 
 * A description of your NEON site including a link to the NEON site information as reference and photos.
 * A table from IMG with the metagenome information including Ecosystem subtype, latitude, longitude, Genome Size, Gene Count
