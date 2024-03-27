@@ -158,11 +158,16 @@ project_groups <- read_csv("data/NEON/project_groups.csv")
 You can work together with your group, but each of you should submit a lab report to Canvas. For today's report include:
 
 * A description of your NEON site including a link to the NEON site information as reference and photos.
-* A table from IMG with the metagenome information including Ecosystem subtype, latitude, longitude, Genome Size, Gene Count
-* A summary of the MAGs at your site including the taxomic breakdown. Use both tables and graphs.
 * An overview of your Phylum/Class including references.
+
+Using the table from Labs 8 and 9
+
+* A summary of the MAGs at your site including the taxomic breakdown. Use both tables and graphs.
 * A summary of what sites your Phylum/Class is found at. Include tables and graphs with lower level taxonomic information.
 
+From IMG
+
+* A table from IMG with the metagenome information including Ecosystem subtype, latitude, longitude, Genome Size, Gene Count. Just display the table in your Lab 10 report. We will work more with this table next week.
 
 ## Acknowledgements
 
