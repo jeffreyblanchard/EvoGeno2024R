@@ -85,7 +85,7 @@ Once you have created your new group. Go to the [Zotero homepage](https://www.zo
 
 ### Populating your Zotero Web Library
 
-Download the [Zotero extension] for your web browser. 
+Download the [Zotero connector](https://www.zotero.org/download/) for your web browser. 
 
 Go to [Pubmed](https://pubmed.ncbi.nlm.nih.gov/) one of the best sources researching the life sciences and biomedical literature. Search for a term (e.g. virophage). Click on the extensions icon in your web browser.
 
