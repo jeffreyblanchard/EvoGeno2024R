@@ -114,7 +114,7 @@ bibliography: references_virophage.bib
 ---
 ```
 
-Cite the references in our document.Virophages integrated into host genomes can be activated and inhibit giant virus infection [@koslova_endogenous_2024]
+Cite the references in our document.Virophages integrated into host genomes can be activated and inhibit giant virus infection [@koslova_endogenous_2024].  I am going to create a RShiny app [@Chang2015].
 
 ### Integrated Zotero with other software for creating documents
 

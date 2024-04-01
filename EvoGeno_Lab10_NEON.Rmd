@@ -144,13 +144,14 @@ To do this
 
 * Go to (IMG/MER)](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi)
 * Search in IMG using the `Quick Genome Search` with the Study ID `Gs0161344` to find metagenomes associated with our project. 
+* Click on the `176` Hits.
 * Scroll down and check the boxes corresponding to Ecosystem Categories (5), latitude and longitude. The the default checked boxes check
 * Click on `Redisplay`
 * Scroll up click on `Select All` (There should be 176 metagenomes)
 * Click on `Export`
 * This will create a csv file for download. Put this in your data/NEON folder
 * Read in the file using `read_tsv` because although it says it is a csv file it is actually a tsv (tab separated value) file. 
-* Filter the table to include only metagenomes from your site and metagenomes that are `Re-annotated`.
+* Filter the table to include only metagenomes from your site and metagenomes that are `re-annotation`.
 * Display the table using kable or DT(datatable) in your report.
 
 ## Acknowledgements
