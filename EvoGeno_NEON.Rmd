@@ -70,6 +70,17 @@ NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON.csv") %>%
   separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
 ```
 
+```{r}
+NEON_MAGs_bact_ind <- NEON_MAGs %>% 
+  filter(Domain == "Bacteria") %>% 
+  filter(`Assembly Type` == "Individual") 
+```
+
+```{r}
+NEON_MAGs_bact_co <- NEON_MAGs %>% 
+  filter(Domain == "Bacteria") %>% 
+  filter(`Assembly Type` == "Combined") 
+```
 
 ```{r}
 NEON_MAGs_bact <- NEON_MAGs %>% 
@@ -115,8 +126,31 @@ datatable(
 ### Assembly Type by Phylum Bar 
 ```{r}
 NEON_MAGs_bact %>% 
-ggplot(aes(x = Phylum, fill = `Assembly Type`)) +
+ggplot(aes(x = fct_infreq(Phylum), fill = `Assembly Type`)) +
   geom_bar(position="dodge") +
   coord_flip()
+```
+
+```{r}
+novel_ind <-  NEON_MAGs_bact_ind %>% 
+  filter(is.na(Phylum) | is.na(Class) | is.na(Order) | is.na(Family) | is.na(Genus)) %>% select(c(Phylum, Class, Order, Family, Genus))
+
+```
+
+```{r}
+novel_co <-  NEON_MAGs_bact_co %>% 
+  filter(is.na(Phylum) | is.na(Class) | is.na(Order) | is.na(Family) | is.na(Genus)) %>% select(c(Phylum, Class, Order, Family, Genus))
+
+colSums(is.na(novel_co))
+```
+
+
+```{r}
+datatable(
+  NEON_MAGs_bact %>% 
+  filter(is.na(Phylum) | is.na(Class) | is.na(Order) | is.na(Family) | is.na(Genus)) %>% 
+  select(c(Phylum, Class, Order, Family, Genus, `Assembly Type`, `Bin Quality`)) %>% 
+  filter(`Bin Quality` == "HQ")
+)
 ```
 
