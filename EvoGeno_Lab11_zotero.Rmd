@@ -120,4 +120,8 @@ Cite the references in our document.Virophages integrated into host genomes can 
 
 You will not need to do this for this course, but to have the Zotero Library installed on your computer download the [Zotero version](https://www.zotero.org/download/) for your computer. Then download the plugin for your writing sofware (e.g. LibreOffice, Google Docs, Word).
 
+### Exercises
+
+Add references related to your project to your Lab 10 report and turn it in as Lab 11.
+
 ## References
