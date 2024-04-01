@@ -89,7 +89,7 @@ Download the [Zotero extension] for your web browser.
 
 Go to [Pubmed](https://pubmed.ncbi.nlm.nih.gov/) one of the best sources researching the life sciences and biomedical literature. Search for a term (e.g. virophage). Click on the extensions icon in your web browser.
 
-[Zotero extensions icon](images/lab11/zotero_ext.png)
+![Zotero extensions icon](images/lab11/zotero_ext.png)
 
 Select the box(es) for the references you want to import.  You should now see them in your Zotero Web Library. If they are not yet in your group library move them to share with other members of your project team.
 
@@ -97,7 +97,7 @@ Select the box(es) for the references you want to import.  You should now see th
 
 Go to your Zotero Web Library. Select the references you want to export. Click on the export icon.
 
-[Zotero export icon](images/lab11/zotero_export.png)
+![Zotero export icon](images/lab11/zotero_export.png)
 
 Save the references in BibText format. This should create a `.bib` file. Upload this file into your working directory on Posit Cloud. Add the name of the file (e.g. references_virophage.bib) to your YAML block
 
