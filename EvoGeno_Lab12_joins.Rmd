@@ -1,0 +1,147 @@
+---
+title: "Lab 12 : Table joins of NEON MAG, metagenomic and chemistry data"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    theme: united
+    highlight: tango
+---
+
+## Learning objectives
+
+* Joining tables together
+
+## Libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(knitr)
+```
+
+## Joining tables
+
+[Tidyverse Cookbook](https://rstudio-education.github.io/tidyverse-cookbook/) has many practical solutions to problems. We will go over different ways to [join tables](https://rstudio-education.github.io/tidyverse-cookbook/transform-tables.html#joins). 
+
+## NEON MAG table
+
+Let's load the MAG table into R
+
+```{r, warning=FALSE, message=FALSE}
+NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON_edArchaea.csv") %>% 
+  # remove columns that are not needed for data analysis
+  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`)) %>% 
+  # create a new column with the Assembly Type
+  mutate("Assembly Type" = case_when(`Genome Name` == "NEON combined assembly" ~ `Genome Name`,
+                            TRUE ~ "Individual")) %>% 
+  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Combined") %>% 
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus"), "; ", remove = FALSE) %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
+```
+
+
+## NEON metagenome information
+
+We are going to remove the `re-annotation` and `WREF plot` samples from the data set you export last week from IMG.
+
+```{r, warning=FALSE, message=FALSE}
+NEON_metagenomes <- read_tsv("data/NEON/exported_img_data_Gs0161344_NEON.tsv") %>% 
+  rename(`Genome Name` = `Genome Name / Sample Name`) %>% 
+  filter(str_detect(`Genome Name`, 're-annotation', negate = T)) %>% 
+  filter(str_detect(`Genome Name`, 'WREF plot', negate = T)) 
+```
+
+Now let's reformat `Genome Name` as we did for the above MAG table
+```{r}
+NEON_metagenomes <- NEON_metagenomes %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
+```
+
+
+## NEON Chemistry data
+
+```{r, warning=FALSE, message=FALSE}
+NEON_chemistry <- read_tsv("data/NEON/neon_plot_soilChem1_metadata.tsv") %>% 
+  # remove -COMP from genomicsSampleID
+  mutate_at("genomicsSampleID", str_replace, "-COMP", "") 
+```
+
+Here are the column descriptions for the NEON chemistry data set
+```{r, warning=FALSE, message=FALSE}
+kable(
+  NEON_chemistry_description <- read_tsv("data/NEON/neon_soilChem1_metadata_descriptions.tsv") 
+)
+```
+
+
+## Exercise
+
+### Exercise 1
+
+Create some tables with just a few columns to work on the basics of table joins by making a new data frame selecting
+
+* In `NEON_MAGs` the columns `Sample Name`, `Site ID`, `GTDB-Tk Taxonomy Lineage`
+* In `NEON_metagenomes` the columns `Sample Name`, `Site ID`, `Ecosystem Subtype`
+* In `NEON_chemistry` the columns `genomicsSampleID`, `siteID`, `nlcdClass`
+
+### Exercise 2
+
+Now filter the above `NEON_MAGs`, `NEON_metagenomes` and `NEON_chemistry` to contain just the data for your project site
+
+
+### Exercise 3
+
+Do a left join of the NEON MAGs with NEON metagenomes by the `Sample Name` and show the resulting table. Notice what happens when 2 columns have the same name. Did you get the number of rows you expected? 
+
+### Exercise 4
+
+Using the data from your site do a left join of the NEON chemistry with NEON metagenomes from above by the `Sample Name` and `genomicsSampleID` columns and show the resulting table.  Use `by = c("Sample Name" = "genomicsSampleID"))`.    Did you get the number of rows you expected? 
+
+### Exercise 5 
+
+Does it matter with these tables if your do a left, right or full join. Should the resulting tables
+
+### Exercise 6
+
+Do a left join of the NEON chemistry with NEON metagenomes by site ID columns and show the resulting table. Did you get the number of rows you expected? 
+
+### Exercise 7
+
+Join the NEON MAG, metagenome and chemistry dataframes into a single data frame. What happens to the metagenome and chemistry information on the rows with the NEON coassembly?   
+
+
+### Exercise 8
+
+Filter the above table to contain data for just your project taxonomic group.  Make a boxplot of the soil temperatures for each sample at the sites.
+
+### Exercise 9
+
+Make a scatterplot of `Ecosystem Subtype` vs temperature. Use the Order as the color for the points.
+
+### Exercise 10
+
+Make a scatterplots of soilInCaClpH  vs  `ncldClass` (National Land Cover Database) terms.  Use the Family as the color for the points.
+
+### Exercise 11, 12, and 13
+
+Exploring the data is an important part of data analysis. Humans are great at visually recognizing patterns. Make 3 other graphs specific to your project.
+
+

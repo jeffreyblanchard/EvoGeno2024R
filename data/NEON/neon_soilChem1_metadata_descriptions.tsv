@@ -1,0 +1,24 @@
+fieldName	description	dataType	units
+siteID	NEON site code	string	NA
+plotID	Plot identifier (NEON site code_XXX)	string	NA
+sampleID	Identifier for sample	string	NA
+horizon	Organic or mineral soil	string	NA
+genomicsSampleID	Identifier for a genomics sample	string	NA
+d15N	Measure of the ratio of 15N:14N in a sample, relative to atmospheric N2	real	permill
+organicd13C	Measure of the ratio of 13C:12C in soil organic carbon, relative to Vienna Pee Dee Belemnite	real	permill
+nitrogenPercent	Percent nitrogen in a sample on a dry weight basis	real	percent
+organicCPercent	Percent organic carbon in a sample on a dry weight basis	real	percent
+CNratio	Ratio of carbon to nitrogen concentration in a sample on a dry weight basis	real	NA
+nlcdClass	National Land Cover Database Vegetation Type Name	string	NA
+subplotID	Identifier for the NEON subplot	string	NA
+coreCoordinateX	x location of the soil core relative to the SW corner	real	meter
+coreCoordinateY	y location of the soil core relative to the SW corner	real	meter
+decimalLatitude	The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area	real	decimalDegree
+decimalLongitude	The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area	real	decimalDegree
+elevation	Elevation (in meters) above sea level	real	meter
+sampleTiming	Timing of the sampling event with regard to the field season	string	NA
+soilTemp	In-situ temperature of soil at approximately 10 cm depth	real	degree
+sampleTopDepth	Depth below the soil surface of the top of a soil sample	real	centimeter
+sampleBottomDepth	Depth below the soil surface of the bottom of a soil sample	real	centimeter
+soilInWaterpH	pH value of soil measured in water solution	real	pH
+soilInCaClpH	pH value of soil measured in calcium chloride solution	real	pH
