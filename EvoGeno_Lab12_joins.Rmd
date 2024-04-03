@@ -92,7 +92,9 @@ kable(
 ```
 
 
-## Exercise
+## Exercises
+
+Include the examples from section 4.23 of [Tidyverse Cookbook](https://rstudio-education.github.io/tidyverse-cookbook/transform-tables.html#joins) in your lab report. 
 
 ### Exercise 1
 
