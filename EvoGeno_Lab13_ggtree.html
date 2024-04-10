@@ -432,6 +432,7 @@ Analysis and Tree Visualization</h1>
 
 <div id="TOC">
 <ul>
+<li><a href="#acknowledgements" id="toc-acknowledgements">Acknowledgements</a></li>
 <li><a href="#learning-objectives" id="toc-learning-objectives">Learning
 Objectives</a></li>
 <li><a href="#sequence-alignment-background" id="toc-sequence-alignment-background">Sequence Alignment Background</a>
@@ -461,12 +462,11 @@ Computer</a>
 <li><a href="#ngphylogeny.fr---a-quick-and-easy-working-flow-including-multiple-sequence-alignment-phylogenetic-analysis-and-tree-visualization" id="toc-ngphylogeny.fr---a-quick-and-easy-working-flow-including-multiple-sequence-alignment-phylogenetic-analysis-and-tree-visualization">NGPhylogeny.fr
 - A quick and easy working flow including multiple sequence alignment,
 phylogenetic analysis and tree visualization</a></li>
-<li><a href="#phylogenetic-tree-visualization" id="toc-phylogenetic-tree-visualization">Phylogenetic tree
-visualization</a></li>
 </ul></li>
-<li><a href="#acknowledgements" id="toc-acknowledgements">Acknowledgements</a></li>
-<li><a href="#bioconductor" id="toc-bioconductor">Bioconductor</a>
+<li><a href="#phylogenetic-tree-visualization" id="toc-phylogenetic-tree-visualization">Phylogenetic tree
+visualization</a>
 <ul>
+<li><a href="#bioconductor" id="toc-bioconductor">Bioconductor</a></li>
 <li><a href="#installing-bioconductor-ggtree-and-biostrings" id="toc-installing-bioconductor-ggtree-and-biostrings">Installing
 Bioconductor, ggtree and Biostrings</a></li>
 </ul></li>
@@ -503,6 +503,12 @@ silouhettes</a></li>
 </ul>
 </div>
 
+<div id="acknowledgements" class="section level2">
+<h2>Acknowledgements</h2>
+<p>This lab is a slighlty modified update of <a href="https://4va.github.io/biodatasci/r-ggtree.html">Stephen Turner’s
+ggtree tutorial</a>. Many of the examples here were modified from the <a href="http://bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree
+vignettes</a>.</p>
+</div>
 <div id="learning-objectives" class="section level2">
 <h2>Learning Objectives</h2>
 <ul>
@@ -814,8 +820,9 @@ scale at the bottom represents sequence distance (e.g. 0.2 is 20%).</p>
 <p>Here is a link to the results <a href="ngphylogeny.fr/workspace/history/35a006bfb261cb33">NGPhylogeny</a>.
 The newick tree file was added to the data/lab13 directory</p>
 </div>
-<div id="phylogenetic-tree-visualization" class="section level3">
-<h3>Phylogenetic tree visualization</h3>
+</div>
+<div id="phylogenetic-tree-visualization" class="section level2">
+<h2>Phylogenetic tree visualization</h2>
 <p>The tree visualizations on NGPhylogeny.fr are ok for some purposes,
 but often for publications more tree editing and visualization features
 are needed. There are a number of packages available to bring trees to
@@ -832,25 +839,15 @@ extends the ‘ggplot2’ for visualization and annotation of phylogenetic
 trees with their annotation data. The author, Guangchuang Yu, has
 recently published an R book <a href="https://yulab-smu.top/treedata-book/">Data Integration,
 Manipulation and Visualization of Phylogenetic Trees</a>.</p>
-</div>
-</div>
-<div id="acknowledgements" class="section level2">
-<h2>Acknowledgements</h2>
-<p>This lab is a slighlty modified update of <a href="https://4va.github.io/biodatasci/r-ggtree.html">Stephen Turner’s
-ggtree tutorial</a>.</p>
-<p>This lesson demonstrates how to use <strong>ggtree</strong>, an
-extension of the ggplot2 package to visualize and annotate phylogenetic
-trees. Many of the examples here were modified from the <a href="http://bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree
-vignettes</a>.</p>
-</div>
-<div id="bioconductor" class="section level2">
-<h2>Bioconductor</h2>
+<div id="bioconductor" class="section level3">
+<h3>Bioconductor</h3>
 <p><a href="https://bioconductor.org/">Bioconductor</a> is an open
 source, open development software project for genomic data analysis.
 There are thousands of software packages available and an active user
 community. R/Bioconductor is one of the primary mechanisms for
 publishing new genomic data analysis tools. We will use Bioconductor in
 the this and the following weeks labs.</p>
+</div>
 <div id="installing-bioconductor-ggtree-and-biostrings" class="section level3">
 <h3>Installing Bioconductor, ggtree and Biostrings</h3>
 <p><strong>Bioconductor, ggtree and Biostrings is already installed on
