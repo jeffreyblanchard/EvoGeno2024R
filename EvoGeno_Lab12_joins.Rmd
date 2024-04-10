@@ -119,7 +119,7 @@ Using the data from your site do a left join of the NEON chemistry with NEON met
 
 ### Exercise 5 
 
-Does it matter with these tables if your do a left, right or full join. Should the resulting tables
+Does it matter with these tables if your do a left, right or full join. Show the resulting tables
 
 ### Exercise 6
 
