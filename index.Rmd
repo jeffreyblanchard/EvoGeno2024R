@@ -20,6 +20,7 @@ This is a rendering of hmtl files from the [course repository](https://github.co
 * Lab 10 : [National Ecological Observatory (NEON) Projects](EvoGeno_Lab10_NEON.html)
 * Lab 11 : [Adding references to your report with Zotero](EvoGeno_Lab11_zotero.html)
 * Lab 12 : [Table joins of NEON MAG, metagenomic and chemistry data](EvoGeno_Lab12_joins.html)
+* Lab 13 : [Phylogenetic tree visualization using ggtree](EvoGeno_Lab13_ggtree.html)
 
 Advanced Labs
 
