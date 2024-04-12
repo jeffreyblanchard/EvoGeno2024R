@@ -16,6 +16,7 @@ output:
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(zoo)
+library(knitr)
 ```
 
 ## Overview
@@ -136,9 +137,12 @@ write_tsv(sankey_data_allTaxa, "NEON_MAG_co_pavian.txt")
 
 ### Results files for all NEON taxa
 
-[Interactive HTML file with Pavian Sankey Plot for Individual Assembly](images/lab14/sankey-NEON_MAG_ind_pavian.txt.html)
+This code will `embed` the Sankey html results files within the Rmarkdown document.  You should use it when making your report.
 
-[Interactive HTML file with Pavian Sankey Plot for Combined Assembly](images/lab14/sankey-NEON_MAG_co_pavian.txt.html)
+```{r, fig.width=10}
+knitr::include_url("images/lab14/sankey-NEON_MAG_ind_pavian.txt.html")
+knitr::include_url("images/lab14/sankey-NEON_MAG_co_pavian.txt.html")
+```
 
 ## Exercises
 

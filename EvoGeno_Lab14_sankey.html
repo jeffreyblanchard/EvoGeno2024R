@@ -481,7 +481,8 @@ taxa</a></li>
 <div id="libraries" class="section level2">
 <h2>Libraries</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(zoo)</span></code></pre></div>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(zoo)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code></pre></div>
 </div>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
@@ -613,10 +614,15 @@ assemblies</p></li>
 </div>
 <div id="results-files-for-all-neon-taxa" class="section level3">
 <h3>Results files for all NEON taxa</h3>
-<p><a href="images/lab14/sankey-NEON_MAG_ind_pavian.txt.html">Interactive HTML
-file with Pavian Sankey Plot for Individual Assembly</a></p>
-<p><a href="images/lab14/sankey-NEON_MAG_co_pavian.txt.html">Interactive
-HTML file with Pavian Sankey Plot for Combined Assembly</a></p>
+<p>This code will <code>embed</code> the Sankey html results files
+within the Rmarkdown document. You should use it when making your
+report.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_url</span>(<span class="st">&quot;images/lab14/sankey-NEON_MAG_ind_pavian.txt.html&quot;</span>)</span></code></pre></div>
+<iframe src="images/lab14/sankey-NEON_MAG_ind_pavian.txt.html" width="960" height="400px" data-external="1">
+</iframe>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_url</span>(<span class="st">&quot;images/lab14/sankey-NEON_MAG_co_pavian.txt.html&quot;</span>)</span></code></pre></div>
+<iframe src="images/lab14/sankey-NEON_MAG_co_pavian.txt.html" width="960" height="400px" data-external="1">
+</iframe>
 </div>
 </div>
 <div id="exercises" class="section level2">
