@@ -20,7 +20,7 @@ library(zoo)
 
 ## Overview
 
-By now you have released that it is difficult to make a single graph that shows that taxonomic levels of your study group. Sankey plots have become popular in the last few years as a way to visual several or all taxonomic levels in a single graph. Today we will make Sankey plots using a R Shiny app developed by Florian Breitwieser. First we will need to use R to make the proper input files. 
+By now you have realized that it is difficult to make a single graph that shows that taxonomic levels of your study group. Sankey plots have become popular in the last few years as a way to visual several or all taxonomic levels in a single graph. Today we will make Sankey plots using a R Shiny app developed by Florian Breitwieser. First we will need to use R to make the proper input files. 
 
 ## NEON MAG table
 
