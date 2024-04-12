@@ -1,0 +1,158 @@
+---
+title: "Lab 14 : Taxonomy visualization with Sankey plots"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    theme: united
+    highlight: tango
+---
+
+## Learning objectives
+* How to visualize taxonomies using a Sankey plot
+
+## Libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(zoo)
+```
+
+## Overview
+
+By now you have released that it is difficult to make a single graph that shows that taxonomic levels of your study group. Sankey plots have become popular in the last few years as a way to visual several or all taxonomic levels in a single graph. Today we will make Sankey plots using a R Shiny app developed by Florian Breitwieser. First we will need to use R to make the proper input files. 
+
+## NEON MAG table
+
+### Base level dataframes with the NEON MAGs
+
+```{r, warning=FALSE, message=FALSE}
+NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON_edArchaea.csv") %>% 
+  # remove columns that are not needed for data analysis
+  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`)) %>% 
+  # create a new column with the Assembly Type
+  mutate("Assembly Type" = case_when(`Genome Name` == "NEON combined assembly" ~ `Genome Name`,
+                            TRUE ~ "Individual")) %>% 
+  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Combined") %>% 
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus"), "; ", remove = FALSE) %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
+```
+
+### Filter for individual assemblies
+```{r}
+NEON_MAGs_ind <- NEON_MAGs %>% 
+  filter(`Assembly Type` == "Individual") 
+```
+
+### Filter for combined assemblies
+```{r}
+NEON_MAGs_co <- NEON_MAGs %>% 
+  filter(`Assembly Type` == "Combined") 
+```
+
+
+## Make input for for Pavian Sankey Plot (from IMG format for GTDB taxonomy
+
+### Make data frame in Pavian Sankey format
+```{r}
+# Select the GTDB Taxonomic lineage and separate into taxonomic levels
+sankey_data <- NEON_MAGs_co %>% 
+  select(`GTDB-Tk Taxonomy Lineage`) %>% 
+  # NAs are likely Archaea
+  replace_na(list(`GTDB-Tk Taxonomy Lineage` = 'Archaea')) %>% 
+  # Pavian format requires p__ etc
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), "; ") 
+
+# Fill in the NAs with the taxonomic the higher taxonomic level to the left
+sankey_data[] <- t(apply(sankey_data, 1, zoo::na.locf))
+
+# Put the data into a format that can be read by the Sankey App
+
+sankey_data <- sankey_data %>% 
+  unite(col = "classification", c(Domain, Phylum, Class, Order, Family, Genus, Species), sep='; ') %>% 
+  mutate_at("classification", str_replace, "Archaea", "d__Archaea") %>% 
+  mutate_at("classification", str_replace, "Bacteria", "d__Bacteria") %>%  
+  mutate_at("classification", str_replace, "; ", "|p__") %>% 
+  mutate_at("classification", str_replace, "; ", "|c__") %>% 
+  mutate_at("classification", str_replace, "; ", "|o__") %>% 
+  mutate_at("classification", str_replace, "; ", "|f__") %>% 
+  mutate_at("classification", str_replace, "; ", "|g__") %>% 
+  mutate_at("classification", str_replace, "; ", "|s__")  
+
+# Create format for Pavian with counts for each taxonomic level
+sankey_data_s <- sankey_data
+sankey_data_g <- sankey_data
+sankey_data_f <- sankey_data
+sankey_data_o <- sankey_data
+sankey_data_c <- sankey_data
+sankey_data_p <- sankey_data
+sankey_data_d <- sankey_data
+
+sankey_data_g$classification <- sub("\\|s__.*", "", sankey_data_g$classification)  
+sankey_data_f$classification <- sub("\\|g__.*", "", sankey_data_f$classification)  
+sankey_data_o$classification <- sub("\\|f__.*", "", sankey_data_o$classification)  
+sankey_data_c$classification <- sub("\\|o__.*", "", sankey_data_c$classification)  
+sankey_data_p$classification <- sub("\\|c__.*", "", sankey_data_p$classification)  
+sankey_data_d$classification <- sub("\\|p__.*", "", sankey_data_d$classification)  
+
+sankey_data_allTaxa <- bind_rows(sankey_data_s, sankey_data_g, sankey_data_f, sankey_data_o, sankey_data_c, sankey_data_p, sankey_data_d) %>% 
+  mutate(classification = as.factor(classification)) %>% 
+  count(classification) %>% 
+# rename for Pavian format
+  rename(`#SampleID` = `classification`) %>% 
+  rename(`Metaphlan2_Analysis` = `n`) 
+
+# Write file to input to Pavian Sankey
+write_tsv(sankey_data_allTaxa, "NEON_MAG_co_pavian.txt")
+```
+
+
+## Pavian Sankey Plot
+
+### Generating the base Sankey graph
+* Upload the above pavian formatted file to [Pavian Shiny](https://fbreitwieser.shinyapps.io/pavian/)
+* Click Generate html report
+* Click on Sample then Configure Sankey to see the plot
+
+### Parameters to adjust on the Sankey graph
+* Taxonomic ranks D,P,C,O,F and maybe G
+* Increase scale between nodes to 1.2-1.4
+* Increase Figure height to 500-1000
+* Increase taxa to max level which still conveys key points and makes a good visual 
+
+### Saving the html file and/or save the html file as a png.
+* Save network
+
+* Use the same parameters for both the individual and combined assemblies
+
+### Results files for all NEON taxa
+
+[Interactive HTML file with Pavian Sankey Plot for Individual Assembly](images/lab14/sankey-NEON_MAG_ind_pavian.txt.html)
+
+[Interactive HTML file with Pavian Sankey Plot for Combined Assembly](images/lab14/sankey-NEON_MAG_co_pavian.txt.html)
+
+## Exercises
+
+### Exercise 1
+
+Make a Sankey plot for the individual assemblies for your Phylum at all sites.
+
+### Exercise 2
+
+Make a Sankey plot for the combined assemblies for your Phylum.
+
+### Exercise 3
+
+Make a Sankey plot for all taxa at your site.
+
+
+
