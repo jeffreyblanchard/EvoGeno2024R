@@ -23,7 +23,6 @@ This is a rendering of hmtl files from the [course repository](https://github.co
 * Lab 13 : [Phylogenetic tree visualization using ggtree](EvoGeno_Lab13_ggtree.html)
 * Lab 14 : [Taxonomy visualization with Sankey plots](EvoGeno_Lab14_sankey.html)
 
-
 Advanced Labs
 
 * Lab A1 : [Programming in R - Regular Expressions](EvoGeno_xtra1_stringr.html)
