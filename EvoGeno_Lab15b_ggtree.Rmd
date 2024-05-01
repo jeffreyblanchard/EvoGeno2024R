@@ -160,7 +160,7 @@ grep("Chloroflexota", node_vector_bac, value = TRUE)
 match(grep("Chloroflexota", node_vector_bac, value = TRUE), node_vector_bac)
 ```
 
-If you are working with Archaea you can identify the Phyla and color as below
+If you are working with Archaea do not need to get a subtree. You can identify the Phyla and color as below
 
 ```{r}
 # Make a vector with the internal node labels
@@ -370,4 +370,35 @@ ggtree(tree_Chloroflexota, layout="circular", branch.length="none") %<+%
           legend.text=element_text(size=6), # the text size of legend.
           legend.spacing.y = unit(0.02, "cm")  # the distance of legends (y orientation).
       ) 
+```
+
+### Making a tree of your site
+
+Filter to your site MAGs
+```{r}
+NEON_MAGs_metagenomes_chemistry_CLBJ <- NEON_MAGs_metagenomes_chemistry %>% 
+  filter(`Site ID.x` == "CLBJ")
+```
+
+### Make a vector with your site MAGs
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_CLBJ <- NEON_MAGs_metagenomes_chemistry %>% 
+  filter(`Site ID.x` == "CLBJ") %>% 
+  filter(Domain == "Bacteria")
+```
+
+```{r}
+CLBJ_MAGs_label <- NEON_MAGs_metagenomes_chemistry_CLBJ$label
+```
+
+```{r}
+tree_bac_CLBJ_MAGs <-drop.tip(tree_bac,tree_bac$tip.label[-match(CLBJ_MAGs_label, tree_bac$tip.label)])
+```
+
+
+```{r, fig.height = 8}
+ggtree(tree_bac_CLBJ_MAGs, layout="circular")  %<+%
+  NEON_MAGs_metagenomes_chemistry +
+  geom_point(mapping=aes(color=Phylum)) 
 ```
