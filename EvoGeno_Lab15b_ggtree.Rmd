@@ -1,5 +1,5 @@
 ---
-title: "Lab 15 : Update of GTDB and ggtree with your taxonomic group"
+title: "Lab 16 : Visualizing NEON data on your phylogenetic trees"
 output:
   html_document:
     toc: true
@@ -211,8 +211,8 @@ ggtree(tree_bac, layout="circular", branch.length="none") +
 ```{r}
 ggtree(tree_bac, layout="circular", branch.length="none") %>% 
   collapse(node=1712) + 
-  geom_point2(aes(subset=(node==55)), shape=23, size=5, fill='steelblue') +
-  geom_cladelab(node=55, label="Chloroflexota", align=TRUE,  
+  geom_point2(aes(subset=(node==1712)), shape=23, size=5, fill='steelblue') +
+  geom_cladelab(node=1712, label="Chloroflexota", align=TRUE,  
                   offset = 2, textcolor='steelblue')
 ```
 ### Circular no branch lengths taxonomic group collapsed as triangle and labeled 
