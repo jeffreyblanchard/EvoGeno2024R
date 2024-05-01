@@ -210,13 +210,17 @@ ggtree(tree_bac, layout="circular", branch.length="none") +
 ggtree(tree_bac, layout="circular", branch.length="none") +
   
     geom_hilight(node=1712, fill="steelblue", alpha=.6) +
-    geom_cladelab(node=1712, label="Chloroflexota", align=TRUE, offset = 0, textcolor='steelblue', barcolor='steelblue') +
+    geom_cladelab(node=1712, label="Chloroflexota", align=TRUE, hjust=-0.1, offset = 0, textcolor='steelblue', barcolor='steelblue') +
 
     geom_hilight(node=1789, fill="darkgreen", alpha=.6) +
     geom_cladelab(node=1789, label="Actinomycetota", align=TRUE, vjust=-0.4, offset = 0, textcolor='darkgreen', barcolor='darkgreen') +
   
       geom_hilight(node=2673, fill="darkorange", alpha=.6) +
-    geom_cladelab(node=2673, label="Acidobacteriota", align=TRUE, hjust=1.1, offset = 0, textcolor='darkorange', barcolor='darkorange')
+    geom_cladelab(node=2673, label="Acidobacteriota", align=TRUE, hjust=1.1, offset = 0, textcolor='darkorange', barcolor='darkorange') +
+  
+    geom_hilight(node=3047, fill="purple", alpha=.6) +
+    geom_cladelab(node=3047, label="Pseudomonadota ", align=TRUE, hjust=-0.1, offset = 0, textcolor='purple', barcolor='purple')
+
 
 ```
 
