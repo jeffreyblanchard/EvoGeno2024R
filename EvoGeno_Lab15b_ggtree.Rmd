@@ -1,0 +1,346 @@
+---
+title: "Lab 15 : Update of GTDB and ggtree with your taxonomic group"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    theme: united
+    highlight: tango
+---
+
+## Learning objectives
+
+* Visualizing and annotating trees 
+
+
+This lab draws on examples in 
+
+* [Data Integration, Manipulation and Visualization of Phylogenetic Trees](https://yulab-smu.top/treedata-book/)
+* [ggtreeExtra](https://bioconductor.org/packages/devel/bioc/vignettes/ggtreeExtra/inst/doc/ggtreeExtra.html)
+* [ape package documentation](https://cran.r-project.org/web//packages/ape/ape.pdf)
+* [phytools package documentation](https://cran.r-project.org/web/packages/phytools/phytools.pdf)
+* [Working with Trees using the ape * Package](https://eeob-macroevolution.github.io/Practicals/Intro_to_Phylo/intro_to_phylo.html)
+* [Introduction to phylogenies in R](http://phytools.org/eqg/Exercise_3.2/)
+* [Drawing Phylogenies in R: Basic and Advanced Features With ape](9https://cran.r-project.org/web/packages/ape/vignettes/DrawingPhylogenies.pdf)
+* [gtdb forum](https://forum.gtdb.ecogenomic.org/)
+* [gtdb commands](https://ecogenomics.github.io/GTDBTk/commands/de_novo_wf.html)
+
+Two of the packages are available through Bioconductor
+
+```{r, eval=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("treeio")
+BiocManager::install("ggtreeExtra")
+```
+
+## Load libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(knitr)
+library(ggtree)
+library(TDbook) #A Companion Package for the Book "Data Integration, Manipulation and Visualization of Phylogenetic Trees" by Guangchuang Yu (2022, ISBN:9781032233574).
+library(ggimage)
+library(rphylopic)
+library(treeio)
+library(tidytree)
+library(ape)
+library(TreeTools)
+library(phytools)
+library(ggnewscale)
+library(ggtreeExtra)
+library(ggstar)
+```
+
+## Reading in files
+
+### MAG table
+
+Let's load the MAG table with the new GTDB annotations with the updated taxonomy database
+
+```{r, warning=FALSE, message=FALSE}
+NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON_2024_4_21.csv") %>% 
+  # remove columns that are not needed for data analysis
+  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`, `Bin Lineage`)) %>% 
+  # create a new column with the Assembly Type
+  mutate("Assembly Type" = case_when(`Genome Name` == "NEON combined assembly" ~ `Genome Name`,
+                            TRUE ~ "Individual")) %>% 
+  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Combined") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "d__", "") %>%  
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "p__", "") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "c__", "") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "o__", "") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "f__", "") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "g__", "") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "s__", "") %>%
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), ";", remove = FALSE) %>% 
+  mutate_at("Domain", na_if,"") %>% 
+  mutate_at("Phylum", na_if,"") %>% 
+  mutate_at("Class", na_if,"") %>% 
+  mutate_at("Order", na_if,"") %>% 
+  mutate_at("Family", na_if,"") %>% 
+  mutate_at("Genus", na_if,"") %>% 
+  mutate_at("Species", na_if,"") %>% 
+  
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
+```
+
+### Metagenome information
+
+We are going to remove the `re-annotation` and `WREF plot` samples from the data set you export last week from IMG.
+
+```{r, warning=FALSE, message=FALSE}
+NEON_metagenomes <- read_tsv("data/NEON/exported_img_data_Gs0161344_NEON.tsv") %>% 
+  select(-c(`Domain`, `Sequencing Status`, `Sequencing Center`)) %>% 
+  rename(`Genome Name` = `Genome Name / Sample Name`) %>% 
+  filter(str_detect(`Genome Name`, 're-annotation', negate = T)) %>% 
+  filter(str_detect(`Genome Name`, 'WREF plot', negate = T)) 
+```
+
+Now let's reformat `Genome Name` as we did for the above MAG table
+```{r}
+NEON_metagenomes <- NEON_metagenomes %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
+```
+
+### NEON Chemistry data
+
+```{r, warning=FALSE, message=FALSE}
+NEON_chemistry <- read_tsv("data/NEON/neon_plot_soilChem1_metadata.tsv") %>% 
+  # remove -COMP from genomicsSampleID
+  mutate_at("genomicsSampleID", str_replace, "-COMP", "") 
+```
+
+### Join the NEON MAG, metagenome and chemistry dataframes into a single data fram
+
+```{r}
+NEON_MAGs_metagenomes_chemistry <- NEON_MAGs %>% 
+  left_join(NEON_metagenomes, by = "Sample Name") %>% 
+  left_join(NEON_chemistry, by = c("Sample Name" = "genomicsSampleID")) %>% 
+  rename("label" = "Bin ID")
+```
+
+### Read in the tree files from GTDB
+
+```{r}
+tree_arc <- read.tree("data/NEON/gtdbtk.ar53.decorated.tree")
+tree_bac <- read.tree("data/NEON/gtdbtk.bac120.decorated.tree")
+```
+
+
+### Getting your subtree
+
+You first need to find the internal node on the tree corresponding to your Domain, Phylum or Class. Below is an expample 
+```{r}
+# Make a vector with the internal node labels
+node_vector_bac = c(tree_bac$tip.label,tree_bac$node.label)
+
+# Search for your Phylum or Class to get the node
+grep("Chloroflexota", node_vector_bac, value = TRUE)
+match(grep("Chloroflexota", node_vector_bac, value = TRUE), node_vector_bac)
+
+```
+
+```{r}
+# First need to preorder tree before extracting. N
+tree_bac_preorder <- Preorder(tree_bac)
+tree_Chloroflexota <- Subtree(tree_bac_preorder, 1712)
+```
+
+### Filter NEON table to taxonomic group or site
+
+```{r}
+NEON_MAGs_Chloroflexota <- NEON_MAGs_metagenomes_chemistry %>% 
+  filter(Phylum == "Chloroflexota") 
+```
+
+## Tree graphs
+
+### Basic rectangular
+
+```{r, fig.height = 10, fig.width = 10}
+ggtree(tree_Chloroflexota) +
+  geom_tiplab(size=3) +
+  xlim(0,20)
+```
+
+### Basic circular
+
+```{r, fig.height = 12, fig.width = 11}
+ggtree(tree_Chloroflexota, layout="circular") + 
+  geom_tiplab(aes(angle=angle))+
+    theme_tree() +
+    xlim(0,20)
+```
+Circular with taxonomic group highlighted
+
+```{r}
+ggtree(tree_bac, layout="circular") +
+    geom_hilight(node=1712, fill="steelblue", alpha=.6) 
+```
+### Circular no branch lengths taxonomic group labeled
+
+```{r}
+ggtree(tree_bac, layout="circular", branch.length="none") +
+    geom_hilight(node=1712, fill="steelblue", alpha=.6) +
+    geom_cladelab(node=1712, label="Chloroflexota", align=TRUE,  
+                  offset = 0, textcolor='steelblue', barcolor='steelblue')
+```
+### Circular no branch lengths taxonomic group collapsed
+
+```{r}
+ggtree(tree_bac, layout="circular", branch.length="none") %>% 
+  collapse(node=1712) + 
+  geom_point2(aes(subset=(node==55)), shape=23, size=5, fill='steelblue') +
+  geom_cladelab(node=55, label="Chloroflexota", align=TRUE,  
+                  offset = 2, textcolor='steelblue')
+```
+### Circular no branch lengths taxonomic group collapsed as triangle and labeled 
+```{r}
+p <- ggtree(tree_bac, layout="circular", branch.length="none")
+scaleClade(p, 1712, .2) %>% collapse(1712, 'min', fill="steelblue")  +
+  geom_cladelab(node=1712, label="Chloroflexota", align=TRUE,  
+                  offset = 0.2, textcolor='steelblue')
+```
+
+### Adding data to your tree
+
+Note the special symbol `%<+%`. This is for joining the tree object with your data
+
+```{r}
+ggtree(tree_Chloroflexota, layout="circular")  %<+%
+  NEON_MAGs_metagenomes_chemistry + 
+  geom_tiplab(size=2, hjust=-.1) +
+  xlim(0,20) +
+  geom_point(mapping=aes(color=Class)) 
+```
+
+```{r}
+ggtree(tree_Chloroflexota, layout="circular")  %<+%
+  NEON_MAGs_metagenomes_chemistry + 
+  geom_tiplab(size=2, hjust=-.1) +
+  xlim(0,20) +
+  geom_point(mapping=aes(color=Class, shape = `Assembly Type`)) 
+```
+
+
+```{r}
+ggtree(tree_Chloroflexota)  %<+%
+  NEON_MAGs_metagenomes_chemistry + 
+  geom_tiplab(size=2, hjust=-.1) +
+  xlim(0,20) +
+  geom_point(mapping=aes(color=`Ecosystem Subtype`)) 
+```
+
+### Adding a gradient to your tree 
+
+```{r}
+ggtree(tree_Chloroflexota)  %<+%
+  NEON_MAGs_metagenomes_chemistry + 
+  geom_tippoint(aes(colour=`Bin Completeness`)) + 
+  scale_colour_gradient(low='blue', high='red') +
+  geom_tiplab(size=2, hjust=-.1) +
+  xlim(0,15) 
+```
+
+### Circular tree with data
+
+```{r}
+ggtree(tree_Chloroflexota, layout="circular")  %<+%
+  NEON_MAGs_metagenomes_chemistry + 
+  geom_point2(mapping=aes(color=`Ecosystem Subtype`, size=`Total Number of Bases`))
+  # geom_point2 is for circular trees
+```
+
+### Multiple graphs in the same panel
+
+```{r}
+# For unknown reasons the following does not like blank spaces in the names
+NEON_MAGs_metagenomes_chemistry_noblank <- NEON_MAGs_metagenomes_chemistry %>% 
+  rename("AssemblyType" = "Assembly Type") %>% 
+  rename("BinCompleteness" = "Bin Completeness") %>% 
+  rename("BinContamination" = "Bin Contamination") %>% 
+  rename("TotalNumberofBases" = "Total Number of Bases") %>% 
+  rename("EcosystemSubtype" = "Ecosystem Subtype")
+
+ggtree(tree_Chloroflexota)  %<+%
+  NEON_MAGs_metagenomes_chemistry + 
+  geom_tippoint(aes(colour=`Ecosystem Subtype`)) + 
+
+# For unknown reasons the following does not like blank spaces in the names
+  geom_facet(panel = "Bin Completeness", data = NEON_MAGs_metagenomes_chemistry_noblank, geom = geom_point, 
+      mapping=aes(x = BinCompleteness)) +
+  geom_facet(panel = "Bin Contamination", data = NEON_MAGs_metagenomes_chemistry_noblank, geom = geom_col, 
+                aes(x = BinContamination), orientation = 'y', width = .6) +
+  theme_tree2(legend.position=c(.1, .7))
+```
+
+### Adding outer rings to a circular tree
+
+```{r}
+ggtree(tree_Chloroflexota, layout="circular", branch.length="none") %<+% 
+  NEON_MAGs_metagenomes_chemistry + 
+  geom_point2(mapping=aes(color=`Ecosystem Subtype`, size=`Total Number of Bases`)) + 
+  new_scale_fill() + 
+  geom_fruit(
+      data=NEON_MAGs_metagenomes_chemistry_noblank,
+      geom=geom_tile,
+      mapping=aes(y=label, x=1, fill= AssemblyType),
+      offset=0.08,   # The distance between external layers, default is 0.03 times of x range of tree.
+      pwidth=0.25 # width of the external layer, default is 0.2 times of x range of tree.
+      ) 
+```
+### Adding multiple rings to a circular tree
+
+```{r, fig.height}
+ggtree(tree_Chloroflexota, layout="circular", branch.length="none") %<+% 
+  NEON_MAGs_metagenomes_chemistry + 
+  geom_point2(mapping=aes(color=`Ecosystem Subtype`, size=`Total Number of Bases`)) + 
+  new_scale_fill() + 
+  geom_fruit(
+      data=NEON_MAGs_metagenomes_chemistry_noblank,
+      geom=geom_tile,
+      mapping=aes(y=label, x=1, fill= AssemblyType),
+      offset=0.08,   # The distance between external layers, default is 0.03 times of x range of tree.
+      pwidth=0.25 # width of the external layer, default is 0.2 times of x range of tree.
+      ) + 
+  new_scale_fill() +
+  geom_fruit(
+          data=NEON_MAGs_metagenomes_chemistry_noblank,
+          geom=geom_col,
+          mapping=aes(y=label, x=TotalNumberofBases),  
+          pwidth=0.4,
+          axis.params=list(
+                          axis="x", # add axis text of the layer.
+                          text.angle=-45, # the text size of axis.
+                          hjust=0  # adjust the horizontal position of text of axis.
+                      ),
+          grid.params=list() # add the grid line of the external bar plot.
+      ) + 
+      theme(#legend.position=c(0.96, 0.5), # the position of legend.
+          legend.background=element_rect(fill=NA), # the background of legend.
+          legend.title=element_text(size=7), # the title size of legend.
+          legend.text=element_text(size=6), # the text size of legend.
+          legend.spacing.y = unit(0.02, "cm")  # the distance of legends (y orientation).
+      ) 
+```
