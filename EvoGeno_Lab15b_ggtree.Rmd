@@ -150,7 +150,7 @@ tree_bac <- read.tree("data/NEON/gtdbtk.bac120.decorated.tree")
 
 ### Getting your subtree
 
-You first need to find the internal node on the tree corresponding to your Domain, Phylum or Class. Below is an expample 
+If you are working Bacteria you first need to find the internal node on the tree corresponding to your Domain, Phylum or Class. Below is an expample 
 ```{r}
 # Make a vector with the internal node labels
 node_vector_bac = c(tree_bac$tip.label,tree_bac$node.label)
@@ -158,7 +158,17 @@ node_vector_bac = c(tree_bac$tip.label,tree_bac$node.label)
 # Search for your Phylum or Class to get the node
 grep("Chloroflexota", node_vector_bac, value = TRUE)
 match(grep("Chloroflexota", node_vector_bac, value = TRUE), node_vector_bac)
+```
 
+If you are working with Archaea you can identify the Phyla and color as below
+
+```{r}
+# Make a vector with the internal node labels
+node_vector_arc = c(tree_arc$tip.label,tree_arc$node.label)
+
+# Search for your Phylum or Class to get the node
+grep("p__", node_vector_arc, value = TRUE)
+match(grep("p__", node_vector_arc, value = TRUE), node_vector_arc)
 ```
 
 ```{r}
@@ -220,8 +230,6 @@ ggtree(tree_bac, layout="circular", branch.length="none") +
   
     geom_hilight(node=3047, fill="purple", alpha=.6) +
     geom_cladelab(node=3047, label="Pseudomonadota ", align=TRUE, hjust=-0.1, offset = 0, textcolor='purple', barcolor='purple')
-
-
 ```
 
 ### Circular no branch lengths taxonomic group collapsed
@@ -234,6 +242,7 @@ ggtree(tree_bac, layout="circular", branch.length="none") %>%
                   offset = 2, textcolor='steelblue')
 ```
 ### Circular no branch lengths taxonomic group collapsed as triangle and labeled 
+
 ```{r}
 p <- ggtree(tree_bac, layout="circular", branch.length="none")
 scaleClade(p, 1712, .2) %>% collapse(1712, 'min', fill="steelblue")  +
