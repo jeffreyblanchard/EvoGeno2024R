@@ -151,7 +151,7 @@ To do this
 * Click on `Export`
 * This will create a csv file for download. Put this in your data/NEON folder
 * Read in the file using `read_tsv` because although it says it is a csv file it is actually a tsv (tab separated value) file. 
-* Filter the table to include only metagenomes from your site and metagenomes that do not include the substrings `re-annotation` or `WREF plot`
+* Filter the table to include only metagenomes from your site and metagenomes that are `re-annotation`.
 * Display the table using kable or DT(datatable) in your report.
 
 ## Acknowledgements

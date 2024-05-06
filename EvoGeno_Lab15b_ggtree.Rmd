@@ -308,9 +308,7 @@ NEON_MAGs_metagenomes_chemistry_noblank <- NEON_MAGs_metagenomes_chemistry %>%
   rename("BinCompleteness" = "Bin Completeness") %>% 
   rename("BinContamination" = "Bin Contamination") %>% 
   rename("TotalNumberofBases" = "Total Number of Bases") %>% 
-  rename("EcosystemSubtype" = "Ecosystem Subtype") %>% 
-  rename("SiteID.x" = "Site ID.x") 
-  
+  rename("EcosystemSubtype" = "Ecosystem Subtype")
 
 ggtree(tree_Chloroflexota)  %<+%
   NEON_MAGs_metagenomes_chemistry + 
@@ -374,71 +372,33 @@ ggtree(tree_Chloroflexota, layout="circular", branch.length="none") %<+%
       ) 
 ```
 
-### Filter to your site MAGs
+### Making a tree of your site
 
-Filter to either Bacteria or Archaea
+Filter to your site MAGs
+```{r}
+NEON_MAGs_metagenomes_chemistry_CLBJ <- NEON_MAGs_metagenomes_chemistry %>% 
+  filter(`Site ID.x` == "CLBJ")
+```
+
+### Make a vector with your site MAGs
+
 ```{r}
 NEON_MAGs_metagenomes_chemistry_CLBJ <- NEON_MAGs_metagenomes_chemistry %>% 
   filter(`Site ID.x` == "CLBJ") %>% 
   filter(Domain == "Bacteria")
 ```
 
-Make a vector of the MAGs labels
-
 ```{r}
 CLBJ_MAGs_label <- NEON_MAGs_metagenomes_chemistry_CLBJ$label
 ```
 
-Use appropriate Bacteria or Archaea tree to select your site MAG labels
-
 ```{r}
 tree_bac_CLBJ_MAGs <-drop.tip(tree_bac,tree_bac$tip.label[-match(CLBJ_MAGs_label, tree_bac$tip.label)])
-
 ```
 
-Now make a tree with your site MAGs
 
-```{r, fig.height = 8, fig.width=8}
+```{r, fig.height = 8}
 ggtree(tree_bac_CLBJ_MAGs, layout="circular")  %<+%
   NEON_MAGs_metagenomes_chemistry +
   geom_point(mapping=aes(color=Phylum)) 
-```
-
-### A tree with a particular ecosystem subtype
-
-
-```{r, fig.height = 12, fig.width = 12}
-# Filter to either Bacteria or Archaea and parameter of interest
-NEON_MAGs_metagenomes_chemistry_soilInCaClpH <- NEON_MAGs_metagenomes_chemistry %>% 
-  filter(soilInCaClpH > 7) %>% 
-  filter(Domain == "Bacteria")
-# Make a vector of the MAGs labels
-soilInCaClpH_MAGs_label <- NEON_MAGs_metagenomes_chemistry_soilInCaClpH$label
-
-# Use appropriate Bacteria or Archaea tree to select your site MAG labels
-tree_bac_soilInCaClpH_MAGs <-drop.tip(tree_bac,tree_bac$tip.label[-match(soilInCaClpH_MAGs_label, tree_bac$tip.label)])
-
-# Now make a tree with your MAGs of interest
-ggtree(tree_bac_soilInCaClpH_MAGs, layout="circular")  %<+%
-  NEON_MAGs_metagenomes_chemistry +
-  geom_point(mapping=aes(color=Phylum)) 
-```
-
-
-```{r, fig.height = 12, fig.width = 12}
-# Filter to either Bacteria or Archaea and parameter of interest
-NEON_MAGs_metagenomes_chemistry_soilInCaClpH <- NEON_MAGs_metagenomes_chemistry %>% 
-  filter(soilInCaClpH < 4) %>% 
-  filter(Domain == "Bacteria")
-# Make a vector of the MAGs labels
-soilInCaClpH_MAGs_label <- NEON_MAGs_metagenomes_chemistry_soilInCaClpH$label
-
-# Use appropriate Bacteria or Archaea tree to select your site MAG labels
-tree_bac_soilInCaClpH_MAGs <-drop.tip(tree_bac,tree_bac$tip.label[-match(soilInCaClpH_MAGs_label, tree_bac$tip.label)])
-
-# Now make a tree with your MAGs of interest
-ggtree(tree_bac_soilInCaClpH_MAGs, layout="circular")  %<+%
-  NEON_MAGs_metagenomes_chemistry +
-  geom_point(mapping=aes(color=Phylum)) 
-
 ```
