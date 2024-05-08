@@ -161,13 +161,8 @@ to get a prompt where you can paste your PAT: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ### On the github website
 
 * Create a new repo by clicking on the new repository button.
-* Give it a name, make it public, Add a readme file, Add R .gitignore file, Add Apache license.
-* Enable a web page for the repo - Click of the settings wheel, in the left menu select `pages` then under branch select `main` and save.
-![](images/lab5/select_branch.png)
-
-* Go back to your main repo page, in the right corner in the `About` section click the wheel. Select `Use your GitHub Pages website`. Save changes
-* Click on the green `code` button and copy the https link.
-![](images/lab5/green_code_button.png)
+* Give it a name, make it public. Do not add readme, .gitignore or license files 
+* Copy the link to the site.
 
 ### Enable git in Rstudio
 
@@ -180,7 +175,7 @@ to get a prompt where you can paste your PAT: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ```{r, eval=FALSE}
 library(usethis)
-use_git_config(user.name = "janedoe", user.email = "jane@example.org")
+use_git_config(user.name = "jeffreyblanchard", user.email = "jlb@umass.edu")
 gitcreds::gitcreds_set() 
 ```
 
@@ -195,12 +190,22 @@ usethis::create_github_token()
 Now in the __Terminal__ window establish a connection to your github repo and make your first commit
 
 ```{r, eval=FALSE}
-git remote set-url origin https://github.com/jeffreyblanchard/quarto5-posit.git
-# pull all files from the GitHub repo (typically just readme, license, gitignore)
-git pull origin master
-git add .
+echo "# test-project" >> README.md
+git add README.md
 git commit -m "first commit"
 git branch -M main
+git remote add origin https://github.com/jeffreyblanchard/test-project.git
 git push -u origin main
 ```
 
+This only pushes the readme to github.  Now under the `Git` tab in RStudio (top right pane) check your files, commit and then push.
+
+
+### To enable a web page for your repo
+
+* Enable a web page for the repo - Click of the settings wheel, in the left menu select `pages` then under branch select `main` and save.
+![](images/lab5/select_branch.png)
+
+* Go back to your main repo page, in the right corner in the `About` section click the wheel. Select `Use your GitHub Pages website`. Save changes
+* Click on the green `code` button and copy the https link.
+![](images/lab5/green_code_button.png)
