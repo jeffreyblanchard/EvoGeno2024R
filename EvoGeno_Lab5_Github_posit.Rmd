@@ -156,5 +156,51 @@ to get a prompt where you can paste your PAT: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 * You could also try [prettydoc](https://prettydoc.statr.me/0
 
 
-*** More on git and working with your repos in later labs
+## Linking an existing R project with a new Github repo
+
+### On the github website
+
+* Create a new repo by clicking on the new repository button.
+* Give it a name, make it public, Add a readme file, Add R .gitignore file, Add Apache license.
+* Enable a web page for the repo - Click of the settings wheel, in the left menu select `pages` then under branch select `main` and save.
+![](images/lab5/select_branch.png)
+
+* Go back to your main repo page, in the right corner in the `About` section click the wheel. Select `Use your GitHub Pages website`. Save changes
+* Click on the green `code` button and copy the https link.
+![](images/lab5/green_code_button.png)
+
+### Enable git in Rstudio
+
+* Open your project in Rstudio and navigate to Tools -> Version Control -> Project Setup
+* Click SVN/Git tab and select git as the version control system. It will ask you to initialize a new git repo and restart Rstudio
+* After Rstudio reopens, confirm that there is a Git tab in the environment pane 
+
+### In the R Console (bottom left)
+* In the R __Console__ Add your git credentials with the `usethis` package and your token begining with `ghp...`
+
+```{r, eval=FALSE}
+library(usethis)
+use_git_config(user.name = "janedoe", user.email = "jane@example.org")
+gitcreds::gitcreds_set() 
+```
+
+If you have forgotten your token. Create a new token using
+
+```{r, eval=FALSE}
+library(usethis)
+usethis::create_github_token()
+```
+
+### In the Terminal Window (bottom left)
+Now in the __Terminal__ window establish a connection to your github repo and make your first commit
+
+```{r, eval=FALSE}
+git remote set-url origin https://github.com/jeffreyblanchard/quarto5-posit.git
+# pull all files from the GitHub repo (typically just readme, license, gitignore)
+git pull origin master
+git add .
+git commit -m "first commit"
+git branch -M main
+git push -u origin main
+```
 
