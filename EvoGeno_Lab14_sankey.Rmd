@@ -113,7 +113,7 @@ sankey_data_allTaxa <- bind_rows(sankey_data_s, sankey_data_g, sankey_data_f, sa
   rename(`Metaphlan2_Analysis` = `n`) 
 
 # Write file to input to Pavian Sankey
-write_tsv(sankey_data_allTaxa, "NEON_MAG_co_pavian.txt")
+write_tsv(sankey_data_allTaxa, "data/NEON/NEON_MAG_co_pavian.txt")
 ```
 
 

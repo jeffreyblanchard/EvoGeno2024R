@@ -156,56 +156,5 @@ to get a prompt where you can paste your PAT: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 * You could also try [prettydoc](https://prettydoc.statr.me/0
 
 
-## Linking an existing R project with a new Github repo
+*** More on git and working with your repos in later labs
 
-### On the github website
-
-* Create a new repo by clicking on the new repository button.
-* Give it a name, make it public. Do not add readme, .gitignore or license files 
-* Copy the link to the site.
-
-### Enable git in Rstudio
-
-* Open your project in Rstudio and navigate to Tools -> Version Control -> Project Setup
-* Click SVN/Git tab and select git as the version control system. It will ask you to initialize a new git repo and restart Rstudio
-* After Rstudio reopens, confirm that there is a Git tab in the environment pane 
-
-### In the R Console (bottom left)
-* In the R __Console__ Add your git credentials with the `usethis` package and your token begining with `ghp...`
-
-```{r, eval=FALSE}
-library(usethis)
-use_git_config(user.name = "jeffreyblanchard", user.email = "jlb@umass.edu")
-gitcreds::gitcreds_set() 
-```
-
-If you have forgotten your token. Create a new token using
-
-```{r, eval=FALSE}
-library(usethis)
-usethis::create_github_token()
-```
-
-### In the Terminal Window (bottom left)
-Now in the __Terminal__ window establish a connection to your github repo and make your first commit
-
-```{r, eval=FALSE}
-echo "# test-project" >> README.md
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/jeffreyblanchard/test-project.git
-git push -u origin main
-```
-
-This only pushes the readme to github.  Now under the `Git` tab in RStudio (top right pane) check your files, commit and then push.
-
-
-### To enable a web page for your repo
-
-* Enable a web page for the repo - Click of the settings wheel, in the left menu select `pages` then under branch select `main` and save.
-![](images/lab5/select_branch.png)
-
-* Go back to your main repo page, in the right corner in the `About` section click the wheel. Select `Use your GitHub Pages website`. Save changes
-* Click on the green `code` button and copy the https link.
-![](images/lab5/green_code_button.png)
