@@ -22,7 +22,7 @@ This is a rendering of hmtl files from the [course repository](https://github.co
 * Lab 12 : [Table joins of NEON MAG, metagenomic and chemistry data](EvoGeno_Lab12_joins.html)
 * Lab 13 : [Phylogenetic tree visualization using ggtree](EvoGeno_Lab13_ggtree.html)
 * Lab 14 : [Taxonomy visualization with Sankey plots](EvoGeno_Lab14_sankey.html)
-* Lab 14 : [Taxonomy visualization with Sankey plots - Revised for GOLD_Study_ID_Gs0161344_NEON_2024_4_21.csv](EvoGeno_Lab14_sankey_revised.html)
+* Lab 14 : [Taxonomy visualization with Sankey plots - Revised for GOLD_Study_ID_Gs0161344_NEON_2024_4_21](EvoGeno_Lab14_sankey_revised.html)
 * Lab 15 : [Update of GTDB and ggtree with your taxonomic group I](EvoGeno_Lab15a_ggtree.html)
 * Lab 16 : [Visualizing NEON data on your phylogenetic trees](EvoGeno_Lab15b_ggtree.html)
 
