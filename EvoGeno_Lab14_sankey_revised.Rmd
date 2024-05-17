@@ -83,8 +83,6 @@ NEON_MAGs_co <- NEON_MAGs %>%
 # Select the GTDB Taxonomic lineage and separate into taxonomic levels
 sankey_data2 <- NEON_MAGs_co %>% 
   select(`GTDB-Tk Taxonomy Lineage`) %>% 
-  # NAs are likely Archaea
-  replace_na(list(`GTDB-Tk Taxonomy Lineage` = 'Archaea')) %>% 
   # Pavian format requires p__ etc
   separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), ";") 
 

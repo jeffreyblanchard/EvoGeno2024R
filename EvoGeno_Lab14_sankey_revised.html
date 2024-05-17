@@ -550,51 +550,49 @@ taxonomy</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Select the GTDB Taxonomic lineage and separate into taxonomic levels</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>sankey_data2 <span class="ot">&lt;-</span> NEON_MAGs_co <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">GTDB-Tk Taxonomy Lineage</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="co"># NAs are likely Archaea</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="fu">replace_na</span>(<span class="fu">list</span>(<span class="st">`</span><span class="at">GTDB-Tk Taxonomy Lineage</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&#39;Archaea&#39;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="co"># Pavian format requires p__ etc</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">separate</span>(<span class="st">`</span><span class="at">GTDB-Tk Taxonomy Lineage</span><span class="st">`</span>, <span class="fu">c</span>(<span class="st">&quot;Domain&quot;</span>, <span class="st">&quot;Phylum&quot;</span>, <span class="st">&quot;Class&quot;</span>, <span class="st">&quot;Order&quot;</span>, <span class="st">&quot;Family&quot;</span>, <span class="st">&quot;Genus&quot;</span>, <span class="st">&quot;Species&quot;</span>), <span class="st">&quot;;&quot;</span>) </span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co"># Fill in the NAs with the taxonomic the higher taxonomic level to the left</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>sankey_data2[] <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">apply</span>(sankey_data2, <span class="dv">1</span>, zoo<span class="sc">::</span>na.locf))</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="co"># Pavian format requires p__ etc</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="fu">separate</span>(<span class="st">`</span><span class="at">GTDB-Tk Taxonomy Lineage</span><span class="st">`</span>, <span class="fu">c</span>(<span class="st">&quot;Domain&quot;</span>, <span class="st">&quot;Phylum&quot;</span>, <span class="st">&quot;Class&quot;</span>, <span class="st">&quot;Order&quot;</span>, <span class="st">&quot;Family&quot;</span>, <span class="st">&quot;Genus&quot;</span>, <span class="st">&quot;Species&quot;</span>), <span class="st">&quot;;&quot;</span>) </span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co"># Fill in the NAs with the taxonomic the higher taxonomic level to the left</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>sankey_data2[] <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">apply</span>(sankey_data2, <span class="dv">1</span>, zoo<span class="sc">::</span>na.locf))</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co"># Put the data into a format that can be read by the Sankey App</span></span>
 <span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co"># Put the data into a format that can be read by the Sankey App</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>sankey_data2 <span class="ot">&lt;-</span> sankey_data2 <span class="sc">%&gt;%</span> </span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="at">col =</span> <span class="st">&quot;classification&quot;</span>, <span class="fu">c</span>(Domain, Phylum, Class, Order, Family, Genus, Species), <span class="at">sep=</span><span class="st">&#39;;&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>sankey_data2 <span class="ot">&lt;-</span> sankey_data2 <span class="sc">%&gt;%</span> </span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="at">col =</span> <span class="st">&quot;classification&quot;</span>, <span class="fu">c</span>(Domain, Phylum, Class, Order, Family, Genus, Species), <span class="at">sep=</span><span class="st">&#39;;&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;classification&quot;</span>, str_replace, <span class="st">&quot;;&quot;</span>, <span class="st">&quot;|&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;classification&quot;</span>, str_replace, <span class="st">&quot;;&quot;</span>, <span class="st">&quot;|&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;classification&quot;</span>, str_replace, <span class="st">&quot;;&quot;</span>, <span class="st">&quot;|&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;classification&quot;</span>, str_replace, <span class="st">&quot;;&quot;</span>, <span class="st">&quot;|&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;classification&quot;</span>, str_replace, <span class="st">&quot;;&quot;</span>, <span class="st">&quot;|&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;classification&quot;</span>, str_replace, <span class="st">&quot;;&quot;</span>, <span class="st">&quot;|&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;classification&quot;</span>, str_replace, <span class="st">&quot;;&quot;</span>, <span class="st">&quot;|&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;classification&quot;</span>, str_replace, <span class="st">&quot;;&quot;</span>, <span class="st">&quot;|&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;classification&quot;</span>, str_replace, <span class="st">&quot;;&quot;</span>, <span class="st">&quot;|&quot;</span>) </span>
-<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a></span>
-<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co"># Create format for Pavian with counts for each taxonomic level</span></span>
-<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>sankey_data_s <span class="ot">&lt;-</span> sankey_data2</span>
-<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>sankey_data_g <span class="ot">&lt;-</span> sankey_data2</span>
-<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>sankey_data_f <span class="ot">&lt;-</span> sankey_data2</span>
-<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>sankey_data_o <span class="ot">&lt;-</span> sankey_data2</span>
-<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>sankey_data_c <span class="ot">&lt;-</span> sankey_data2</span>
-<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>sankey_data_p <span class="ot">&lt;-</span> sankey_data2</span>
-<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>sankey_data_d <span class="ot">&lt;-</span> sankey_data2</span>
-<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a></span>
-<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>sankey_data_g<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|s__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_g<span class="sc">$</span>classification)  </span>
-<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>sankey_data_f<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|g__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_f<span class="sc">$</span>classification)  </span>
-<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>sankey_data_o<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|f__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_o<span class="sc">$</span>classification)  </span>
-<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a>sankey_data_c<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|o__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_c<span class="sc">$</span>classification)  </span>
-<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a>sankey_data_p<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|c__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_p<span class="sc">$</span>classification)  </span>
-<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a>sankey_data_d<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|p__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_d<span class="sc">$</span>classification)  </span>
-<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a></span>
-<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a>sankey_data_allTaxa <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sankey_data_s, sankey_data_g, sankey_data_f, sankey_data_o, sankey_data_c, sankey_data_p, sankey_data_d) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">classification =</span> <span class="fu">as.factor</span>(classification)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a>  <span class="fu">count</span>(classification) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a><span class="co"># rename for Pavian format</span></span>
-<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">#SampleID</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">classification</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Metaphlan2_Analysis</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">n</span><span class="st">`</span>) </span>
-<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a></span>
-<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a><span class="co"># Write file to input to Pavian Sankey</span></span>
-<span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a><span class="fu">write_tsv</span>(sankey_data_allTaxa, <span class="st">&quot;data/NEON/NEON_MAG_co_pavian.txt&quot;</span>)</span></code></pre></div>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="st">&quot;classification&quot;</span>, str_replace, <span class="st">&quot;;&quot;</span>, <span class="st">&quot;|&quot;</span>) </span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co"># Create format for Pavian with counts for each taxonomic level</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>sankey_data_s <span class="ot">&lt;-</span> sankey_data2</span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>sankey_data_g <span class="ot">&lt;-</span> sankey_data2</span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>sankey_data_f <span class="ot">&lt;-</span> sankey_data2</span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>sankey_data_o <span class="ot">&lt;-</span> sankey_data2</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>sankey_data_c <span class="ot">&lt;-</span> sankey_data2</span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>sankey_data_p <span class="ot">&lt;-</span> sankey_data2</span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>sankey_data_d <span class="ot">&lt;-</span> sankey_data2</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>sankey_data_g<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|s__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_g<span class="sc">$</span>classification)  </span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a>sankey_data_f<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|g__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_f<span class="sc">$</span>classification)  </span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>sankey_data_o<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|f__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_o<span class="sc">$</span>classification)  </span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>sankey_data_c<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|o__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_c<span class="sc">$</span>classification)  </span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>sankey_data_p<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|c__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_p<span class="sc">$</span>classification)  </span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a>sankey_data_d<span class="sc">$</span>classification <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">|p__.*&quot;</span>, <span class="st">&quot;&quot;</span>, sankey_data_d<span class="sc">$</span>classification)  </span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a>sankey_data_allTaxa <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sankey_data_s, sankey_data_g, sankey_data_f, sankey_data_o, sankey_data_c, sankey_data_p, sankey_data_d) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">classification =</span> <span class="fu">as.factor</span>(classification)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a>  <span class="fu">count</span>(classification) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a><span class="co"># rename for Pavian format</span></span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">#SampleID</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">classification</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Metaphlan2_Analysis</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">n</span><span class="st">`</span>) </span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a><span class="co"># Write file to input to Pavian Sankey</span></span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a><span class="fu">write_tsv</span>(sankey_data_allTaxa, <span class="st">&quot;data/NEON/NEON_MAG_co_pavian.txt&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="pavian-sankey-plot" class="section level2">
