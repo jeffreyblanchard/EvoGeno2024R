@@ -1,0 +1,315 @@
+---
+title: "NEON WREF metagenome bins"
+author: "Jeff Blanchard"
+date: "2025-03-19"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-float: true
+    embed-resources: true
+    code-fold: true
+    code-summary: "Show the code"
+execute: 
+  warning: false
+  message: false
+---
+
+## Load libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(knitr)
+library(ggVennDiagram)
+```
+
+## Reading and wrangle files
+
+### MAG table
+
+Our data that we will work with today can be found by searching metagenome bins associated with GOLD Study ID Gs0161344 [IMG/MER](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetagenomeBinSearch&page=searchForm)
+
+A description of the column headers for the file we will work with
+
+-   Bin ID - Metagenome Assemble Genome (MAG) ID
+-   Genome Name - The metagenome sample name
+-   IMG Genome ID - The metagenome sample ID
+-   Bin Quality - An estimate of the quality of the bin or MAG
+-   Bin Lineage - Taxonomic lineage using the JGI system
+-   GTDB-Tk Taxonomy Lineage - Taxonomic lineage using GTDB
+-   Bin Methods - The methods for binning contigs and quality control
+-   Created By - The process by which the bins were created
+-   Date Added - Date sample/metagenome was added
+-   Bin Completeness - An estimate of the completeness of the MAG
+-   Bin Contamination - An estimate of the contamination of the MAG
+-   Total Number of Bases - MAG size in bases
+-   5s rRNA - Count of 5s rRNAs in the MAG
+-   16s rRNA - Count of 16S rRNAs in the MAG
+-   23s rRNA - Count of 23s rRNAs in the MAG
+-   tRNA Genes - Count of tRNA genes in the MAG
+-   Gene Count - Count of number of genes in the MAG
+-   Scaffold Count - Number of separate scaffold comprising the MAG. The ideal would be 1
+-   GOLD Study ID - The ID in the JGI GOLD database
+
+Load the MAG table with modifications
+
+```{r, warning=FALSE, message=FALSE}
+NEON_MAGs <- read_tsv("data/NEON/GOLD_Study_ID_Gs0161344_NEON_2025_3_18.tsv") |> 
+  # remove columns that are not needed for data analysis
+  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`, `Bin Lineage`)) |> 
+  # create a new column with the Assembly Type
+  mutate("Assembly Type" = `Genome Name`) |> 
+  mutate("Assembly Type" = case_when(`Assembly Type` == "NEON combined assembly" | `Assembly Type` == "WREF organic layer samples" | `Assembly Type` == "WREF mineral layer samples" | `Assembly Type` == "WREF site samples" | `Assembly Type` == "WREF plot 73 samples" | `Assembly Type` == "WREF plot 4 samples" | `Assembly Type` == "WREF plot 3 samples"  ~ `Assembly Type`, TRUE ~ "Individual")) |> 
+  mutate_at("Assembly Type", str_replace, "WREF organic layer samples", "Coassembly") |> 
+  mutate_at("Assembly Type", str_replace, "WREF mineral layer samples", "Coassembly") |> 
+  mutate_at("Assembly Type", str_replace, "WREF site samples", "Coassembly") |> 
+  mutate_at("Assembly Type", str_replace, "WREF plot 3 samples", "Coassembly") |> 
+  mutate_at("Assembly Type", str_replace, "WREF plot 4 samples", "Coassembly") |> 
+  mutate_at("Assembly Type", str_replace, "WREF plot 73 samples", "Coassembly") |> 
+  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Coassembly") |> 
+  mutate("Assembly Method" = case_when(`Genome Name` == "NEON combined assembly" | `Genome Name` == "WREF site samples" ~ `Genome Name`,
+                            TRUE ~ "MetaSpades")) |> 
+  mutate_at("Assembly Method", str_replace, "NEON combined assembly", "MetaHipMer") |> 
+  mutate_at("Assembly Method", str_replace, "WREF site samples", "MetaHipMer") |> 
+  mutate_at("GTDB Taxonomy Lineage", str_replace, "d__", "") |>  
+  mutate_at("GTDB Taxonomy Lineage", str_replace, "p__", "") |> 
+  mutate_at("GTDB Taxonomy Lineage", str_replace, "c__", "") |> 
+  mutate_at("GTDB Taxonomy Lineage", str_replace, "o__", "") |> 
+  mutate_at("GTDB Taxonomy Lineage", str_replace, "f__", "") |> 
+  mutate_at("GTDB Taxonomy Lineage", str_replace, "g__", "") |> 
+  mutate_at("GTDB Taxonomy Lineage", str_replace, "s__", "") |>
+  separate(`GTDB Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), ";", remove = FALSE) |> 
+  mutate_at("Domain", na_if,"") |> 
+  mutate_at("Phylum", na_if,"") |> 
+  mutate_at("Class", na_if,"") |> 
+  mutate_at("Order", na_if,"") |> 
+  mutate_at("Family", na_if,"") |> 
+  mutate_at("Genus", na_if,"") |> 
+  mutate_at("Species", na_if,"") |> 
+  
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") |> 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") |> 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") |>
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) |> 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") |>
+  mutate(`Sample Name` = coalesce(`Sample Name`, Site)) |>
+  select(-bin_oid)
+```
+
+### Metagenome information
+
+From IMG create table from IMG with the metagenome information including Ecosystem subtype, latitude, longitude, Genome Size, Gene Count. Just display the table in your Lab 10 report.  We will work more with this table next week. 
+
+To do this
+
+* Go to (IMG/MER)](https://img.jgi.doe.gov/cgi-bin/mer/main.cgi)
+* Search in IMG using the `Quick Genome Search` with the Study ID `Gs0161344` to find metagenomes associated with our project. 
+* Click on the `176` Hits.
+* Scroll down and check the boxes corresponding to Ecosystem Categories (5), latitude and longitude. The the default checked boxes check
+* Click on `Redisplay`
+* Scroll up click on `Select All` (There should be 176 metagenomes)
+* Click on `Export`
+* This will create a csv file for download. Put this in your data/NEON folder
+* Read in the file using `read_tsv` because although it says it is a csv file it is actually a tsv (tab separated value) file. 
+* Filter the table to include only metagenomes from your site and metagenomes that do not include the substrings `re-annotation` 
+
+```{r, warning=FALSE, message=FALSE}
+NEON_metagenomes <- read_tsv("data/NEON/exported_img_data_Gs0161344_NEON.tsv") |> 
+  select(-c(`Domain`, `Sequencing Status`, `Sequencing Center`)) |> 
+  rename(`Genome Name` = `Genome Name / Sample Name`) |> 
+  filter(str_detect(`Genome Name`, 're-annotation', negate = T)) |> 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") |> 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") |> 
+  # Get rid of the the common string "-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") |> 
+  mutate(`Sample Name` = coalesce(`Sample Name`, Site)) |> 
+  select(-c(Site, `IMG Genome ID`)) 
+```
+
+### Join the NEON MAG and metagenenome
+
+```{r}
+NEON_MAGs_metagenomes <- NEON_MAGs |> 
+  left_join(NEON_metagenomes, by = "Sample Name") 
+```
+
+
+### Filter to WREF MAGs
+
+```{r}
+NEON_MAGs_WREF <- NEON_MAGs_metagenomes |> 
+  filter(str_detect(Site, 'WREF') | str_detect(Site, "Wind River"))
+```
+
+### Filter to 87 individual and 87 coassembly
+
+```{r}
+NEON_MAGs_87 <- NEON_MAGs_metagenomes |> 
+  filter(`Sample Name` == "NEON combined assembly" | `Assembly Type` == "Individual")
+```
+
+## Graphs
+
+### Bars
+
+#### GTDB Taxonomy lineages all by assembly
+
+```{r}
+NEON_MAGs_WREF |> 
+  ggplot(aes(x = `Sample Name`, fill = Phylum)) +
+  geom_bar()+
+  coord_flip() 
+```
+#### Get a count of distinct lineages in the complete data set
+
+```{r}
+NEON_MAGs_WREF |> 
+  distinct(`GTDB Taxonomy Lineage`) |> 
+  count()
+```
+
+#### Distinct GTDB Taxonomy lineages all by assembly
+
+```{r}
+NEON_MAGs_WREF |> 
+  distinct(`GTDB Taxonomy Lineage`, `Sample Name`, Phylum) |> 
+  ggplot(aes(x = `Sample Name`, fill = Phylum)) +
+  geom_bar()+
+  coord_flip()
+```
+### Venns
+
+#### Plot 3 Sample Individual vs Coassembly
+```{r}
+Set1 <- NEON_MAGs_WREF |> 
+  filter(Subplot == "003")
+Set2 <- NEON_MAGs_WREF |>
+  filter(Site == "WREF plot 3 samples" )
+x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
+ggVennDiagram(x, category.names = c("Ind", "CoA")) 
+```
+#### Plot 4 Sample Individual vs Coassembly
+```{r}
+Set1 <- NEON_MAGs_WREF |> 
+  filter(Subplot == "004")
+Set2 <- NEON_MAGs_WREF |>
+  filter(Site == "WREF plot 4 samples" )
+x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
+ggVennDiagram(x, category.names = c("Ind", "CoA")) 
+```
+
+#### Plot 73 Sample Individual vs Coassembly
+
+```{r}
+Set1 <- NEON_MAGs_WREF |> 
+  filter(Subplot == "073")
+Set2 <- NEON_MAGs_WREF |>
+  filter(Site == "WREF plot 73 samples" )
+x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
+ggVennDiagram(x, category.names = c("Ind", "CoA")) 
+```
+
+#### Plot Organic Individual vs Coassembly
+
+```{r}
+Set1 <- NEON_MAGs_WREF |> 
+  filter(Layer == "O")
+Set2 <- NEON_MAGs_WREF |>
+  filter(Site == "WREF organic layer samples" )
+x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
+ggVennDiagram(x, category.names = c("Ind", "CoA"))
+```
+
+#### Plot Mineral Individual vs Coassembly
+
+```{r}
+Set1 <- NEON_MAGs_WREF |> 
+  filter(Layer == "M")
+Set2 <- NEON_MAGs_WREF |>
+  filter(Site == "WREF mineral layer samples" )
+x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
+ggVennDiagram(x, category.names = c("Ind", "CoA"))
+```
+
+#### Plot Site All Individual vs Coassembly
+
+```{r}
+Set1 <- NEON_MAGs_WREF |> 
+  filter(`Assembly Type` == "Individual")
+Set2 <- NEON_MAGs_WREF |>
+  filter(Site == "WREF site samples" )
+x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
+ggVennDiagram(x, category.names = c("Ind", "CoA"))
+```
+
+#### Plot Site coassembly vs Organic and Mineral coassembly
+  
+```{r}
+Set1 <- NEON_MAGs_WREF |> 
+  filter(Site == "WREF organic layer samples" | Site == "WREF mineral layer samples" )
+Set2 <- NEON_MAGs_WREF |>
+  filter(Site == "WREF site samples" )
+x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
+ggVennDiagram(x, category.names = c("CoA-Layer", "CoA-Site"))
+```
+
+#### Plot Site All Individual vs Organic and Mineral coassemblies
+
+```{r}
+Set1 <- NEON_MAGs_WREF |> 
+  filter(`Assembly Type` == "Individual")
+Set2 <- NEON_MAGs_WREF |>
+  filter(Site == "WREF organic layer samples" | Site == "WREF mineral layer samples" )
+x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
+ggVennDiagram(x, category.names = c("Ind", "CoA-Layer"))
+```
+
+#### Plot All 87 Individual vs Coassembly
+
+```{r}
+Set1 <- NEON_MAGs_87 |> 
+  filter(`Assembly Type` == "Individual")
+Set2 <- NEON_MAGs_87 |>
+  filter(`Sample Name` == "NEON combined assembly" ) 
+x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
+ggVennDiagram(x, category.names = c("Ind", "CoA"))
+```
+
+### Bubble charts
+
+#### All 
+```{r, fig.height = 20, fig.width =10}
+level_order <- c("WREF site samples", "WREF organic layer samples", "WREF mineral layer samples", "WREF_001-O-20210621", "WREF plot 73 samples", "WREF_073-O-20210623", "WREF_073-M-20210623", "WREF plot 4 samples", "WREF_004-O-20210622", "WREF_004-M-20210622", "WREF plot 3 samples", "WREF_003-O-20210622", "WREF_003-M-20210622")
+  
+NEON_MAGs_WREF |>
+  group_by(`Sample Name`, `GTDB Taxonomy Lineage`) |> 
+  summarise(n = n()) |> 
+  ggplot(aes(x = factor(`Sample Name`, level = level_order), y = `GTDB Taxonomy Lineage`, size = n)) +
+  geom_point() +
+  theme(
+        axis.text.x = element_text(angle = 45, hjust=1))
+```
+
+
+#### All except sample coassemblies
+```{r, fig.height = 20, fig.width =10}
+level_order <- c("WREF site samples", "WREF organic layer samples", "WREF_001-O-20210621", "WREF_003-O-20210622", "WREF_004-O-20210622", "WREF_073-O-20210623", "WREF mineral layer samples", "WREF_003-M-20210622", "WREF_004-M-20210622", "WREF_073-M-20210623")
+  
+NEON_MAGs_WREF |>
+  filter(`Assembly Type` == "Individual" | Site == "WREF organic layer samples" | Site == "WREF mineral layer samples" | Site == "WREF site samples") |> 
+  group_by(`Sample Name`, `GTDB Taxonomy Lineage`) |> 
+  summarise(n = n()) |> 
+  ggplot(aes(x = factor(`Sample Name`, level = level_order), y = `GTDB Taxonomy Lineage`, size = n)) +
+  geom_point() +
+  theme(
+        axis.text.x = element_text(angle = 45, hjust=1))
+```
+        
+        
