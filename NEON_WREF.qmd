@@ -140,7 +140,6 @@ NEON_MAGs_metagenomes <- NEON_MAGs |>
   left_join(NEON_metagenomes, by = "Sample Name") 
 ```
 
-
 ### Filter to WREF MAGs
 
 ```{r}
@@ -249,7 +248,7 @@ x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
 ggVennDiagram(x, category.names = c("Ind", "CoA"))
 ```
 
-#### Plot Site coassembly vs Organic and Mineral coassembly
+#### Plot Site Coassembly vs Organic and Mineral Coassembly
   
 ```{r}
 Set1 <- NEON_MAGs_WREF |> 
@@ -299,6 +298,7 @@ NEON_MAGs_WREF |>
 
 
 #### All except sample coassemblies
+
 ```{r, fig.height = 20, fig.width =10}
 level_order <- c("WREF site samples", "WREF organic layer samples", "WREF_001-O-20210621", "WREF_003-O-20210622", "WREF_004-O-20210622", "WREF_073-O-20210623", "WREF mineral layer samples", "WREF_003-M-20210622", "WREF_004-M-20210622", "WREF_073-M-20210623")
   
@@ -312,4 +312,44 @@ NEON_MAGs_WREF |>
         axis.text.x = element_text(angle = 45, hjust=1))
 ```
         
-        
+### XYs
+
+#### NEON WREF Site Coassembly vs Organic and Mineral Coassembly
+
+```{r, fig.height = 6, fig.width = 8}
+NEON_MAGs_WREF %>% 
+  filter(Site == "WREF organic layer samples" | Site == "WREF mineral layer samples" | Site == "WREF site samples" )|>
+ggplot(aes(x = `Bin Completeness`, y = `Scaffold Count`, shape = `Bin Quality`, color = `Assembly Method`)) +
+  geom_point() +
+    labs(title = "Relationship between MAGs completenes and the number of scaffolds", x = "MAG completeness", y = "Number of Scaffolds in the MAG") 
+```
+
+
+#### NEON WREF Site Coassembly vs Individual Assembly
+
+```{r, fig.height = 6, fig.width = 8}
+NEON_MAGs_WREF %>% 
+  filter(Site == "WREF organic layer samples" | `Assembly Type` == "Individual" )|>
+ggplot(aes(x = `Bin Completeness`, y = `Scaffold Count`, shape = `Bin Quality`, color = `Assembly Type`)) +
+  geom_point() +
+    labs(title = "Relationship between MAGs completenes and the number of scaffolds", x = "MAG completeness", y = "Number of Scaffolds in the MAG") 
+```
+
+#### NEON WREF Organic and Mineral Coassembly vs Individual Assembly
+
+```{r, fig.height = 6, fig.width = 8}
+NEON_MAGs_WREF %>% 
+  filter(Site == "WREF organic layer samples" | Site == "WREF mineral layer samples"| `Assembly Type` == "Individual" )|>
+ggplot(aes(x = `Bin Completeness`, y = `Scaffold Count`, shape = `Bin Quality`, color = `Assembly Type`)) +
+  geom_point() +
+    labs(title = "Relationship between MAGs completenes and the number of scaffolds", x = "MAG completeness", y = "Number of Scaffolds in the MAG") 
+```
+
+#### NEON pilot Relationship between MAGs completenes and the number of scaffolds
+
+```{r, fig.height = 6, fig.width = 8}
+NEON_MAGs_87 %>% 
+ggplot(aes(x = `Bin Completeness`, y = `Scaffold Count`, shape = `Bin Quality`, color = `Assembly Type`)) +
+  geom_point() +
+    labs(title = "Relationship between MAGs completenes and the number of scaffolds", x = "MAG completeness", y = "Number of Scaffolds in the MAG") 
+```
