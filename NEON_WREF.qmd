@@ -215,7 +215,7 @@ x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
 ggVennDiagram(x, category.names = c("Ind", "CoA")) 
 ```
 
-#### Plot Organic Individual vs Coassembly
+#### Organic Individual vs Coassembly
 
 ```{r}
 Set1 <- NEON_MAGs_WREF |> 
@@ -226,7 +226,7 @@ x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
 ggVennDiagram(x, category.names = c("Ind", "CoA"))
 ```
 
-#### Plot Mineral Individual vs Coassembly
+#### Mineral Individual vs Coassembly
 
 ```{r}
 Set1 <- NEON_MAGs_WREF |> 
@@ -237,7 +237,7 @@ x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
 ggVennDiagram(x, category.names = c("Ind", "CoA"))
 ```
 
-#### Plot Site All Individual vs Coassembly
+#### Site All Individual vs Coassembly
 
 ```{r}
 Set1 <- NEON_MAGs_WREF |> 
@@ -248,7 +248,7 @@ x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
 ggVennDiagram(x, category.names = c("Ind", "CoA"))
 ```
 
-#### Plot Site Coassembly vs Organic and Mineral Coassembly
+#### Site Coassembly vs Organic and Mineral Coassembly
   
 ```{r}
 Set1 <- NEON_MAGs_WREF |> 
@@ -259,7 +259,7 @@ x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
 ggVennDiagram(x, category.names = c("CoA-Layer", "CoA-Site"))
 ```
 
-#### Plot Site All Individual vs Organic and Mineral coassemblies
+#### Site All Individual vs Organic and Mineral coassemblies
 
 ```{r}
 Set1 <- NEON_MAGs_WREF |> 
@@ -270,7 +270,7 @@ x <- list(Set1$`GTDB Taxonomy Lineage`, Set2$`GTDB Taxonomy Lineage` )
 ggVennDiagram(x, category.names = c("Ind", "CoA-Layer"))
 ```
 
-#### Plot All 87 Individual vs Coassembly
+#### All 87 NEON Pilot Individual vs Coassembly
 
 ```{r}
 Set1 <- NEON_MAGs_87 |> 
