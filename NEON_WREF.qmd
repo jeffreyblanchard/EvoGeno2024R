@@ -289,9 +289,9 @@ ggVennDiagram(x, category.names = c("Ind", "CoA"))
 level_order <- c("WREF site samples", "WREF organic layer samples", "WREF mineral layer samples", "WREF_001-O-20210621", "WREF plot 73 samples", "WREF_073-O-20210623", "WREF_073-M-20210623", "WREF plot 4 samples", "WREF_004-O-20210622", "WREF_004-M-20210622", "WREF plot 3 samples", "WREF_003-O-20210622", "WREF_003-M-20210622")
   
 NEON_MAGs_WREF |>
-  group_by(`Sample Name`, `GTDB Taxonomy Lineage`) |> 
+  group_by(`Sample Name`, `GTDB Taxonomy Lineage`, Phylum) |> 
   summarise(n = n()) |> 
-  ggplot(aes(x = factor(`Sample Name`, level = level_order), y = `GTDB Taxonomy Lineage`, size = n)) +
+  ggplot(aes(x = factor(`Sample Name`, level = level_order), y = `GTDB Taxonomy Lineage`, size = n, color = Phylum)) +
   geom_point() +
   theme(
         axis.text.x = element_text(angle = 45, hjust=1))
@@ -304,9 +304,9 @@ level_order <- c("WREF site samples", "WREF organic layer samples", "WREF_001-O-
   
 NEON_MAGs_WREF |>
   filter(`Assembly Type` == "Individual" | Site == "WREF organic layer samples" | Site == "WREF mineral layer samples" | Site == "WREF site samples") |> 
-  group_by(`Sample Name`, `GTDB Taxonomy Lineage`) |> 
+  group_by(`Sample Name`, `GTDB Taxonomy Lineage`, Phylum) |> 
   summarise(n = n()) |> 
-  ggplot(aes(x = factor(`Sample Name`, level = level_order), y = `GTDB Taxonomy Lineage`, size = n)) +
+  ggplot(aes(x = factor(`Sample Name`, level = level_order), y = `GTDB Taxonomy Lineage`, size = n, color = Phylum)) +
   geom_point() +
   theme(
         axis.text.x = element_text(angle = 45, hjust=1))
