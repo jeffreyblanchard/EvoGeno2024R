@@ -243,7 +243,7 @@ Install Bioconductor locally on your computer or Unity by typing in the R consol
 ```{r eval = FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install(version = "3.17")
+BiocManager::install(version = "3.19")
 ```
 
 Individual packages that are not part of the BioConductor core such as ggtree and Biostrings can be installed using
@@ -428,7 +428,7 @@ p <- ggtree(tree)
 p + 
   geom_tiplab(color="darkorchid", size=5) + 
   geom_tippoint(color="darkorchid", size=2, shape=18) + 
-  geom_nodepoint(color="goldenrod", size=4, alpha=1/2) + 
+  geom_nodelab(color="black", size=4, alpha=1/2) + 
   ggtitle("Exercise 2 Figure: Not the prettiest phylogenetic aesthetics, but it'll do.")
 ```
 
